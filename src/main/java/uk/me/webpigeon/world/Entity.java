@@ -15,9 +15,9 @@ public abstract class Entity {
     protected World world;
 
     // X Co-Ordinate
-    protected int x;
+    protected double x;
     // Y Co-Ordinate
-    protected int y;
+    protected double y;
 
     // Health
     protected int health;
@@ -38,4 +38,12 @@ public abstract class Entity {
     	this.world = world;
     }
 
+	public double getX() {
+		return x;
+	}
+
+	
+	public double getY() {
+		return y;
+	}
 }

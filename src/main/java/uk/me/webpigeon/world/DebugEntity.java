@@ -17,7 +17,7 @@ public class DebugEntity extends Entity {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.red);
-		g2.fillRect(x * SIZE, y * SIZE, SIZE, SIZE);
+		g2.fillRect((int)(x * SIZE), (int)(y * SIZE), SIZE, SIZE);
 	}
 
 }
