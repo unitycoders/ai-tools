@@ -40,7 +40,7 @@ public class World extends JComponent implements Runnable {
         while (running) {
             try {
 
-                Thread.sleep(tickDelay);
+                Thread.sleep((timeOfLastUpdate < tickDelay) ? tickDelay - timeOfLastUpdate : 0);
                 long currentTime = System.nanoTime();
                 timeOfLastUpdate = currentTime - previousTime;
                 previousTime = currentTime;
