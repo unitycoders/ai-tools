@@ -1,5 +1,6 @@
 package uk.me.webpigeon.world;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,11 @@ public class World extends JComponent {
 			entity.update(null);
 		}
 		
+	}
+	
+	protected void paintComponent(Graphics g) {
+		Graphics2D g2 = (Graphics2D)g;
+		draw(g2);
 	}
 	
 	public void draw(Graphics2D g2) {
