@@ -23,7 +23,7 @@ public abstract class Entity {
     protected int health;
 
 
-    public abstract void update(TreeNode behaviourRoot);
+    public abstract void update();
 
     public abstract void draw(Graphics2D graphics);
     
