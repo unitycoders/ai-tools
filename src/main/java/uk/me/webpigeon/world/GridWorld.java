@@ -22,7 +22,7 @@ public class GridWorld extends World {
 
         frame.setPreferredSize(new Dimension(800, 600));
 
-        World world = new GridWorld(10, 10);
+        World world = new GridWorld(10, 5);
         world.addEntity(new DebugEntity());
         frame.add(world);
 
@@ -42,11 +42,10 @@ public class GridWorld extends World {
 
     @Override
     public void draw(Graphics2D g2) {
-        System.out.println("Hello");
         g2.setColor(Color.GREEN);
-        for (int i = 0; i < width; i++) {
-            g2.drawLine(i * gridSize, 0, i * gridSize, height * gridSize);
-            g2.drawLine(0, i * gridSize, width * gridSize, i * gridSize);
+        for (int i = 0; i <= Math.max(width, height); i++) {
+            if(i <= width) g2.drawLine(i * gridSize, 0, i * gridSize, height * gridSize);
+            if(i <= height) g2.drawLine(0, i * gridSize, width * gridSize, i * gridSize);
         }
         super.draw(g2);
     }
