@@ -12,7 +12,7 @@ import java.awt.*;
 public abstract class Entity {
 
     // The GridWorld in all its glory
-    protected GridWorld world;
+    protected World world;
 
     // X Co-Ordinate
     protected int x;

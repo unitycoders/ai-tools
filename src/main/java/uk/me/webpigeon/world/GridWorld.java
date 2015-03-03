@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Created by Piers on 03/03/2015.
  */
-public class GridWorld extends JComponent {
+public class GridWorld extends World {
 
     // width in squares of the grid
     private int width;
