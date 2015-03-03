@@ -8,17 +8,12 @@ import java.awt.*;
  */
 public class GridWorld extends World {
 
-    // width in squares of the grid
-    private int width;
-    // height in squares of the grid
-    private int height;
+
     // size in pixels of the grid
-    private int gridSize;
+    private int gridSize = 50;
 
     public GridWorld(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.gridSize = 50;
+        super(width, height);
     }
 
     public static void main(String[] args) {
@@ -31,7 +26,7 @@ public class GridWorld extends World {
         frame.setVisible(true);
     }
 
-    public int getCenterOfGrid(int input){
+    public int getCenterOfGrid(int input) {
         return (input * gridSize) + (gridSize / 2);
     }
 

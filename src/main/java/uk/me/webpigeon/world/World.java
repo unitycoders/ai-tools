@@ -1,6 +1,7 @@
 package uk.me.webpigeon.world;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -10,6 +11,17 @@ import javax.swing.*;
  */
 public class World extends JComponent {
 	private List<Entity> entities;
+	
+    // width of the world
+    protected int width;
+    // height of the world
+    protected int height;
+
+    public World(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.entities = new ArrayList<Entity>();
+    }
 	
 	public void addEntity(Entity entity){
 		entities.add(entity);
@@ -28,4 +40,5 @@ public class World extends JComponent {
 			entity.draw(g2);
 		}
 	}
+	
 }
