@@ -17,7 +17,7 @@ public class GridWorld extends World {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Crazy World");
+        JFrame frame = new JFrame("Crazy Grid World");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         frame.setPreferredSize(new Dimension(800, 600));
@@ -34,4 +34,6 @@ public class GridWorld extends World {
     public Dimension getPreferredSize() {
         return new Dimension((width * gridSize) + gridSize, (height * gridSize) + gridSize);
     }
+
+
 }
