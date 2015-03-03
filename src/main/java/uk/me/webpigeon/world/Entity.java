@@ -26,5 +26,16 @@ public abstract class Entity {
     public abstract void update(TreeNode behaviourRoot);
 
     public abstract void draw(Graphics2D graphics);
+    
+    /**
+     * Bind an entity to a world.
+     * 
+     * This method is called by the world when the entity gets added to the world.
+     * 
+     * @param world the world the entity now belongs to
+     */
+    void bind(World world) {
+    	this.world = world;
+    }
 
 }

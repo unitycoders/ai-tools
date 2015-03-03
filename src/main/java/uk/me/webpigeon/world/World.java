@@ -25,6 +25,7 @@ public class World extends JComponent {
 	
 	public void addEntity(Entity entity){
 		entities.add(entity);
+		entity.bind(this);
 	}
 	
 	public void update() {
