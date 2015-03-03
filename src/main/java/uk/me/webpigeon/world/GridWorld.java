@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Created by Piers on 03/03/2015.
  */
-public class World extends JComponent {
+public class GridWorld extends JComponent {
 
     // width in squares of the grid
     private int width;
@@ -15,7 +15,7 @@ public class World extends JComponent {
     // size in pixels of the grid
     private int gridSize;
 
-    public World(int width, int height) {
+    public GridWorld(int width, int height) {
         this.width = width;
         this.height = height;
         this.gridSize = 50;
