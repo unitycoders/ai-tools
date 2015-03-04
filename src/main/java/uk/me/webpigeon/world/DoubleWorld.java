@@ -18,7 +18,7 @@ public class DoubleWorld extends World {
 
     @Override
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.BLACK);
+        g2.setColor(new Color(123, 191, 106));
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.draw(g2);
     }
