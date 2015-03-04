@@ -9,6 +9,7 @@ import javax.swing.WindowConstants;
 
 import uk.me.webpigeon.steering.WanderingBehaviour;
 import uk.me.webpigeon.steering.WeightedBehaviour;
+import uk.me.webpigeon.util.Vector2D;
 
 public class DoubleWorld extends World {
 
@@ -18,10 +19,10 @@ public class DoubleWorld extends World {
 
     @Override
     public void draw(Graphics2D g2) {
-    	double screenWidth = getWidth()/(width * 1.0);
-    	double screenHeight = getHeight()/(height * 1.0);
-    	g2.scale(screenWidth, screenHeight);
-    	
+        double screenWidth = getWidth() / (width * 1.0);
+        double screenHeight = getHeight() / (height * 1.0);
+        g2.scale(screenWidth, screenHeight);
+
         g2.setColor(new Color(123, 191, 106));
         g2.fillRect(0, 0, width, height);
         super.draw(g2);
@@ -30,10 +31,12 @@ public class DoubleWorld extends World {
     public static void main(String[] args) {
         World world = new DoubleWorld(800, 600);
 
-        for (int i=0; i<10; i++) {
-        	world.addEntity(EntityFactory.buildCow(world.width, world.height));
+        for (int i = 0; i < 50; i++) {
+            world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(world.width, world.height, true)));
         }
-
+        for (int i = 0; i < 10; i++) {
+            world.addEntity(EntityFactory.buildCow(world.width, world.height));
+        }
         Thread t = new Thread(world);
         t.start();
 

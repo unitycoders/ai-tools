@@ -24,8 +24,8 @@ public class SteeringEntity extends Entity {
     public void update() {
         Vector2D targetForce = behavour.process();
 
-        location.add(targetForce);
         velocity = Vector2D.add(targetForce, velocity, VECTOR_SMOOTHING);
+        location.add(velocity);
         previousLocations.add(new Vector2D(location));
         location.wrap(world.width, world.height);
     }
@@ -36,8 +36,8 @@ public class SteeringEntity extends Entity {
         sandbox.translate(location.getX(), location.getY());
         
         //TODO piers - can you look at this, i'm assuming theta will be the rotation, but it looks wrong
-        Vector2D polarVel = Vector2D.toPolar(velocity);
-        double theta = polarVel.getTheta();
+//        Vector2D polarVel = Vector2D.toPolar(velocity);
+        double theta = velocity.getTheta();
         sandbox.rotate(theta);
         
         sandbox.setColor(Color.WHITE);
