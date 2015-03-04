@@ -8,6 +8,7 @@ import uk.me.webpigeon.steering.SteeringBehaviour;
 import uk.me.webpigeon.util.Vector2D;
 
 public class SteeringEntity extends Entity {
+	private static final Double VECTOR_SMOOTHING = 0.2;
     private static final Integer SIZE = 30;
     private SteeringBehaviour behavour;
     private ArrayList<Vector2D> previousLocations = new ArrayList<>();
@@ -27,7 +28,7 @@ public class SteeringEntity extends Entity {
         y += targetForce.getY();
 
         location.add(targetForce);
-        velocity = Vector2D.add(targetForce, velocity, 0.75);
+        velocity = Vector2D.add(targetForce, velocity, VECTOR_SMOOTHING);
         previousLocations.add(new Vector2D(location));
         location.wrap(world.width, world.height);
     }
