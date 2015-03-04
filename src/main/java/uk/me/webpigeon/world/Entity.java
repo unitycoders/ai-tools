@@ -44,7 +44,7 @@ public abstract class Entity {
     }
 
 	public double getX() {
-		return x;
+		return location.getX();
 	}
 
 	
