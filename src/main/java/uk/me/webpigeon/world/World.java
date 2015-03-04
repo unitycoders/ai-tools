@@ -63,7 +63,7 @@ public class World extends JComponent implements Runnable {
     public void update(long timeOfLastUpdate) {
 
         for (Entity entity : entities) {
-            entity.update(null);
+            entity.update();
         }
 
     }

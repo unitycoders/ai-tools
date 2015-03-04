@@ -9,7 +9,7 @@ public class DebugEntity extends Entity {
 	private final Integer SIZE = 50; 
 
 	@Override
-	public void update(TreeNode behaviourRoot) {
+	public void update() {
 		// TODO Auto-generated method stub
 		
 	}
