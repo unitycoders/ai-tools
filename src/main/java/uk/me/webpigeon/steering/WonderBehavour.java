@@ -38,7 +38,10 @@ public class WonderBehavour implements SteeringBehavour {
 		
 		Vector2D pw = Vector2D.add(ourPosition, Vector2D.multiply(v, wanderDistance));
 		
-		Vector2D a = new Vector2D(jitter * (random.nextDouble() * 2) - 1, jitter * (random.nextDouble() * 2) - 1);
+		double x = (random.nextDouble() * 2) - 1;
+		double y = (random.nextDouble() * 2) - 1;
+		
+		Vector2D a = new Vector2D(jitter * x, jitter * y);
 		Vector2D wanders2 = Vector2D.add(wanders, a);
 		Vector2D cNorm = new Vector2D(wanders2);
 		cNorm.normalise();

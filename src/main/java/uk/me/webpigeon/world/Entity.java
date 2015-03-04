@@ -26,6 +26,10 @@ public abstract class Entity {
 
     // Health
     protected int health;
+    
+    public Entity() {
+    	this.location = new Vector2D();
+    }
 
 
     public abstract void update();
