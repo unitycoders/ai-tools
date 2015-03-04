@@ -17,7 +17,7 @@ public class SteeringEntity extends Entity {
 	}
 
 	@Override
-	public void update(TreeNode behaviourRoot) {
+	public void update() {
 		Vector2D targetForce = behavour.process();
 		
 		x += targetForce.getX();
