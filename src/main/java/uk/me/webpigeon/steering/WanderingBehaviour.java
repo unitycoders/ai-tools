@@ -10,9 +10,9 @@ import java.util.Random;
  */
 public class WanderingBehaviour implements SteeringBehavour {
 
-    private double wanderRadius = 10;
-    private double wanderDistance = 3;
-    private double angleJitter = 10;
+    private double wanderRadius = 50;
+    private double wanderDistance = 50;
+    private double angleJitter = 8;
     private Entity entity;
 
     // random vector - TODO May need to convert 360 to radians
