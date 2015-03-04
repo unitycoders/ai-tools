@@ -12,9 +12,9 @@ import java.util.Random;
  */
 public class WanderingBehaviour implements SteeringBehaviour {
 
-    private double wanderRadius = 50;
-    private double wanderDistance = 50;
-    private double angleJitter = 15;
+    private double wanderRadius = 25;
+    private double wanderDistance = 25;
+    private double angleJitter = 5;
     private Entity entity;
 
     // random vector
