@@ -17,8 +17,8 @@ public class WanderingBehaviour implements SteeringBehaviour {
     private double angleJitter = 5;
     private Entity entity;
 
-    // random vector - TODO May need to convert 360 to radians
-    private Vector2D c = Vector2D.getRandomPolar(Math.toRadians(360), 1, 1, true);
+    // random vector
+    private Vector2D c = Vector2D.toCartesian(Vector2D.getRandomPolar(Math.toRadians(360), 1, 1, true));
     private SeekBehaviour seek = new SeekBehaviour(null);
     private Random random = new Random();
     private Vector2D centerOfCircle;
@@ -33,19 +33,17 @@ public class WanderingBehaviour implements SteeringBehaviour {
         // Modify ourVelocity to reflect the difference between Position and center of circle
         ourVelocity.normalise();
         ourVelocity.multiply(wanderDistance);
-        
+
         // Use that information to calculate the center of the circle
         centerOfCircle = Vector2D.add(ourPosition, ourVelocity);
         // Vary c by jittering it a little
-        Vector2D tmp = Vector2D.toCartesian(c);
-        tmp.rotate(Math.toRadians((random.nextDouble() * 2 - 1) * angleJitter));
-        c = Vector2D.toPolar(tmp);
+
+        c = Vector2D.toPolar(c);
+        c.rotate(Math.toRadians((random.nextDouble() * 2 - 1) * angleJitter));
+        c = Vector2D.toCartesian(c);
+
         // c is a unit vector in its own co-ordinate system - bring it back
-        seekPosition =
-                Vector2D.add(
-                        centerOfCircle,
-                        tmp
-                );
+        seekPosition = Vector2D.add(centerOfCircle, c);
 
         // Set the seeking behaviour to the target
         seek.setTarget(seekPosition);
@@ -58,12 +56,12 @@ public class WanderingBehaviour implements SteeringBehaviour {
         seek.bind(entity);
     }
 
-	@Override
-	public void debugDraw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		g.drawOval((int)(centerOfCircle.x - wanderRadius), (int)(centerOfCircle.y - wanderRadius), (int)wanderRadius*2, (int)wanderRadius*2);
-		g.setColor(Color.GREEN);
-		g.drawOval((int)seekPosition.x - 2, (int)seekPosition.y - 2, 4, 4);
-		seek.debugDraw(g);
-	}
+    @Override
+    public void debugDraw(Graphics2D g) {
+        // TODO Auto-generated method stub
+        g.drawOval((int) (centerOfCircle.x - wanderRadius), (int) (centerOfCircle.y - wanderRadius), (int) wanderRadius * 2, (int) wanderRadius * 2);
+        g.setColor(Color.GREEN);
+        g.drawOval((int) seekPosition.x - 2, (int) seekPosition.y - 2, 4, 4);
+        seek.debugDraw(g);
+    }
 }
