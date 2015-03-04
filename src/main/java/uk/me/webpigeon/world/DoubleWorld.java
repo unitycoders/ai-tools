@@ -18,8 +18,6 @@ public class DoubleWorld extends World{
 
     @Override
     public void draw(Graphics2D g2) {
-    	update();
-    	
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.draw(g2);
@@ -30,6 +28,9 @@ public class DoubleWorld extends World{
 		
 		Entity entity = new SteeringEntity(new SeekBehavour(new Vector2D(100, 100)));
 		world.addEntity(entity);
+		
+		Thread t = new Thread(world);
+		t.start();
 		
         JFrame frame = new JFrame("Crazy Double World");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

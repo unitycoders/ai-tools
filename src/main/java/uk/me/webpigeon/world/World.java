@@ -21,7 +21,7 @@ public class World extends JComponent implements Runnable {
     // boolean to say are we paused
     protected boolean paused;
     // boolean to say are we still running
-    protected boolean running;
+    protected boolean running = true;
 
     // How long we aim to spend on each tick
     protected int tickDelay;

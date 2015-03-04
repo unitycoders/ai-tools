@@ -4,7 +4,6 @@ import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
 public class SeekBehavour implements SteeringBehavour {
-	private Vector2D currentVel = new Vector2D();
 	private Vector2D targetPos;
 	private Entity entity;
 	
@@ -20,12 +19,11 @@ public class SeekBehavour implements SteeringBehavour {
 	 */
 	public Vector2D process() {
 		Vector2D currentPos = new Vector2D(entity.getX(), entity.getY());
-		System.out.println(currentPos);
-		
+
 		Vector2D targetDirection = Vector2D.subtract(targetPos, currentPos);
 		targetDirection.normalise();
 		
-		currentVel = Vector2D.subtract(targetDirection, currentVel);
+		Vector2D currentVel = targetDirection;
 		return currentVel;
 	}
 
