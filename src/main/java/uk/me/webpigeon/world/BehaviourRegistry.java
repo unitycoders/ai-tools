@@ -1,6 +1,6 @@
 package uk.me.webpigeon.world;
 
-import uk.me.webpigeon.behavour.TreeNode;
+import uk.me.webpigeon.behaviour.TreeNode;
 
 import java.util.HashMap;
 

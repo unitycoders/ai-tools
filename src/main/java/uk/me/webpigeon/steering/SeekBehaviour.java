@@ -14,12 +14,7 @@ public class SeekBehaviour implements SteeringBehaviour {
 		this.targetPos = targetPos;
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param q the target position
-	 * @return
-	 */
+
 	public Vector2D process() {
 		Vector2D currentPos = entity.getLocation();
 

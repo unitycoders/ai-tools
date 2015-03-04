@@ -1,4 +1,4 @@
-package uk.me.webpigeon.behavour;
+package uk.me.webpigeon.behaviour;
 
 public class SequenceNode extends TreeNode {
 
