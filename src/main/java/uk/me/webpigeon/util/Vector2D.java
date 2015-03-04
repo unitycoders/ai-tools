@@ -201,6 +201,10 @@ public final class Vector2D {
         }
     }
 
+    public static Vector2D multiply(Vector2D first){
+        return multiply(first, 1.0);
+    }
+
     public static Vector2D multiply(Vector2D first, double fac) {
         Vector2D second = new Vector2D(first, true);
         second.multiply(fac);
