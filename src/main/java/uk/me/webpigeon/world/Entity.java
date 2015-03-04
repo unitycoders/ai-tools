@@ -23,6 +23,7 @@ public abstract class Entity {
     protected double y;
     // Location of the entity
     protected Vector2D location;
+    protected Vector2D velocity;
 
     // Health
     protected int health;
@@ -51,4 +52,12 @@ public abstract class Entity {
 	public double getY() {
 		return y;
 	}
+
+    public Vector2D getLocation() {
+        return location;
+    }
+
+    public Vector2D getVelocity() {
+        return velocity;
+    }
 }
