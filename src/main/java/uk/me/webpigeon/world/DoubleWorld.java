@@ -30,8 +30,9 @@ public class DoubleWorld extends World {
     public static void main(String[] args) {
         World world = new DoubleWorld(800, 600);
 
-        Entity entity = new SteeringEntity(new WanderingBehaviour());
-        world.addEntity(entity);
+        for (int i=0; i<10; i++) {
+        	world.addEntity(EntityFactory.buildCow(world.width, world.height));
+        }
 
         Thread t = new Thread(world);
         t.start();

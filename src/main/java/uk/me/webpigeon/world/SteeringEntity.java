@@ -12,9 +12,9 @@ public class SteeringEntity extends Entity {
     private SteeringBehaviour behavour;
     private ArrayList<Vector2D> previousLocations = new ArrayList<>();
 
-    public SteeringEntity(SteeringBehaviour behavour) {
+    public SteeringEntity(int x, int y, SteeringBehaviour behavour) {
         this.behavour = behavour;
-        this.location = new Vector2D(50, 50, true);
+        this.location = new Vector2D(x, y, true);
         this.velocity = new Vector2D(0, 0, true);
         behavour.bind(this);
     }
@@ -34,12 +34,12 @@ public class SteeringEntity extends Entity {
 
     @Override
     public void draw(Graphics2D graphics) {
-        graphics.setColor(Color.WHITE);
         double halfSize = SIZE / 2.0;
         int x = (int)(location.getX() - halfSize);
         int y = (int)(location.getY() - halfSize);
         
-        graphics.drawOval(x, y, SIZE, SIZE);
+        graphics.setColor(Color.WHITE);
+        graphics.fillOval(x, y, SIZE, SIZE);
 
     }
     
