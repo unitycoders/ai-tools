@@ -14,7 +14,7 @@ public class WanderingBehaviour implements SteeringBehaviour {
 
     private double wanderRadius = 50;
     private double wanderDistance = 50;
-    private double angleJitter = 5;
+    private double angleJitter = 15;
     private Entity entity;
 
     // random vector
@@ -28,22 +28,20 @@ public class WanderingBehaviour implements SteeringBehaviour {
     public Vector2D process() {
         // Obtain information about the entity
         Vector2D ourPosition = new Vector2D(entity.getLocation(), true);
-        Vector2D ourVelocity = new Vector2D(entity.getVelocity(), true);
+        Vector2D distanceFromUnitToWanderCircle = new Vector2D(entity.getVelocity(), true);
 
-        // Modify ourVelocity to reflect the difference between Position and center of circle
-        ourVelocity.normalise();
-        ourVelocity.multiply(wanderDistance);
+        // Modify distanceFromUnitToWanderCircle to reflect the difference between Position and center of circle
+        distanceFromUnitToWanderCircle.normalise();
+        distanceFromUnitToWanderCircle.multiply(wanderDistance * 2);
 
         // Use that information to calculate the center of the circle
-        centerOfCircle = Vector2D.add(ourPosition, ourVelocity);
+        centerOfCircle = Vector2D.add(ourPosition, distanceFromUnitToWanderCircle);
         // Vary c by jittering it a little
-
-        c = Vector2D.toPolar(c);
+        c.normalise();
         c.rotate(Math.toRadians((random.nextDouble() * 2 - 1) * angleJitter));
-        c = Vector2D.toCartesian(c);
 
         // c is a unit vector in its own co-ordinate system - bring it back
-        seekPosition = Vector2D.add(centerOfCircle, c);
+        seekPosition = Vector2D.add(centerOfCircle, c, wanderRadius);
 
         // Set the seeking behaviour to the target
         seek.setTarget(seekPosition);
