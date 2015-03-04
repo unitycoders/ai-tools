@@ -12,7 +12,7 @@ public class WanderingBehaviour implements SteeringBehavour {
 
     private double wanderRadius = 50;
     private double wanderDistance = 50;
-    private double angleJitter = 8;
+    private double angleJitter = 5;
     private Entity entity;
 
     // random vector - TODO May need to convert 360 to radians

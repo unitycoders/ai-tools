@@ -35,11 +35,16 @@ public class SteeringEntity extends Entity {
     @Override
     public void draw(Graphics2D graphics) {
         graphics.setColor(Color.WHITE);
-        graphics.drawOval((int) (location.getX()), (int) (location.getY()), SIZE, SIZE);
+        double halfSize = SIZE / 2.0;
+        int x = (int)(location.getX() - halfSize);
+        int y = (int)(location.getY() - halfSize);
+        
+        
+        graphics.drawOval(x, y, SIZE, SIZE);
 
-        graphics.setColor(Color.GREEN);
+        graphics.setColor(Color.DARK_GRAY);
         for(int i = 0; i < previousLocations.size() - 1; i++){
-            graphics.drawOval((int)previousLocations.get(i).getX(), (int) previousLocations.get(i).getY(), SIZE / 3, SIZE / 3);
+            graphics.drawOval((int)previousLocations.get(i).getX() - SIZE/6, (int) previousLocations.get(i).getY() - SIZE/6, SIZE / 3, SIZE / 3);
         }
     }
 
