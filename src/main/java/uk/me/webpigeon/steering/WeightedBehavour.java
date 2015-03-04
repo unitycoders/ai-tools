@@ -1,5 +1,6 @@
 package uk.me.webpigeon.steering;
 
+import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,12 @@ public class WeightedBehavour implements SteeringBehavour {
 	}
 
 	public void bind(Entity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void debugDraw(Graphics2D g) {
 		// TODO Auto-generated method stub
 		
 	}

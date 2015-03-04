@@ -1,5 +1,8 @@
 package uk.me.webpigeon.steering;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
@@ -18,7 +21,7 @@ public class SeekBehavour implements SteeringBehavour {
 	 * @return
 	 */
 	public Vector2D process() {
-		Vector2D currentPos = new Vector2D(entity.getX(), entity.getY());
+		Vector2D currentPos = entity.getLocation();
 
 		Vector2D targetDirection = Vector2D.subtract(targetPos, currentPos);
 		targetDirection.normalise();
@@ -33,6 +36,13 @@ public class SeekBehavour implements SteeringBehavour {
 
 	public void setTarget(Vector2D seekTarget) {
 		targetPos = seekTarget;
+	}
+
+	@Override
+	public void debugDraw(Graphics2D g) {
+		g.setColor(Color.WHITE);
+		Vector2D entPos = entity.getLocation();
+		g.drawLine((int)entPos.x, (int)entPos.y, (int)targetPos.x, (int)targetPos.y);	
 	}
 
 }

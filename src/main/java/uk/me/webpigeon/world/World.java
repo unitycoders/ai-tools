@@ -11,6 +11,7 @@ import javax.swing.*;
  * Created by Piers on 03/03/2015.
  */
 public class World extends JComponent implements Runnable {
+	private static final Boolean DEBUG_DRAW = true;
     private List<Entity> entities;
 
     // width of the world
@@ -76,6 +77,9 @@ public class World extends JComponent implements Runnable {
     public void draw(Graphics2D g2) {
         for (Entity entity : entities) {
             entity.draw(g2);
+            if (DEBUG_DRAW) {
+            	entity.debugDraw(g2);
+            }
         }
     }
 

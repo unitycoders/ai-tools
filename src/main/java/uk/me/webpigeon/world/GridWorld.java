@@ -23,7 +23,6 @@ public class GridWorld extends World {
         frame.setPreferredSize(new Dimension(800, 600));
 
         World world = new GridWorld(10, 5);
-        world.addEntity(new DebugEntity());
         frame.add(world);
 
         frame.pack();

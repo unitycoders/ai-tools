@@ -1,5 +1,6 @@
 package uk.me.webpigeon.steering;
 
+import java.awt.Graphics2D;
 import java.util.Random;
 
 import uk.me.webpigeon.util.Vector2D;
@@ -33,7 +34,7 @@ public class WonderBehavour implements SteeringBehavour {
 	public Vector2D process() {
 		Vector2D ourPosition = new Vector2D(entity.getX(), entity.getY());
 		
-		Vector2D v = new Vector2D(-0.1, 0.1);
+		Vector2D v = entity.getVelocity();
 		//v.normalise();
 		
 		Vector2D pw = Vector2D.add(ourPosition, Vector2D.multiply(v, wanderDistance));
@@ -43,16 +44,23 @@ public class WonderBehavour implements SteeringBehavour {
 		
 		Vector2D a = new Vector2D(jitter * x, jitter * y);
 		Vector2D wanders2 = Vector2D.add(wanders, a);
-		Vector2D cNorm = new Vector2D(wanders2);
+		Vector2D cNorm = new Vector2D(wanders2, true);
 		cNorm.normalise();
-		System.out.println("banana "+wanders2 + " " + cNorm.mag());
-		wanders = Vector2D.multiply(a, wanderRadius);
+		wanders = Vector2D.multiply(cNorm, wanderRadius);
 		
 		//set the new target
 		Vector2D seekTarget = Vector2D.add(Vector2D.add(ourPosition, Vector2D.multiply(v, wanderDistance)),wanders);
-		System.out.println(ourPosition+" "+seekTarget);
 		seek.setTarget(seekTarget);
 		return seek.process();
+	}
+
+	@Override
+	public void debugDraw(Graphics2D g) {
+		// TODO Auto-generated method stub
+		
+		g.drawOval((int)wanders.x, (int)wanders.y, (int)wanderRadius*2, (int)wanderRadius*2);
+		
+		seek.debugDraw(g);
 	}
 
 }

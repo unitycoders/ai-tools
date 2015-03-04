@@ -36,6 +36,7 @@ public abstract class Entity {
     public abstract void update();
 
     public abstract void draw(Graphics2D graphics);
+    public void debugDraw(Graphics2D g) {}
     
     /**
      * Bind an entity to a world.
@@ -64,4 +65,5 @@ public abstract class Entity {
     public Vector2D getVelocity() {
         return velocity;
     }
+    
 }
