@@ -33,8 +33,8 @@ public class WonderBehavour implements SteeringBehavour {
 	public Vector2D process() {
 		Vector2D ourPosition = new Vector2D(entity.getX(), entity.getY());
 		
-		Vector2D v = new Vector2D(0.1, 0.1);
-		v.normalise();
+		Vector2D v = new Vector2D(-0.1, 0.1);
+		//v.normalise();
 		
 		Vector2D pw = Vector2D.add(ourPosition, Vector2D.multiply(v, wanderDistance));
 		
@@ -45,8 +45,8 @@ public class WonderBehavour implements SteeringBehavour {
 		Vector2D wanders2 = Vector2D.add(wanders, a);
 		Vector2D cNorm = new Vector2D(wanders2);
 		cNorm.normalise();
-		System.out.println("banana "+a + " " + cNorm.mag());
-		wanders = Vector2D.multiply(cNorm, wanderRadius);
+		System.out.println("banana "+wanders2 + " " + cNorm.mag());
+		wanders = Vector2D.multiply(a, wanderRadius);
 		
 		//set the new target
 		Vector2D seekTarget = Vector2D.add(Vector2D.add(ourPosition, Vector2D.multiply(v, wanderDistance)),wanders);
