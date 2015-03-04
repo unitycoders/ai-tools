@@ -6,7 +6,7 @@ import java.util.Random;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
-public class WonderBehavour implements SteeringBehavour {
+public class WonderBehaviour implements SteeringBehaviour {
 	private double wanderRadius = 10;
 	private double wanderDistance = 3;
 	private double jitter = 1;
@@ -14,12 +14,12 @@ public class WonderBehavour implements SteeringBehavour {
 	
 	private Vector2D c;
 	private Vector2D wanders;
-	private SeekBehavour seek;
+	private SeekBehaviour seek;
 	private Random random;
 	
-	public WonderBehavour() {
+	public WonderBehaviour() {
 		this.wanderDistance = 0.5;
-		this.seek = new SeekBehavour(null);
+		this.seek = new SeekBehaviour(null);
 		this.wanders = new Vector2D();
 		this.random = new Random();
 	}
