@@ -8,7 +8,7 @@ import uk.me.webpigeon.steering.SteeringBehaviour;
 import uk.me.webpigeon.util.Vector2D;
 
 public class SteeringEntity extends Entity {
-    private static final Integer SIZE = 50;
+    private static final Integer SIZE = 30;
     private SteeringBehaviour behavour;
     private ArrayList<Vector2D> previousLocations = new ArrayList<>();
 
@@ -34,13 +34,16 @@ public class SteeringEntity extends Entity {
 
     @Override
     public void draw(Graphics2D graphics) {
-        double halfSize = SIZE / 2.0;
-        int x = (int)(location.getX() - halfSize);
-        int y = (int)(location.getY() - halfSize);
+        Graphics2D sandbox = (Graphics2D)graphics.create();
+        sandbox.translate(location.getX(), location.getY());
         
-        graphics.setColor(Color.WHITE);
-        graphics.fillOval(x, y, SIZE, SIZE);
-
+        //TODO piers - can you look at this, i'm assuming theta will be the rotation, but it looks wrong
+        Vector2D polarVel = Vector2D.toPolar(velocity);
+        double theta = polarVel.getTheta();
+        sandbox.rotate(theta);
+        
+        sandbox.setColor(Color.WHITE);
+        sandbox.fillRect(-SIZE, -(int)(SIZE/2.0), SIZE * 2, SIZE);
     }
     
     public void debugDraw(Graphics2D graphics) {
