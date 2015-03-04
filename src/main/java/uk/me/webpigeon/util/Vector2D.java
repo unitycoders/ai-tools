@@ -47,6 +47,10 @@ public final class Vector2D {
         this.mutable = mutable;
     }
 
+    private void setToMutable() {
+        this.mutable = true;
+    }
+
     // set coordinates
     public void set(double x, double y) {
         if (mutable) {
@@ -274,6 +278,13 @@ public final class Vector2D {
         } else {
 
         }
+    }
+
+    public static Vector2D normalise(Vector2D first) {
+        Vector2D second = new Vector2D(first, false);
+        second.normalise();
+        if (first.mutable) second.setToMutable();
+        return second;
     }
 
     public double getX() {
