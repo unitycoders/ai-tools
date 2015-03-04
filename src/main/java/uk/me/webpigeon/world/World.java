@@ -24,7 +24,7 @@ public class World extends JComponent implements Runnable {
     protected boolean running = true;
 
     // How long we aim to spend on each tick
-    protected int tickDelay;
+    protected int tickDelay = 20;
     // Time spent since last update and this update
     protected long timeOfLastUpdate;
     protected long previousTime;
@@ -40,7 +40,7 @@ public class World extends JComponent implements Runnable {
         while (running) {
             try {
 
-                Thread.sleep((timeOfLastUpdate < tickDelay) ? tickDelay - timeOfLastUpdate : 0);
+                Thread.sleep(tickDelay);
                 long currentTime = System.nanoTime();
                 timeOfLastUpdate = currentTime - previousTime;
                 previousTime = currentTime;

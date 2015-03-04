@@ -1,5 +1,7 @@
 package uk.me.webpigeon.util;
 
+import java.util.Vector;
+
 import javax.xml.bind.annotation.XmlAttribute;
 
 public final class Vector2D {
@@ -234,6 +236,12 @@ public final class Vector2D {
     // scalar product with argument vector
     public double scalarProduct(Vector2D v) {
         return ((x * v.getX()) + (y * v.getY()));
+    }
+    
+    public static Vector2D scalarProduct(Vector2D v1, Vector2D v2) {
+    	Vector2D vector = new Vector2D(v1, true);
+    	vector.scalarProduct(v2);
+    	return vector;
     }
 
     // distance to argument vector

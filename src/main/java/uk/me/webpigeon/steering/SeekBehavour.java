@@ -31,4 +31,8 @@ public class SeekBehavour implements SteeringBehavour {
 		this.entity = entity;
 	}
 
+	public void setTarget(Vector2D seekTarget) {
+		targetPos = seekTarget;
+	}
+
 }

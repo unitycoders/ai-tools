@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import uk.me.webpigeon.steering.SeekBehavour;
+import uk.me.webpigeon.steering.WonderBehavour;
 import uk.me.webpigeon.util.Vector2D;
 
 public class DoubleWorld extends World{
@@ -26,7 +27,7 @@ public class DoubleWorld extends World{
 	public static void main(String[] args) {
 		World world = new DoubleWorld(50, 50);
 		
-		Entity entity = new SteeringEntity(new SeekBehavour(new Vector2D(100, 100)));
+		Entity entity = new SteeringEntity(new WonderBehavour());
 		world.addEntity(entity);
 		
 		Thread t = new Thread(world);
