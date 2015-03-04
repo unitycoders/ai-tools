@@ -42,6 +42,8 @@ public class SteeringEntity extends Entity {
         
         sandbox.setColor(Color.WHITE);
         sandbox.fillRect(-SIZE, -(int)(SIZE/2.0), SIZE * 2, SIZE);
+        sandbox.rotate(-theta);
+        sandbox.translate(-location.getX(), -location.getY());
     }
     
     public void debugDraw(Graphics2D graphics) {
