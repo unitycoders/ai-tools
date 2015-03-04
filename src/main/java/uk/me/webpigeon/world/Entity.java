@@ -1,6 +1,7 @@
 package uk.me.webpigeon.world;
 
 import uk.me.webpigeon.behavour.TreeNode;
+import uk.me.webpigeon.util.Vector2D;
 
 import java.awt.*;
 
@@ -15,9 +16,13 @@ public abstract class Entity {
     protected World world;
 
     // X Co-Ordinate
+    @Deprecated
     protected double x;
     // Y Co-Ordinate
+    @Deprecated
     protected double y;
+    // Location of the entity
+    protected Vector2D location;
 
     // Health
     protected int health;
