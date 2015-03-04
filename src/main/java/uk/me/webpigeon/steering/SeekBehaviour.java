@@ -35,7 +35,7 @@ public class SeekBehaviour implements SteeringBehaviour {
 
 	@Override
 	public void debugDraw(Graphics2D g) {
-		g.setColor(Color.WHITE);
+		g.setColor(Color.GREEN);
 		Vector2D entPos = entity.getLocation();
 		g.drawLine((int)entPos.x, (int)entPos.y, (int)targetPos.x, (int)targetPos.y);	
 	}

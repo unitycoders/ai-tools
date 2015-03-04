@@ -34,6 +34,7 @@ public class DoubleWorld extends World {
         for (int i = 0; i < 50; i++) {
             world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(world.width, world.height, true)));
         }
+        
         for (int i = 0; i < 10; i++) {
             world.addEntity(EntityFactory.buildCow(world.width, world.height));
         }

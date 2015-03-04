@@ -11,7 +11,7 @@ import javax.swing.*;
  * Created by Piers on 03/03/2015.
  */
 public class World extends JComponent implements Runnable {
-	private static final Boolean DEBUG_DRAW = true;
+	private static final Boolean DEBUG_DRAW = false;
     private List<Entity> entities;
 
     // width of the world
