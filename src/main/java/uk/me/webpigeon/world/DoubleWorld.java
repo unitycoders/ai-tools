@@ -18,13 +18,17 @@ public class DoubleWorld extends World {
 
     @Override
     public void draw(Graphics2D g2) {
+    	double screenWidth = getWidth()/(width * 1.0);
+    	double screenHeight = getHeight()/(height * 1.0);
+    	g2.scale(screenWidth, screenHeight);
+    	
         g2.setColor(new Color(123, 191, 106));
-        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.fillRect(0, 0, width, height);
         super.draw(g2);
     }
 
     public static void main(String[] args) {
-        World world = new DoubleWorld(50, 50);
+        World world = new DoubleWorld(800, 600);
 
         Entity entity = new SteeringEntity(new WanderingBehaviour());
         world.addEntity(entity);

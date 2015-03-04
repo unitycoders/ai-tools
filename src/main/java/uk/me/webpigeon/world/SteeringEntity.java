@@ -29,7 +29,7 @@ public class SteeringEntity extends Entity {
         location.add(targetForce);
         velocity = Vector2D.add(targetForce, velocity, 0.75);
         previousLocations.add(new Vector2D(location));
-        location.wrap(500, 500);
+        location.wrap(world.width, world.height);
     }
 
     @Override
