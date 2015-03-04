@@ -12,11 +12,11 @@ public class WanderingBehaviour implements SteeringBehavour {
 
     private double wanderRadius = 10;
     private double wanderDistance = 3;
-    private double angleJitter = 1;
+    private double angleJitter = 10;
     private Entity entity;
 
     // random vector - TODO May need to convert 360 to radians
-    private Vector2D c = Vector2D.getRandomPolar(360, 0, 1, true);
+    private Vector2D c = Vector2D.getRandomPolar(Math.toRadians(360), 1, 1, true);
     private SeekBehavour seek = new SeekBehavour(null);
     private Random random = new Random();
 
@@ -24,7 +24,7 @@ public class WanderingBehaviour implements SteeringBehavour {
     public Vector2D process() {
         // Obtain information about the entity
         Vector2D ourPosition = new Vector2D(entity.getX(), entity.getY());
-        Vector2D ourVelocity = new Vector2D(entity.getVelocity());
+        Vector2D ourVelocity = new Vector2D(entity.getVelocity(), true);
 
         // Modify ourVelocity to reflect the difference between Position and center of circle
         ourVelocity.normalise();
