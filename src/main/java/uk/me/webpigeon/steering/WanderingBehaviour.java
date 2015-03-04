@@ -15,8 +15,8 @@ public class WanderingBehaviour implements SteeringBehavour {
     private double angleJitter = 1;
     private Entity entity;
 
-    private Vector2D c;
-    private SeekBehavour seek;
+    private Vector2D c = Vector2D.getRandomPolar(360, 0, 1, true);
+    private SeekBehavour seek = new SeekBehavour(null);
     private Random random = new Random();
 
     @Override
