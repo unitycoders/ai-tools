@@ -1,6 +1,5 @@
 package uk.me.webpigeon.world;
 
-import uk.me.webpigeon.behavour.TreeNode;
 import uk.me.webpigeon.util.Vector2D;
 
 import java.awt.*;
