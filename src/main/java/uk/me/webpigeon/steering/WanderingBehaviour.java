@@ -15,6 +15,7 @@ public class WanderingBehaviour implements SteeringBehavour {
     private double angleJitter = 1;
     private Entity entity;
 
+    // random vector
     private Vector2D c = Vector2D.getRandomPolar(360, 0, 1, true);
     private SeekBehavour seek = new SeekBehavour(null);
     private Random random = new Random();
@@ -33,7 +34,12 @@ public class WanderingBehaviour implements SteeringBehavour {
         // Vary c by jittering it a little
         c.rotate(Math.toRadians((random.nextDouble() * 2 - 1 * angleJitter)));
         // c is a unit vector in its own co-ordinate system
-        Vector2D seekPosition = Vector2D.add(centerOfCircle, Vector2D.multiply(c, wanderRadius));
+        Vector2D seekPosition =
+                Vector2D.add(
+                        centerOfCircle,
+                        Vector2D.multiply(Vector2D.toCartesian(c), wanderRadius)
+                );
+        
         // Set the seeking behaviour to the target
         seek.setTarget(seekPosition);
         return seek.process();
