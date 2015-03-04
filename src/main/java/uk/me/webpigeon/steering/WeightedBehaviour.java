@@ -8,25 +8,25 @@ import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
 public class WeightedBehaviour implements SteeringBehaviour {
-	private Map<SteeringBehaviour, Double> behavours;
+	private Map<SteeringBehaviour, Double> behaviours;
 	
 	public WeightedBehaviour() {
-		this.behavours = new HashMap<SteeringBehaviour, Double>();
+		this.behaviours = new HashMap<SteeringBehaviour, Double>();
 	}
 	
-	public void addBehavour(SteeringBehaviour behavour, double weight) {
-		behavours.put(behavour, weight);
+	public void addBehavour(SteeringBehaviour behaviour, double weight) {
+		behaviours.put(behaviour, weight);
 	}
 
 	public Vector2D process() {
 		
 		Vector2D total = new Vector2D();
 		
-		for (Map.Entry<SteeringBehaviour, Double> entry : behavours.entrySet()) {
-			SteeringBehaviour behavour = entry.getKey();
+		for (Map.Entry<SteeringBehaviour, Double> entry : behaviours.entrySet()) {
+			SteeringBehaviour behaviour = entry.getKey();
 			Double weight = entry.getValue();
 			
-			Vector2D result = Vector2D.multiply(behavour.process(), weight);
+			Vector2D result = Vector2D.multiply(behaviour.process(), weight);
 			total = Vector2D.add(total, result);
 		}
 		
@@ -36,14 +36,14 @@ public class WeightedBehaviour implements SteeringBehaviour {
 	}
 
 	public void bind(Entity entity) {
-		for (SteeringBehaviour sb : behavours.keySet()) {
+		for (SteeringBehaviour sb : behaviours.keySet()) {
 			sb.bind(entity);
 		}
 	}
 
 	@Override
 	public void debugDraw(Graphics2D g) {
-		for (SteeringBehaviour sb : behavours.keySet()) {
+		for (SteeringBehaviour sb : behaviours.keySet()) {
 			sb.debugDraw(g);
 		}
 	}

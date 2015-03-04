@@ -10,19 +10,19 @@ import uk.me.webpigeon.util.Vector2D;
 public class SteeringEntity extends Entity {
 	private static final Double VECTOR_SMOOTHING = 0.2;
     private static final Integer SIZE = 30;
-    private SteeringBehaviour behavour;
+    private SteeringBehaviour behaviour;
     private ArrayList<Vector2D> previousLocations = new ArrayList<>();
 
-    public SteeringEntity(int x, int y, SteeringBehaviour behavour) {
-        this.behavour = behavour;
+    public SteeringEntity(int x, int y, SteeringBehaviour behaviour) {
+        this.behaviour = behaviour;
         this.location = new Vector2D(x, y, true);
         this.velocity = new Vector2D(0, 0, true);
-        behavour.bind(this);
+        behaviour.bind(this);
     }
 
     @Override
     public void update() {
-        Vector2D targetForce = behavour.process();
+        Vector2D targetForce = behaviour.process();
 
         velocity = Vector2D.add(targetForce, velocity, VECTOR_SMOOTHING);
         location.add(velocity);
@@ -52,7 +52,7 @@ public class SteeringEntity extends Entity {
             graphics.drawOval((int)previousLocations.get(i).getX() - SIZE/6, (int) previousLocations.get(i).getY() - SIZE/6, SIZE / 3, SIZE / 3);
         }
         
-        behavour.debugDraw(graphics);
+        behaviour.debugDraw(graphics);
     }
 
 }

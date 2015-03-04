@@ -236,7 +236,7 @@ public final class Vector2D {
 
     public void divide(double fac) {
         // TODO Check for zero division
-        if (fac == 0) throw new IllegalArgumentException("Factor is 0 - Can't devide by 0");
+        if (fac == 0) throw new IllegalArgumentException("Factor is 0 - Can't divide by 0");
         if (mutable) {
             this.x /= fac;
             this.y /= fac;
@@ -305,10 +305,10 @@ public final class Vector2D {
 
     // distance to argument vector
     public double dist(Vector2D v) {
-        double tempx = (x - v.getX()) * (x - v.getX());
-        double tempy = (y - v.getY()) * (y - v.getY());
+        double tempX = (x - v.getX()) * (x - v.getX());
+        double tempY = (y - v.getY()) * (y - v.getY());
 
-        return (Math.sqrt(tempx + tempy));
+        return (Math.sqrt(tempX + tempY));
     }
 
     public void clone(Vector2D target) {
