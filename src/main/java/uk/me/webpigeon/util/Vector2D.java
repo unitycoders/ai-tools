@@ -1,5 +1,6 @@
 package uk.me.webpigeon.util;
 
+import java.util.Random;
 import java.util.Vector;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -14,6 +15,8 @@ public final class Vector2D {
 
     // default is to make them immutable.
     private boolean mutable = false;
+
+    private static final Random random = new Random();
 
     // construct a zero vector
     public Vector2D() {
@@ -87,6 +90,18 @@ public final class Vector2D {
         return true;
     }
 
+    public boolean roughlyEquals(Object o, float eps) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vector2D vector2D = (Vector2D) o;
+
+        if (Math.abs(x - vector2D.x) > eps) return false;
+        if (Math.abs(y - vector2D.y) > eps) return false;
+
+        return true;
+    }
+
     @Override
     public int hashCode() {
         int result;
@@ -116,6 +131,12 @@ public final class Vector2D {
         direction.normalise();
 //        System.out.println(direction);
         return direction;
+    }
+
+    public double angleBetween(Vector2D v) {
+//        return (float) Math.toDegrees(Math.acos(Math.toRadians(scalarProduct(v) / (mag() * v.mag()))));
+//        return (float) Math.toDegrees(Vector2D.toPolar(getNormalDirectionBetween(v)).getTheta());
+        return Math.toDegrees(theta() - v.theta());
     }
 
     // String for displaying vector as text
@@ -213,6 +234,24 @@ public final class Vector2D {
         return second;
     }
 
+    public void divide(double fac) {
+        // TODO Check for zero division
+        if (fac == 0) throw new IllegalArgumentException("Factor is 0 - Can't devide by 0");
+        if (mutable) {
+            this.x /= fac;
+            this.y /= fac;
+        } else {
+            throw new IllegalAccessError("This Vector2D is immutable");
+        }
+    }
+
+    public static Vector2D divide(Vector2D first, double fac) {
+        Vector2D second = new Vector2D(first, true);
+        second.divide(fac);
+        second.mutable = first.mutable;
+        return second;
+    }
+
 // "wrap" vector with respect to given positive values w and h
 
     // method assumes that x >= -w and y >= -h
@@ -252,6 +291,18 @@ public final class Vector2D {
     	return vector;
     }
 
+    public static Vector2D toCartesian(Vector2D input) {
+        double x = (input.getR() * Math.cos(input.getTheta()));
+        double y =  (input.getR() * Math.sin(input.getTheta()));
+        return new Vector2D(x, y, input.mutable);
+    }
+
+    public static Vector2D toPolar(Vector2D input) {
+        double r = Math.sqrt(input.getX() * input.getX() + input.getY() * input.getY());
+        double theta = Math.tanh(input.getY() / input.getX());
+        return new Vector2D(r, theta, input.mutable);
+    }
+
     // distance to argument vector
     public double dist(Vector2D v) {
         double tempx = (x - v.getX()) * (x - v.getX());
@@ -285,10 +336,10 @@ public final class Vector2D {
     public void normalise() {
         if (mutable) {
             if (x != 0 || y != 0) {
-                multiply(1 / mag());
+                multiply((1 / mag()));
             }
         } else {
-
+            throw new IllegalAccessError("This Vector2D is immutable");
         }
     }
 
@@ -303,7 +354,23 @@ public final class Vector2D {
         return x;
     }
 
+    public double getR() {
+        return x;
+    }
+
     public double getY() {
         return y;
+    }
+
+    public double getTheta(){
+        return y;
+    }
+
+    public static Vector2D getRandomCartesian(double xLimit, double yLimit, boolean mutable) {
+        return new Vector2D(random.nextFloat() * xLimit, random.nextFloat() * yLimit, mutable);
+    }
+
+    public static Vector2D getRandomPolar(double angleRange, double speedMin, double speedMax, boolean mutable) {
+        return new Vector2D(random.nextFloat() * angleRange - angleRange / 2, (speedMin != speedMax) ? (random.nextFloat() * speedMax - speedMin) + speedMin : speedMax, mutable);
     }
 }
