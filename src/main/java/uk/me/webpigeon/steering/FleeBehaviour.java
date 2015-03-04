@@ -3,12 +3,12 @@ package uk.me.webpigeon.steering;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
-public class FleeBehavour implements SteeringBehavour {
+public class FleeBehaviour implements SteeringBehaviour {
 	private Vector2D currentVel = new Vector2D();
 	private Vector2D targetPos;
 	private Entity entity;
 	
-	public FleeBehavour(Vector2D targetPos) {
+	public FleeBehaviour(Vector2D targetPos) {
 		this.targetPos = targetPos;
 	}
 	

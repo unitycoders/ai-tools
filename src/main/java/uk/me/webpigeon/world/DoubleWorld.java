@@ -7,10 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import uk.me.webpigeon.steering.SeekBehavour;
 import uk.me.webpigeon.steering.WanderingBehaviour;
-import uk.me.webpigeon.steering.WonderBehavour;
-import uk.me.webpigeon.util.Vector2D;
 
 public class DoubleWorld extends World{
 	

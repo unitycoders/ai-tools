@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Created by Piers on 04/03/2015.
  */
-public class WanderingBehaviour implements SteeringBehavour {
+public class WanderingBehaviour implements SteeringBehaviour {
 
     private double wanderRadius = 50;
     private double wanderDistance = 50;
@@ -17,7 +17,7 @@ public class WanderingBehaviour implements SteeringBehavour {
 
     // random vector - TODO May need to convert 360 to radians
     private Vector2D c = Vector2D.getRandomPolar(Math.toRadians(360), 1, 1, true);
-    private SeekBehavour seek = new SeekBehavour(null);
+    private SeekBehaviour seek = new SeekBehaviour(null);
     private Random random = new Random();
 
     @Override

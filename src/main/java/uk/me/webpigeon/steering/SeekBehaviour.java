@@ -3,11 +3,11 @@ package uk.me.webpigeon.steering;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
-public class SeekBehavour implements SteeringBehavour {
+public class SeekBehaviour implements SteeringBehaviour {
 	private Vector2D targetPos;
 	private Entity entity;
 	
-	public SeekBehavour(Vector2D targetPos) {
+	public SeekBehaviour(Vector2D targetPos) {
 		this.targetPos = targetPos;
 	}
 	

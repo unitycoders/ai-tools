@@ -6,14 +6,14 @@ import java.util.Map;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
-public class WeightedBehavour implements SteeringBehavour {
-	private Map<SteeringBehavour, Double> behavours;
+public class WeightedBehaviour implements SteeringBehaviour {
+	private Map<SteeringBehaviour, Double> behavours;
 	
-	public WeightedBehavour() {
-		this.behavours = new HashMap<SteeringBehavour, Double>();
+	public WeightedBehaviour() {
+		this.behavours = new HashMap<SteeringBehaviour, Double>();
 	}
 	
-	public void addBehavour(SteeringBehavour behavour, double weight) {
+	public void addBehavour(SteeringBehaviour behavour, double weight) {
 		behavours.put(behavour, weight);
 	}
 
@@ -21,8 +21,8 @@ public class WeightedBehavour implements SteeringBehavour {
 		
 		Vector2D total = new Vector2D();
 		
-		for (Map.Entry<SteeringBehavour, Double> entry : behavours.entrySet()) {
-			SteeringBehavour behavour = entry.getKey();
+		for (Map.Entry<SteeringBehaviour, Double> entry : behavours.entrySet()) {
+			SteeringBehaviour behavour = entry.getKey();
 			Double weight = entry.getValue();
 			
 			Vector2D result = Vector2D.multiply(behavour.process(), weight);
