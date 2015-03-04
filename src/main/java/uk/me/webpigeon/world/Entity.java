@@ -14,12 +14,6 @@ public abstract class Entity {
     // The GridWorld in all its glory
     protected World world;
 
-    // X Co-Ordinate
-    @Deprecated
-    protected double x;
-    // Y Co-Ordinate
-    @Deprecated
-    protected double y;
     // Location of the entity
     protected Vector2D location;
     protected Vector2D velocity;
@@ -54,7 +48,7 @@ public abstract class Entity {
 
 	
 	public double getY() {
-		return y;
+		return location.getY();
 	}
 
     public Vector2D getLocation() {

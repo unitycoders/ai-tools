@@ -30,18 +30,22 @@ public class WeightedBehaviour implements SteeringBehaviour {
 			total = Vector2D.add(total, result);
 		}
 		
+		total.normalise();
+		
 		return total;
 	}
 
 	public void bind(Entity entity) {
-		// TODO Auto-generated method stub
-		
+		for (SteeringBehaviour sb : behavours.keySet()) {
+			sb.bind(entity);
+		}
 	}
 
 	@Override
 	public void debugDraw(Graphics2D g) {
-		// TODO Auto-generated method stub
-		
+		for (SteeringBehaviour sb : behavours.keySet()) {
+			sb.debugDraw(g);
+		}
 	}
 	
 

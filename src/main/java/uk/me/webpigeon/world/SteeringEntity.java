@@ -23,9 +23,6 @@ public class SteeringEntity extends Entity {
     @Override
     public void update() {
         Vector2D targetForce = behavour.process();
-        
-        x += targetForce.getX();
-        y += targetForce.getY();
 
         location.add(targetForce);
         velocity = Vector2D.add(targetForce, velocity, VECTOR_SMOOTHING);
