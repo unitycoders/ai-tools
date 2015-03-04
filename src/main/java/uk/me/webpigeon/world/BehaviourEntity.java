@@ -11,7 +11,7 @@ public class BehaviourEntity extends Entity{
 
 
     static{
-        // Initialise the neccesary behaviour for this
+        // Initialise the necessary behaviour for this
         BehaviourRegistry.registerBehaviour("Wander", null);
     }
 
