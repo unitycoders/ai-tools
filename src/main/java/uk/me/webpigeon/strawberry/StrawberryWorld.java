@@ -24,7 +24,7 @@ public class StrawberryWorld extends JComponent implements Runnable {
         this.width = width;
         this.height = height;
         map = new float[width][height];
-        visitCount = new int[width / 10][height / 10];
+        visitCount = new int[width / 20][height / 20];
         generateSimplexNoise();
 
         strawberries.add(new Strawberry(width / 2, height / 2));
@@ -32,7 +32,7 @@ public class StrawberryWorld extends JComponent implements Runnable {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(width + width, height);
+        return new Dimension(width + width / 2, height);
     }
 
     @Override
@@ -94,8 +94,8 @@ public class StrawberryWorld extends JComponent implements Runnable {
 
     public void addStrawberry(Strawberry strawberry) {
         newBerries.add(strawberry);
-        visitCount[strawberry.x / 10][strawberry.y / 10]++;
-        if (visitCount[strawberry.x / 10][strawberry.y / 10] > largestIndividualVisit) largestIndividualVisit++;
+        visitCount[strawberry.x / 20][strawberry.y / 20]++;
+        if (visitCount[strawberry.x / 20][strawberry.y / 20] > largestIndividualVisit) largestIndividualVisit++;
     }
 
     @Override
@@ -109,8 +109,8 @@ public class StrawberryWorld extends JComponent implements Runnable {
             }
         }
 
-        for (int x = 0; x < width / 10; x++) {
-            for (int y = 0; y < height / 10; y++) {
+        for (int x = 0; x < width / 20; x++) {
+            for (int y = 0; y < height / 20; y++) {
                 g.setColor(new Color(1.0f / ((visitCount[x][y] == 0) ? 1 : visitCount[x][y]), (float) Math.min(1.0, visitCount[x][y] / (largestIndividualVisit)), 0.0f));
                 graphics2D.fillRect(width + (x * 10), y * 10, 10, 10);
                 g.setColor(Color.black);
