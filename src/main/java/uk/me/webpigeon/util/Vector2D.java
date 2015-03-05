@@ -292,8 +292,8 @@ public final class Vector2D {
     }
 
     public static Vector2D toCartesian(Vector2D input) {
-        double x = (input.getR() * Math.cos(input.getTheta()));
-        double y =  (input.getR() * Math.sin(input.getTheta()));
+        double x = (input.getY() * Math.cos(input.getR()));
+        double y =  (input.getY() * Math.sin(input.getR()));
         return new Vector2D(x, y, input.mutable);
     }
 
