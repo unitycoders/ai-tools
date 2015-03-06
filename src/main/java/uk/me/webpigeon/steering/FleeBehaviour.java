@@ -19,11 +19,9 @@ public class FleeBehaviour implements SteeringBehaviour {
 	}
 
 	/**
+	 * Return the position vector which corresponds to the opposite direction to the object.
 	 * 
-	 * 
-	 * @param q
-	 *            the target position
-	 * @return
+	 * @return the normalised direction vector
 	 */
 	public Vector2D process() {
 		Vector2D currentPos = entity.getLocation();
