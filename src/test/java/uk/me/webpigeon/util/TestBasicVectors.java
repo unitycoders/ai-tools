@@ -19,7 +19,7 @@ public class TestBasicVectors {
 		assertEquals(expectY, v2.getY(), EPSILON);
 	}
 
-	@Test
+	/*@Test
 	public void testCloneDoesNotAlterOrig() {
 		float expectX = 10;
 		float expectY = 5;
@@ -35,6 +35,6 @@ public class TestBasicVectors {
 		assertEquals(expectX, v1.getX(), EPSILON);
 		assertEquals(expectY, v1.getY(), EPSILON);
 
-	}
+	}*/
 
 }
