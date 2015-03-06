@@ -18,35 +18,64 @@ public final class Vector2D {
 
     private static final Random random = new Random();
 
-    // construct a zero vector
+    /**
+     * Create a new immutable vector of size (0,0).
+     */
     public Vector2D() {
         x = 0;
         y = 0;
     }
 
+    /**
+     * Create a new vector of size (0,0).
+     * 
+     * @param mutable true if vector can be modified
+     */
     public Vector2D(boolean mutable) {
         x = 0;
         y = 0;
         this.mutable = mutable;
     }
 
-    // construct a vector with given coordinates
+    /**
+     * Create a new immutable vector of a user defined size.
+     * 
+     * @param x the x component
+     * @param y the y component
+     */
     public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Create a new vector of a user defined size.
+     * 
+     * @param x the x component
+     * @param y the y component
+     * @param mutable true if vector can be modified
+     */
     public Vector2D(double x, double y, boolean mutable) {
         this(x, y);
         this.mutable = mutable;
     }
 
-    // construct a vector that is a copy of the argument
+    /**
+     * Create an immutable copy of vector which is a copy of another vector.
+     * 
+     * @param v the vector to copy
+     */
     public Vector2D(Vector2D v) {
         this.x = v.getX();
         this.y = v.getY();
     }
 
+    /**
+     * Create an immutable copy of vector which is a copy of another vector.
+     * 
+     * @param v the vector to copy
+     * @param mutable true if vector can be modified
+     */
     public Vector2D(Vector2D v, boolean mutable) {
         this(v);
         this.mutable = mutable;
@@ -56,7 +85,13 @@ public final class Vector2D {
         this.mutable = true;
     }
 
-    // set coordinates
+    /**
+     * Update the position of this vector.
+     * 
+     * @param x the new x position of this vector
+     * @param y the new y position of this vector
+     * @throws IllegalArgumentException is this is an immutable vector
+     */
     public void set(double x, double y) {
         if (mutable) {
             this.x = x;
@@ -66,7 +101,12 @@ public final class Vector2D {
         }
     }
 
-    // set coordinates to argument vector coordinates
+    /**
+     * Update the position of this vector.
+     * 
+     * @param v the vector to copy from
+     * @throws IllegalArgumentException is this is an immutable vector
+     */
     public void set(Vector2D v) {
         if (mutable) {
             set(v.getX(), v.getY());
