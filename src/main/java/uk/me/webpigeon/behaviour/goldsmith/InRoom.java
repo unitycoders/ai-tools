@@ -1,6 +1,6 @@
 package uk.me.webpigeon.behaviour.goldsmith;
 
-import uk.me.webpigeon.behaviour.*;
+import uk.me.webpigeon.behaviour.TreeNode;
 
 public class InRoom extends TreeNode {
 

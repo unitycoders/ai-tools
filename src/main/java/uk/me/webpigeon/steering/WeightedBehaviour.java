@@ -9,29 +9,29 @@ import uk.me.webpigeon.world.Entity;
 
 public class WeightedBehaviour implements SteeringBehaviour {
 	private Map<SteeringBehaviour, Double> behaviours;
-	
+
 	public WeightedBehaviour() {
 		this.behaviours = new HashMap<SteeringBehaviour, Double>();
 	}
-	
+
 	public void addBehavour(SteeringBehaviour behaviour, double weight) {
 		behaviours.put(behaviour, weight);
 	}
 
 	public Vector2D process() {
-		
+
 		Vector2D total = new Vector2D();
-		
+
 		for (Map.Entry<SteeringBehaviour, Double> entry : behaviours.entrySet()) {
 			SteeringBehaviour behaviour = entry.getKey();
 			Double weight = entry.getValue();
-			
+
 			Vector2D result = Vector2D.multiply(behaviour.process(), weight);
 			total = Vector2D.add(total, result);
 		}
-		
+
 		total.normalise();
-		
+
 		return total;
 	}
 
@@ -47,6 +47,5 @@ public class WeightedBehaviour implements SteeringBehaviour {
 			sb.debugDraw(g);
 		}
 	}
-	
 
 }

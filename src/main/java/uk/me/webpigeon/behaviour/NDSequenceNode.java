@@ -13,5 +13,4 @@ public class NDSequenceNode extends SequenceNode {
 		return collection;
 	}
 
-	
 }

@@ -9,18 +9,17 @@ import uk.me.webpigeon.world.Entity;
 public class SeekBehaviour implements SteeringBehaviour {
 	private Vector2D targetPos;
 	private Entity entity;
-	
+
 	public SeekBehaviour(Vector2D targetPos) {
 		this.targetPos = targetPos;
 	}
-	
 
 	public Vector2D process() {
 		Vector2D currentPos = entity.getLocation();
 
 		Vector2D targetDirection = Vector2D.subtract(targetPos, currentPos);
 		targetDirection.normalise();
-		
+
 		Vector2D currentVel = targetDirection;
 		return currentVel;
 	}
@@ -37,7 +36,8 @@ public class SeekBehaviour implements SteeringBehaviour {
 	public void debugDraw(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		Vector2D entPos = entity.getLocation();
-		g.drawLine((int)entPos.x, (int)entPos.y, (int)targetPos.x, (int)targetPos.y);	
+		g.drawLine((int) entPos.x, (int) entPos.y, (int) targetPos.x,
+				(int) targetPos.y);
 	}
 
 }

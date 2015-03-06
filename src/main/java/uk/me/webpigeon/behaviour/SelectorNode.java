@@ -2,7 +2,7 @@ package uk.me.webpigeon.behaviour;
 
 public class SelectorNode extends TreeNode {
 
-	public SelectorNode(TreeNode ... children) {
+	public SelectorNode(TreeNode... children) {
 		super(children.length);
 		for (TreeNode child : children) {
 			addChild(child);
@@ -11,7 +11,7 @@ public class SelectorNode extends TreeNode {
 
 	@Override
 	public Boolean eval() {
-		
+
 		Boolean result = false;
 		for (TreeNode child : getChildren()) {
 			result = child.eval();
@@ -19,9 +19,8 @@ public class SelectorNode extends TreeNode {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
 
 }

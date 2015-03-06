@@ -6,9 +6,11 @@ import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
 public interface SteeringBehaviour {
-	
+
 	public void bind(Entity entity);
+
 	public Vector2D process();
+
 	public void debugDraw(Graphics2D g);
 
 }
