@@ -31,4 +31,23 @@ public class EntityFactory {
 		return cow;
 	}
 
+	
+	public static Cow buildGenomeCow(int maxWidth, int maxHeight, double[] genome) {
+		Random r = new Random();
+
+		int x = r.nextInt(maxWidth);
+		int y = r.nextInt(maxHeight);
+
+		WeightedBehaviour wb = new WeightedBehaviour();
+		//wb.addBehavour(new SeekBehaviour(new Vector2D(400, 300)), 2.5);
+		// wb.addBehavour(new FleeBehaviour(new Vector2D(400, 300)), 0.2);
+		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 0)), 4);
+		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 600)), 4);
+		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 0)), 4);
+		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 600)), 4);
+		wb.addBehavour(new WanderingBehaviour(), 5);
+
+		Cow cow = new Cow(x, y, wb, genome);
+		return cow;
+	}
 }
