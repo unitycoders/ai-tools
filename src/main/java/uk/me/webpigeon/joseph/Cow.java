@@ -19,6 +19,7 @@ public class Cow extends SteeringEntity {
 	
 	public Cow(int x, int y, SteeringBehaviour behavour) {
 		super(x, y, behavour);
+		this.genome = new double[]{MAX_SATURATION, HUNGER_RATE};
 		saturation = MAX_SATURATION;
 		memory = new Memory();
 	}
@@ -42,7 +43,9 @@ public class Cow extends SteeringEntity {
 			//cow starved
 			health = 0;
 		}
-		saturation -= HUNGER_RATE;
+		
+		//stop cows from cheating by evolving negative hunger rates
+		saturation -= Math.abs(genome[GenomeCoding.HUNGER_RATE]);
 	}
 	
 	public void draw(Graphics2D g) {

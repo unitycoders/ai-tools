@@ -12,7 +12,7 @@ import uk.me.webpigeon.world.World;
 import uk.me.webpigeon.world.WorldComponent;
 
 public class CowPopulationManager implements WorldComponent {
-	private double epsilon = 2;
+	private double epsilon = 0.02;
 	private int cowPopulation;
 	private List<Cow> cows;
 	
@@ -40,8 +40,6 @@ public class CowPopulationManager implements WorldComponent {
 			Cow parent = selectParent();
 			double[] genome = parent==null?buildBaseGenome():parent.getGenome();
 			genome = mutateGenome(genome);
-			
-			System.out.println(Arrays.toString(genome));
 			
 			//build a new cow with our new genome
 			Cow newCow = EntityFactory.buildGenomeCow(800, 600, genome);
@@ -81,6 +79,7 @@ public class CowPopulationManager implements WorldComponent {
 		
 		double[] genome = new double[GenomeCoding.GENOME_SIZE];
 		genome[GenomeCoding.MAX_SAT_ID] = BaseStats.BASE_SAT;
+		genome[GenomeCoding.HUNGER_RATE] = BaseStats.BASE_HUNGER;
 		
 		return genome;
 	}
