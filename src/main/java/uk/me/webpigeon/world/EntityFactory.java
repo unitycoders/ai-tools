@@ -12,7 +12,7 @@ public class EntityFactory {
 	private EntityFactory() {
 	}
 
-	public static Entity buildCow(int maxWidth, int maxHeight) {
+	public static Cow buildCow(int maxWidth, int maxHeight) {
 		Random r = new Random();
 
 		int x = r.nextInt(maxWidth);
@@ -27,7 +27,7 @@ public class EntityFactory {
 		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 600)), 4);
 		wb.addBehavour(new WanderingBehaviour(), 5);
 
-		Entity cow = new Cow(x, y, wb);
+		Cow cow = new Cow(x, y, wb);
 		return cow;
 	}
 

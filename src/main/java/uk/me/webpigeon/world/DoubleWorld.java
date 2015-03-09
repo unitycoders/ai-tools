@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.util.Vector2D;
 
 public class DoubleWorld extends World {
@@ -28,15 +29,13 @@ public class DoubleWorld extends World {
 
 	public static void main(String[] args) {
 		World world = new DoubleWorld(800, 600);
+		world.addComponent(new CowPopulationManager(10));
 
 		for (int i = 0; i < 50; i++) {
 			world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
 					world.width, world.height, true)));
 		}
-
-		for (int i = 0; i < 10; i++) {
-			world.addEntity(EntityFactory.buildCow(world.width, world.height));
-		}
+		
 		Thread t = new Thread(world);
 		t.start();
 

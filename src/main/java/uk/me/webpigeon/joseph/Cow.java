@@ -12,14 +12,18 @@ public class Cow extends SteeringEntity {
 	private final static double HUNGER_RATE = 0.01f;
 	private double saturation;
 	
+	private Memory memory;
+	
 	public Cow(int x, int y, SteeringBehaviour behavour) {
 		super(x, y, behavour);
 		saturation = MAX_SATURATION;
+		memory = new Memory();
 	}
 
 	@Override
 	public void update() {
 		processNeeds();
+		
 		super.update();
 	}
 	

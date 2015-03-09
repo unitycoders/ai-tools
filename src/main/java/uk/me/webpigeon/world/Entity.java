@@ -62,4 +62,8 @@ public abstract class Entity {
 		return velocity;
 	}
 
+	public boolean isDead() {
+		return health <= 0;
+	}
+
 }

@@ -3,6 +3,7 @@ package uk.me.webpigeon.world;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import javax.swing.JComponent;
 public class World extends JComponent implements Runnable {
     private static final Boolean DEBUG_DRAW = false;
     private List<Entity> entities;
+    private List<WorldComponent> components;
 
     // width of the world
     protected int width;
@@ -35,6 +37,7 @@ public class World extends JComponent implements Runnable {
         this.width = width;
         this.height = height;
         this.entities = new ArrayList<Entity>();
+        this.components = new ArrayList<WorldComponent>();
     }
 
     @Override
@@ -57,6 +60,10 @@ public class World extends JComponent implements Runnable {
         }
     }
 
+    public void addComponent(WorldComponent component) {
+    	components.add(component);
+    }
+    
     public void addEntity(Entity entity) {
         entities.add(entity);
         entity.bind(this);
@@ -64,9 +71,20 @@ public class World extends JComponent implements Runnable {
 
     public void update(long timeOfLastUpdate) {
 
-        for (Entity entity : entities) {
-            entity.update();
-        }
+    	Iterator<Entity> entItr = entities.iterator();
+    	while(entItr.hasNext()) {
+    		Entity entity = entItr.next();
+    		entity.update();
+    		
+    		//reap dead entities
+    		if (entity.isDead()) {
+    			entItr.remove();
+    		}
+    	}
+    	
+    	for (WorldComponent component : components) {
+    		component.update(this, 0);
+    	}
 
     }
 
