@@ -2,6 +2,7 @@ package uk.me.webpigeon.world;
 
 import java.util.Random;
 
+import uk.me.webpigeon.joseph.Cow;
 import uk.me.webpigeon.steering.SeekBehaviour;
 import uk.me.webpigeon.steering.WanderingBehaviour;
 import uk.me.webpigeon.steering.WeightedBehaviour;
@@ -18,7 +19,7 @@ public class EntityFactory {
 		int y = r.nextInt(maxHeight);
 
 		WeightedBehaviour wb = new WeightedBehaviour();
-		wb.addBehavour(new SeekBehaviour(new Vector2D(400, 300)), 2.5);
+		//wb.addBehavour(new SeekBehaviour(new Vector2D(400, 300)), 2.5);
 		// wb.addBehavour(new FleeBehaviour(new Vector2D(400, 300)), 0.2);
 		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 0)), 4);
 		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 600)), 4);
@@ -26,7 +27,7 @@ public class EntityFactory {
 		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 600)), 4);
 		wb.addBehavour(new WanderingBehaviour(), 5);
 
-		Entity cow = new SteeringEntity(x, y, wb);
+		Entity cow = new Cow(x, y, wb);
 		return cow;
 	}
 

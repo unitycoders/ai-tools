@@ -23,6 +23,7 @@ public abstract class Entity {
 
 	public Entity() {
 		this.location = new Vector2D();
+		this.health = 100;
 	}
 
 	public abstract void update();

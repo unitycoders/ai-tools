@@ -35,19 +35,22 @@ public class SteeringEntity extends Entity {
 
 	@Override
 	public void draw(Graphics2D graphics) {
-		Graphics2D sandbox = (Graphics2D) graphics.create();
-		sandbox.translate(location.getX(), location.getY());
-
-		// TODO piers - can you look at this, i'm assuming theta will be the
-		// rotation, but it looks wrong
-		// Vector2D polarVel = Vector2D.toPolar(velocity);
-		double theta = velocity.getTheta();
-		sandbox.rotate(Math.toRadians(rotationAmount));
-
-		sandbox.setColor(Color.WHITE);
-		sandbox.fillRect(-SIZE, -(int) (SIZE / 2.0), SIZE * 2, SIZE);
-		sandbox.rotate(Math.toRadians(-rotationAmount));
-		sandbox.translate(-location.getX(), -location.getY());
+		
+		if (health > 0) {
+			Graphics2D sandbox = (Graphics2D) graphics.create();
+			sandbox.translate(location.getX(), location.getY());
+	
+			// TODO piers - can you look at this, i'm assuming theta will be the
+			// rotation, but it looks wrong
+			// Vector2D polarVel = Vector2D.toPolar(velocity);
+			double theta = velocity.getTheta();
+			sandbox.rotate(Math.toRadians(rotationAmount));
+	
+			sandbox.setColor(Color.WHITE);
+			sandbox.fillRect(-SIZE, -(int) (SIZE / 2.0), SIZE * 2, SIZE);
+			sandbox.rotate(Math.toRadians(-rotationAmount));
+			sandbox.translate(-location.getX(), -location.getY());
+		}
 	}
 
 	public void debugDraw(Graphics2D graphics) {

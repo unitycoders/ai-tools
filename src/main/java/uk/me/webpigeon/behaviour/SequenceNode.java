@@ -15,7 +15,7 @@ public class SequenceNode extends TreeNode {
 			addChild(child);
 		}
 	}
-
+	
 	/**
 	 * Evaluate all child nodes in order from 0 ... size.
 	 * 
