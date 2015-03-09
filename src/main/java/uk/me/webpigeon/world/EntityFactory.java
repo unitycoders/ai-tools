@@ -2,7 +2,7 @@ package uk.me.webpigeon.world;
 
 import java.util.Random;
 
-import uk.me.webpigeon.joseph.Cow;
+import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.steering.SeekBehaviour;
 import uk.me.webpigeon.steering.WanderingBehaviour;
 import uk.me.webpigeon.steering.WeightedBehaviour;

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.EntityFactory;
 import uk.me.webpigeon.world.World;
