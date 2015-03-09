@@ -8,7 +8,7 @@ import java.util.List;
 import uk.me.webpigeon.joseph.GenomeCoding;
 import uk.me.webpigeon.joseph.Memory;
 import uk.me.webpigeon.joseph.utility.Action;
-import uk.me.webpigeon.joseph.utility.Need;
+import uk.me.webpigeon.joseph.utility.Factor;
 import uk.me.webpigeon.joseph.utility.UtilitySystem;
 import uk.me.webpigeon.steering.SteeringBehaviour;
 import uk.me.webpigeon.world.Entity;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UtilitySystem {
-	private List<Need> factors;
+	private List<Factor> factors;
 	
 	public UtilitySystem() {
 		this.factors = new ArrayList<>();
@@ -44,7 +44,7 @@ public class UtilitySystem {
 		}
 		
 		double total = 0;
-		for (Need factor : factors) {
+		for (Factor factor : factors) {
 			total += factor.getValue(action);
 		}
 		
