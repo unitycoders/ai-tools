@@ -60,10 +60,18 @@ public class World extends JComponent implements Runnable {
         }
     }
 
+    /**
+     * Adds a new WorldComponent to this world
+     * @param component The WorldComponent to be added
+     */
     public void addComponent(WorldComponent component) {
     	components.add(component);
     }
-    
+
+    /**
+     * Adds the entity to the world and binds the world to the entity
+     * @param entity The entity to be added to this world
+     */
     public void addEntity(Entity entity) {
         entities.add(entity);
         entity.bind(this);
@@ -88,10 +96,23 @@ public class World extends JComponent implements Runnable {
 
     }
 
+    /**
+     * Gets the entities that are within the provided radius to the provided source entity
+     * @param source The start point for the check
+     * @param radius The search radius to use
+     * @return The list of entities that are close enough
+     */
     public ArrayList<Entity> getNearEntities(Entity source, double radius) {
         return getNearEntities(source, radius, Entity.class);
     }
 
+    /**
+     * Gets the entities that are within the provided radius to the provided source entity and are of a certain class
+     * @param source The start point for the check
+     * @param radius The search radius to use
+     * @param type The class of the entity to search for
+     * @return The list of entities that are close enough of the correct class
+     */
     public ArrayList<Entity> getNearEntities(Entity source, double radius, Class type){
         ArrayList<Entity> nearEntities = new ArrayList<>();
         nearEntities.addAll(entities.stream()
@@ -102,6 +123,12 @@ public class World extends JComponent implements Runnable {
         return nearEntities;
     }
 
+    /**
+     * Gets the nearest entity of a given type to the provided source
+     * @param source The start point for the check
+     * @param type The clas of the entity to search for
+     * @return The entity that is the nearest of that type
+     */
     public Entity getNearestEntityOfType(Entity source, Class type) {
         return entities.stream().filter(s -> s.getClass().isAssignableFrom(type))
                 .sorted((s1, s2) -> (int) (source.getLocation().dist(s1.getLocation()) - source.getLocation().dist(s2.getLocation())))

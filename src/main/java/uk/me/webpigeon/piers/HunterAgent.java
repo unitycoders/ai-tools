@@ -1,5 +1,6 @@
 package uk.me.webpigeon.piers;
 
+import uk.me.webpigeon.behaviour.TreeNode;
 import uk.me.webpigeon.world.Entity;
 
 import java.awt.*;
@@ -26,7 +27,14 @@ public class HunterAgent extends Entity {
     // How thirsty are we
     int thirstLevel;
 
-    public HunterAgent() {
+    // The behaviour tree that governs how we behave
+    private TreeNode behaviourTree;
+
+    /**
+     * Public constructor providing the tree to use to control this agent
+     * @param behaviourTree
+     */
+    public HunterAgent(TreeNode behaviourTree) {
 
     }
 
