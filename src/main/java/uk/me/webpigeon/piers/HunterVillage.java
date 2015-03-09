@@ -19,7 +19,7 @@ public class HunterVillage implements WorldComponent {
     private int currentPopulation;
 
     private ArrayList<HunterAgent> hunters;
-    
+
 
     @Override
     public void update(World world, int delta) {
