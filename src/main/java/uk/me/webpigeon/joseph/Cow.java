@@ -2,7 +2,10 @@ package uk.me.webpigeon.joseph;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
+import uk.me.webpigeon.joseph.utility.Need;
 import uk.me.webpigeon.steering.SteeringBehaviour;
 import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.SteeringEntity;
@@ -33,12 +36,15 @@ public class Cow extends SteeringEntity {
 
 	@Override
 	public void update() {
-		processNeeds();
+		processLife();
 		age += 1;
 		super.update();
 	}
 	
-	private void processNeeds() {
+	/**
+	 * Update this cow's game state
+	 */
+	private void processLife() {
 		if (saturation <= 0) {
 			//cow starved
 			health = 0;
@@ -46,6 +52,10 @@ public class Cow extends SteeringEntity {
 		
 		//stop cows from cheating by evolving negative hunger rates
 		saturation -= Math.abs(genome[GenomeCoding.HUNGER_RATE]);
+	}
+	
+	private void processNeeds() {
+		//TODO hook up utility system here
 	}
 	
 	public void draw(Graphics2D g) {
