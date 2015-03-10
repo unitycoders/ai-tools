@@ -2,7 +2,10 @@ package uk.me.webpigeon.world;
 
 import java.util.Random;
 
+import uk.me.webpigeon.joseph.GenomeCoding;
 import uk.me.webpigeon.joseph.cow.Cow;
+import uk.me.webpigeon.joseph.cow.CowFactory;
+import uk.me.webpigeon.joseph.utility.UtilitySystem;
 import uk.me.webpigeon.steering.SeekBehaviour;
 import uk.me.webpigeon.steering.WanderingBehaviour;
 import uk.me.webpigeon.steering.WeightedBehaviour;
@@ -13,22 +16,8 @@ public class EntityFactory {
 	}
 
 	public static Cow buildCow(int maxWidth, int maxHeight) {
-		Random r = new Random();
-
-		int x = r.nextInt(maxWidth);
-		int y = r.nextInt(maxHeight);
-
-		WeightedBehaviour wb = new WeightedBehaviour();
-		//wb.addBehavour(new SeekBehaviour(new Vector2D(400, 300)), 2.5);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(400, 300)), 0.2);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 0)), 4);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 600)), 4);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 0)), 4);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 600)), 4);
-		wb.addBehavour(new WanderingBehaviour(), 5);
-
-		Cow cow = new Cow(x, y, wb);
-		return cow;
+		double[] genome = new double[]{GenomeCoding.MAX_SAT_ID, GenomeCoding.HUNGER_RATE};
+		return buildGenomeCow(maxWidth, maxHeight, genome);
 	}
 
 	
@@ -38,16 +27,10 @@ public class EntityFactory {
 		int x = r.nextInt(maxWidth);
 		int y = r.nextInt(maxHeight);
 
-		WeightedBehaviour wb = new WeightedBehaviour();
-		//wb.addBehavour(new SeekBehaviour(new Vector2D(400, 300)), 2.5);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(400, 300)), 0.2);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 0)), 4);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(0, 600)), 4);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 0)), 4);
-		// wb.addBehavour(new FleeBehaviour(new Vector2D(800, 600)), 4);
-		wb.addBehavour(new WanderingBehaviour(), 5);
+		UtilitySystem util = new UtilitySystem();
+		CowFactory.applyCowActions(util);
 
-		Cow cow = new Cow(x, y, wb, genome);
+		Cow cow = new Cow(x, y, util, genome);
 		return cow;
 	}
 }
