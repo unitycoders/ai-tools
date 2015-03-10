@@ -2,6 +2,7 @@ package uk.me.webpigeon.joseph.utility;
 
 import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.world.Entity;
+import uk.me.webpigeon.world.World;
 
 public class Action {
 	private UtilTreeNode utilCalc;
@@ -10,7 +11,7 @@ public class Action {
 		this.utilCalc = utilCalc;
 	}
 
-	public void executeStep(Entity entity) {
+	public void executeStep(Entity entity, World world) {
 		
 	}
 	

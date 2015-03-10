@@ -62,7 +62,7 @@ public class Cow extends SteeringEntity {
 		}
 		
 		if (action != null) {
-			action.executeStep(this);
+			action.executeStep(this, world);
 		}
 	}
 	
@@ -96,6 +96,11 @@ public class Cow extends SteeringEntity {
 		}
 		
 		return 0.0;
+	}
+
+	public void addSaturation(int health) {
+		double maxSat = getPropertyMax(Property.SATURATION);
+		saturation = Math.min(maxSat, saturation+health);
 	}
 	
 }

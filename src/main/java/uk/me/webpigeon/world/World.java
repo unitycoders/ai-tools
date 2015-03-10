@@ -76,6 +76,10 @@ public class World extends JComponent implements Runnable {
         entities.add(entity);
         entity.bind(this);
     }
+    
+    public void removeEntity(Entity entity) {
+    	entity.health = 0;
+    }
 
     public void update(long timeOfLastUpdate) {
 
