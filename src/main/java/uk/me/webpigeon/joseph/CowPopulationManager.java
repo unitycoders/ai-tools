@@ -16,10 +16,12 @@ public class CowPopulationManager implements WorldComponent {
 	private double epsilon = 0.02;
 	private int cowPopulation;
 	private List<Cow> cows;
+	private List<Cow> newCows;
 	
 	public CowPopulationManager(int cowPopulation) {
 		this.cowPopulation = cowPopulation;
 		this.cows = new ArrayList<Cow>();
+		this.newCows = new ArrayList<Cow>();
 	}
 	
 	public void update(World world, int delta) {
@@ -34,9 +36,24 @@ public class CowPopulationManager implements WorldComponent {
 			}
 		}
 		
+		// add any outstanding cows
+		addWaitingCows(world);
+	}
+	
+	private void addWaitingCows(World world) {
+		Iterator<Cow> cowItr = newCows.iterator();
+		while (cowItr.hasNext()) {
+			Cow cow = cowItr.next();
+			cows.add(cow);
+			world.addEntity(cow);
+			cowItr.remove();
+		}
+	}
+	
+	public void addMoreCows(int cowCount) {
 		// find out now many new cows we need
-		int replacementCowsNeeded = cowPopulation - cows.size();
-		for (int i=0; i<replacementCowsNeeded; i++) {
+		//int replacementCowsNeeded = cowPopulation - cows.size();
+		for (int i=0; i<cowCount; i++) {
 			//get the best cow and mutate it's genome
 			Cow parent = selectParent();
 			double[] genome = parent==null?buildBaseGenome():parent.getGenome();
@@ -44,10 +61,8 @@ public class CowPopulationManager implements WorldComponent {
 			
 			//build a new cow with our new genome
 			Cow newCow = EntityFactory.buildGenomeCow(800, 600, genome);
-			cows.add(newCow);
-			world.addEntity(newCow);
+			newCows.add(newCow);
 		}
-		
 	}
 	
 	private Cow selectParent() {
@@ -83,5 +98,10 @@ public class CowPopulationManager implements WorldComponent {
 		genome[GenomeCoding.HUNGER_RATE] = BaseStats.BASE_HUNGER;
 		
 		return genome;
+	}
+
+	public void addCow(double[] genome) {
+		Cow newCow = EntityFactory.buildGenomeCow(800, 600, genome);
+		newCows.add(newCow);
 	}
 }

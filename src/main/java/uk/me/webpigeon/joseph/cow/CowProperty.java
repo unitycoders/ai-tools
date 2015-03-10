@@ -1,5 +1,6 @@
 package uk.me.webpigeon.joseph.cow;
 
+import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.joseph.utility.UtilTreeNode;
 
 public class CowProperty extends UtilTreeNode {

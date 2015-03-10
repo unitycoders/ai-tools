@@ -31,7 +31,10 @@ public class DoubleWorld extends World {
 
 	public static void main(String[] args) {
 		World world = new DoubleWorld(800, 600);
-		world.addComponent(new CowPopulationManager(10));
+		
+		CowPopulationManager pop = new CowPopulationManager(10);
+		pop.addMoreCows(10);
+		world.addComponent(pop);
 
 		for (int i = 0; i < 50; i++) {
 			world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
