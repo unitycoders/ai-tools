@@ -56,10 +56,12 @@ public class Cow extends SteeringEntity {
 	}
 	
 	private void processNeeds() {
-		if (action == null || action.isComplete()) {
-			action = util.process(this);
-			System.out.println("I want to: "+action);
+		Action newAction = util.process(this);
+		if (newAction != null && !newAction.equals(action)){
+			action = newAction;
+			action.notifyStarted(this);
 		}
+		System.out.println("I want to: "+action);
 		
 		if (action != null) {
 			action.executeStep(this, world);

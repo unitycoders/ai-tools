@@ -22,5 +22,9 @@ public class Action {
 	public double getScore(Cow cow) {
 		return utilCalc.eval(cow);
 	}
+
+	public void notifyStarted(Entity cow) {
+		
+	}
 	
 }
