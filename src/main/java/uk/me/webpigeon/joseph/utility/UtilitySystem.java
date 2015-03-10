@@ -3,22 +3,24 @@ package uk.me.webpigeon.joseph.utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.me.webpigeon.joseph.cow.Cow;
+
 public class UtilitySystem {
-	private List<Factor> factors;
+	private List<Action> actions;
 	
 	public UtilitySystem() {
-		this.factors = new ArrayList<>();
+		this.actions = new ArrayList<>();
 	}
 	
 	/**
 	 * Find out what is most important at the moment.
 	 */
-	public Action process(List<Action> actions) {
+	public Action process(Cow cow) {
 		Action bestAction = null;
-		double bestScore = 0;
+		double bestScore = -Double.MAX_VALUE;
 		
 		for (Action action : actions) {
-			double score = getScore(action);
+			double score = action.getScore(cow);
 			
 			if (score > bestScore) {
 				bestScore = score;
@@ -32,22 +34,7 @@ public class UtilitySystem {
 		return bestAction;
 	}
 	
-	/**
-	 * Get the mean score for all factors.
-	 * 
-	 * @param action the action to evaluate
-	 * @return the score for this action
-	 */
-	public double getScore(Action action){
-		if (factors.isEmpty()) {
-			return 0;
-		}
-		
-		double total = 0;
-		for (Factor factor : factors) {
-			total += factor.getValue(action);
-		}
-		
-		return total / factors.size();
+	public void addAction(Action action) {
+		actions.add(action);
 	}
 }

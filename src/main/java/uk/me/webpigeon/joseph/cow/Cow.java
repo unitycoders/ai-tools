@@ -18,7 +18,6 @@ public class Cow extends SteeringEntity {
 	private final static double MAX_SATURATION = 10;
 	private final static double HUNGER_RATE = 0.01f;
 	
-	private List<Action> actions;
 	private UtilitySystem util;
 	private Action action;
 	
@@ -28,17 +27,12 @@ public class Cow extends SteeringEntity {
 	private Color colour;
 	private int age;
 	
-	public Cow(int x, int y, SteeringBehaviour behavour) {
-		this(x, y, behavour, new double[]{MAX_SATURATION, HUNGER_RATE});
-	}
-	
-	public Cow(int x, int y, SteeringBehaviour bh, double[] genome) {
-		super(x, y, bh);
+	public Cow(int x, int y, UtilitySystem util, double[] genome) {
+		super(x, y, null);
 		this.genome = genome;
 		this.saturation = genome[GenomeCoding.MAX_SAT_ID];
-		this.util = new UtilitySystem();
-		this.actions = new ArrayList<Action>();
-		memory = new Memory();
+		this.util = util;
+		this.memory = new Memory();
 	}
 
 	@Override
@@ -63,14 +57,13 @@ public class Cow extends SteeringEntity {
 	}
 	
 	private void processNeeds() {
-		if (action != null && action.isComplete()) {
-			action = null;
+		if (action == null || action.isComplete()) {
+			action = util.process(this);
+			System.out.println("I want to: "+action);
 		}
 		
-		//TODO hook up utility system here
-		action = util.process(actions);
-		if (action == null) {
-			return;
+		if (action != null) {
+			action.executeStep(this);
 		}
 	}
 	
@@ -89,4 +82,21 @@ public class Cow extends SteeringEntity {
 		return genome;
 	}
 
+	public Double getProperty(Property prop) {
+		//TODO might store these in a map
+		if (prop == Property.SATURATION) {
+			return saturation;
+		}
+		
+		return 0.0;
+	}
+
+	public Double getPropertyMax(Property prop) {
+		if (prop == Property.SATURATION) {
+			return genome[GenomeCoding.MAX_SAT_ID];
+		}
+		
+		return 0.0;
+	}
+	
 }

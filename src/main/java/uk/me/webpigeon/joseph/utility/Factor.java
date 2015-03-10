@@ -1,9 +1,13 @@
 package uk.me.webpigeon.joseph.utility;
 
-public class Factor {
-	
-	public double getValue(Action action) {
-		return 0.0;
+import uk.me.webpigeon.joseph.cow.Cow;
+
+public class Factor extends UtilTreeNode {
+
+	@Override
+	public Double eval(Cow cow) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
