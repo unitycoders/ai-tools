@@ -104,4 +104,12 @@ public class CowPopulationManager implements WorldComponent {
 		Cow newCow = EntityFactory.buildGenomeCow(800, 600, this, genome);
 		newCows.add(newCow);
 	}
+
+	public int getPopMax() {
+		return cowPopulation;
+	}
+
+	public int getPop() {
+		return cows.size() + newCows.size();
+	}
 }

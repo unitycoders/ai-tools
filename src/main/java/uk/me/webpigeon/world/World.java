@@ -21,6 +21,8 @@ public class World extends JComponent implements Runnable {
     private List<Entity> entities;
     private List<WorldComponent> components;
     
+    private List<Entity> addList;
+    
     protected double scaleX;
     protected double scaleY;
 
@@ -45,6 +47,7 @@ public class World extends JComponent implements Runnable {
         this.height = height;
         this.entities = new ArrayList<Entity>();
         this.components = new ArrayList<WorldComponent>();
+        this.addList = new ArrayList<Entity>();
     }
 
     @Override
@@ -80,8 +83,7 @@ public class World extends JComponent implements Runnable {
      * @param entity The entity to be added to this world
      */
     public void addEntity(Entity entity) {
-        entities.add(entity);
-        entity.bind(this);
+        addList.add(entity);
     }
     
     public void removeEntity(Entity entity) {
@@ -103,6 +105,14 @@ public class World extends JComponent implements Runnable {
     	
     	for (WorldComponent component : components) {
     		component.update(this, 0);
+    	}
+    	
+    	Iterator<Entity> addItr = addList.iterator();
+    	while(addItr.hasNext()){
+    		Entity entity = addItr.next();
+    		entities.add(entity);
+            entity.bind(this);
+            addItr.remove();
     	}
 
     }

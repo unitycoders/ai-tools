@@ -2,6 +2,7 @@ package uk.me.webpigeon.joseph.cow;
 
 import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.joseph.utility.Action;
+import uk.me.webpigeon.joseph.utility.MathNode;
 import uk.me.webpigeon.joseph.utility.MeanNode;
 import uk.me.webpigeon.joseph.utility.UtilTreeNode;
 import uk.me.webpigeon.joseph.utility.UtilitySystem;
@@ -22,12 +23,14 @@ public class CowFactory {
 	}
 	
 	public static Action buildReproduceBehavour(CowPopulationManager pop, UtilitySystem util) {
-		UtilTreeNode hunger = new CowProperty(Property.SATURATION);
-		return new MakeBabbyCow(hunger, pop);
+		UtilTreeNode currPop = new CowPopulationStats("current", pop);
+		UtilTreeNode maxPop = new CowPopulationStats("max", pop);
+		UtilTreeNode div = new MathNode('/', currPop, maxPop);
+		return new MakeBabbyCow(div, pop);
 	}
 	
 	public static void applyCowActions(CowPopulationManager pop, UtilitySystem util) {
-		//util.addAction(buildReproduceBehavour(pop, util));
+		util.addAction(buildReproduceBehavour(pop, util));
 		util.addAction(buildEatAction(util));
 		util.addAction(buildWanderingBehavour(util));
 	}
