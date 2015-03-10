@@ -60,7 +60,7 @@ public class CowPopulationManager implements WorldComponent {
 			genome = mutateGenome(genome);
 			
 			//build a new cow with our new genome
-			Cow newCow = EntityFactory.buildGenomeCow(800, 600, genome);
+			Cow newCow = EntityFactory.buildGenomeCow(800, 600, this, genome);
 			newCows.add(newCow);
 		}
 	}
@@ -101,7 +101,7 @@ public class CowPopulationManager implements WorldComponent {
 	}
 
 	public void addCow(double[] genome) {
-		Cow newCow = EntityFactory.buildGenomeCow(800, 600, genome);
+		Cow newCow = EntityFactory.buildGenomeCow(800, 600, this, genome);
 		newCows.add(newCow);
 	}
 }

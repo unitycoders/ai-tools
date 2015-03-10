@@ -8,6 +8,7 @@ import uk.me.webpigeon.world.World;
 
 public class MakeBabbyCow extends Action {
 	private CowPopulationManager population;
+	private boolean cowAdded;
 
 	public MakeBabbyCow(UtilTreeNode utilCalc, CowPopulationManager population) {
 		super(utilCalc);
@@ -16,17 +17,15 @@ public class MakeBabbyCow extends Action {
 
 	@Override
 	public void executeStep(Entity entity, World world) {
-		Cow cow = (Cow)entity;
-		population.addCow(cow.getGenome());
-		
-		// TODO Auto-generated method stub
-		super.executeStep(entity, world);
+		if (!cowAdded) {
+			Cow cow = (Cow)entity;
+			population.addCow(cow.getGenome());
+		}
 	}
 
 	@Override
 	public void notifyStarted(Entity cow) {
-		// TODO Auto-generated method stub
-		super.notifyStarted(cow);
+		cowAdded = false;
 	}
 	
 }
