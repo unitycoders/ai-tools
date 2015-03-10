@@ -2,12 +2,16 @@ package uk.me.webpigeon.world;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
+
+import uk.me.webpigeon.util.Vector2D;
 
 /**
  * Created by Piers on 03/03/2015.
@@ -16,6 +20,9 @@ public class World extends JComponent implements Runnable {
     private static final Boolean DEBUG_DRAW = false;
     private List<Entity> entities;
     private List<WorldComponent> components;
+    
+    protected double scaleX;
+    protected double scaleY;
 
     // width of the world
     protected int width;
@@ -138,6 +145,18 @@ public class World extends JComponent implements Runnable {
                 .sorted((s1, s2) -> (int) (source.getLocation().dist(s1.getLocation()) - source.getLocation().dist(s2.getLocation())))
                 .collect(Collectors.toList()).get(0);
     }
+    
+    public Entity getNearestEntityOfType(Vector2D source, Class type) {
+        List<Entity> entityList = entities.stream().filter(s -> type.isAssignableFrom(s.getClass()))
+                .sorted((s1, s2) -> (int) (source.dist(s1.getLocation()) - source.dist(s2.getLocation())))
+                .collect(Collectors.toList());
+        
+        if (entityList.isEmpty()) {
+        	return null;
+        }
+        
+        return entityList.get(0);
+    }
 
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -151,6 +170,12 @@ public class World extends JComponent implements Runnable {
                 entity.debugDraw(g2);
             }
         }
+    }
+    
+    public Point project(Point2D p) {
+    	int x = (int)(p.getX() * scaleX);
+    	int y = (int)(p.getY() * scaleY);
+    	return new Point(x, y);
     }
 
 }

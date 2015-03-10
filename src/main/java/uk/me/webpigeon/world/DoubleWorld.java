@@ -18,9 +18,9 @@ public class DoubleWorld extends World {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		double screenWidth = getWidth() / (width * 1.0);
-		double screenHeight = getHeight() / (height * 1.0);
-		g2.scale(screenWidth, screenHeight);
+		scaleX = getWidth() / (width * 1.0);
+		scaleY = getHeight() / (height * 1.0);
+		g2.scale(scaleX, scaleY);
 
 		g2.setColor(new Color(123, 191, 106));
 		g2.fillRect(0, 0, width, height);
@@ -38,6 +38,8 @@ public class DoubleWorld extends World {
 		
 		Thread t = new Thread(world);
 		t.start();
+		
+		world.addMouseListener(new MouseListener(world));
 
 		JFrame frame = new JFrame("Crazy Double World");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

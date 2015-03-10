@@ -61,7 +61,6 @@ public class Cow extends SteeringEntity {
 			action = newAction;
 			action.notifyStarted(this);
 		}
-		System.out.println("I want to: "+action);
 		
 		if (action != null) {
 			action.executeStep(this, world);
