@@ -1,10 +1,12 @@
 package uk.me.webpigeon.world;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import uk.me.webpigeon.joseph.CowPopulationManager;
@@ -45,6 +47,7 @@ public class DoubleWorld extends World {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.add(world);
+		frame.add(new JPanel(), BorderLayout.EAST);
 		frame.pack();
 		frame.setVisible(true);
 	}

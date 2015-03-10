@@ -141,9 +141,7 @@ public class World extends JComponent implements Runnable {
      * @return The entity that is the nearest of that type
      */
     public Entity getNearestEntityOfType(Entity source, Class type) {
-        return entities.stream().filter(s -> s.getClass().isAssignableFrom(type))
-                .sorted((s1, s2) -> (int) (source.getLocation().dist(s1.getLocation()) - source.getLocation().dist(s2.getLocation())))
-                .collect(Collectors.toList()).get(0);
+        return getNearestEntityOfType(source.location, type);
     }
     
     public Entity getNearestEntityOfType(Vector2D source, Class type) {

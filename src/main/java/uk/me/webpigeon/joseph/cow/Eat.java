@@ -23,6 +23,10 @@ public class Eat extends Action {
 	public void executeStep(Entity entity, World world) {
 		if (plant == null) {
 			plant = world.getNearestEntityOfType(entity, GrassEntity.class);
+			if (plant == null) {
+				//ah, there are no more plants, I'm a sad cow :(
+				return;
+			}
 			dest = plant.getLocation();
 		}
 		
