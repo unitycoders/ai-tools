@@ -1,0 +1,11 @@
+<Configuration>
+    <DomainFile>HunterDomain.xml</DomainFile>
+    <ModelActionsPackage></ModelActionsPackage>
+    <ModelConditionsPackage></ModelConditionsPackage>
+    <ModelActionsOutputDirectory></ModelActionsOutputDirectory>
+    <ModelConditionsOutputDirector></ModelConditionsOutputDirector>
+    <ExecutionActionsPackage></ExecutionActionsPackage>
+    <ExecutionConditionsPackage></ExecutionConditionsPackage>
+    <ExecutionActionsOutputDirectory></ExecutionActionsOutputDirectory>
+    <ExecutionConditionsOutputDirector></ExecutionConditionsOutputDirector>
+</Configuration>

@@ -1,0 +1,30 @@
+<Domain package="uk.me.webpigeon">
+    <ActionSet>
+        <Action name="Walk">
+            <Parameter name="Location" type="COORDINATE"/>
+        </Action>
+        <Action name="Kill">
+            <Parameter name="Target" type="ENTITY_ID"/>
+
+        </Action>
+        <Action name="ReturnHome"/>
+
+        <Action name="Harvest">
+            <Parameter name="Target" type="ENTITY_ID"/>
+        </Action>
+        <Action name="Chase">
+            <Parameter name="Target" type="ENTITY_ID"/>
+        </Action>
+    </ActionSet>
+    <SensorSet>
+        <Sensor name="Hunger" type="INTEGER"/>
+        <Sensor name="NearestCow" type="ENTITY_ID"/>
+        <sensor name="NearestDeadCow" type="ENTITY_ID"/>
+    </SensorSet>
+    <GoalSet>
+
+    </GoalSet>
+    <EntitySet>
+
+    </EntitySet>
+</Domain>
