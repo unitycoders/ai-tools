@@ -4,8 +4,10 @@ import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.joseph.utility.Action;
 import uk.me.webpigeon.joseph.utility.MathNode;
 import uk.me.webpigeon.joseph.utility.MeanNode;
+import uk.me.webpigeon.joseph.utility.QuadraticCurve;
 import uk.me.webpigeon.joseph.utility.UtilitySystem;
 import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.TreeNode;
 import uk.me.webpigeon.steering.SteeringBehaviour;
 import uk.me.webpigeon.steering.WanderingBehaviour;
 
@@ -13,7 +15,8 @@ public class CowFactory {
 
 	public static Action buildEatAction(Cow cow, UtilitySystem util) {
 		AbstractTreeNode hunger = new InvertedCowProperty(cow, Property.SATURATION);
-		return new Eat(hunger);
+		TreeNode<Double> quadtraic = new QuadraticCurve(hunger, 1, 0.2);
+		return new Eat(quadtraic);
 	}
 	
 	public static Action buildWanderingBehavour(Cow cow, UtilitySystem util) {

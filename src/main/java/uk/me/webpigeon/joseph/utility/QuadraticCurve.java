@@ -4,10 +4,10 @@ import uk.me.webpigeon.joseph.utility.trees.TreeNode;
 import uk.me.webpigeon.joseph.utility.trees.UtilCurve;
 
 public class QuadraticCurve extends UtilCurve {
-	private float m;
-	private float k;
+	private double m;
+	private double k;
 	
-	public QuadraticCurve(TreeNode<Double> child, float m, float k) {
+	public QuadraticCurve(TreeNode<Double> child, double m, double k) {
 		super(child);
 		this.m = m;
 		this.k = k;
