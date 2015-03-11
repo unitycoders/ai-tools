@@ -8,7 +8,7 @@ import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
 public class WeightedBehaviour implements SteeringBehaviour {
-	private Map<SteeringBehaviour, Double> behaviours;
+	protected Map<SteeringBehaviour, Double> behaviours;
 
 	public WeightedBehaviour() {
 		this.behaviours = new HashMap<SteeringBehaviour, Double>();

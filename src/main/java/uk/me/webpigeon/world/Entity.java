@@ -9,11 +9,11 @@ import uk.me.webpigeon.util.Vector2D;
 
 /**
  * Base abstract class for all entity objects in the world
- *
+ * <p>
  * Created by Piers on 03/03/2015.
  */
 public abstract class Entity {
-
+	
 	// The GridWorld in all its glory
 	protected World world;
 	protected List<Vector2D> previousLocations;
