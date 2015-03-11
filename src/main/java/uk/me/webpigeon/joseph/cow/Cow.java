@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.me.webpigeon.joseph.GenomeCoding;
-import uk.me.webpigeon.joseph.Memory;
 import uk.me.webpigeon.joseph.utility.Action;
 import uk.me.webpigeon.joseph.utility.UtilitySystem;
 import uk.me.webpigeon.steering.SteeringBehaviour;
@@ -14,7 +13,6 @@ import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.SteeringEntity;
 
 public class Cow extends SteeringEntity {
-	private final static double MAX_SATURATION = 10;
 	private final static double HUNGER_RATE = 0.01f;
 	
 	private UtilitySystem util;
@@ -22,7 +20,6 @@ public class Cow extends SteeringEntity {
 	
 	private double saturation;
 	private double[] genome;
-	private Memory memory;
 	private Color colour;
 	private int age;
 	
@@ -31,7 +28,6 @@ public class Cow extends SteeringEntity {
 		this.genome = genome;
 		this.saturation = genome[GenomeCoding.MAX_SAT_ID];
 		this.util = util;
-		this.memory = new Memory();
 	}
 
 	@Override
