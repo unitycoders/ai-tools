@@ -1,7 +1,7 @@
 package uk.me.webpigeon.joseph.cow;
 
 import uk.me.webpigeon.joseph.utility.Action;
-import uk.me.webpigeon.joseph.utility.UtilTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 import uk.me.webpigeon.steering.SeekBehaviour;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
@@ -14,7 +14,7 @@ public class Eat extends Action {
 	Entity plant;
 	Vector2D dest;
 	
-	public Eat(UtilTreeNode utilCalc) {
+	public Eat(AbstractTreeNode utilCalc) {
 		super(utilCalc);
 		behaviour = new SeekBehaviour(null);
 	}

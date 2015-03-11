@@ -1,13 +1,15 @@
 package uk.me.webpigeon.joseph.utility;
 
 import uk.me.webpigeon.joseph.cow.Cow;
+import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.TreeNode;
 import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.World;
 
 public class Action {
-	private UtilTreeNode utilCalc;
+	private TreeNode<Double> utilCalc;
 	
-	public Action(UtilTreeNode utilCalc) {
+	public Action(TreeNode<Double> utilCalc) {
 		this.utilCalc = utilCalc;
 	}
 
@@ -19,8 +21,8 @@ public class Action {
 		return true;
 	}
 
-	public double getScore(Cow cow) {
-		return utilCalc.eval(cow);
+	public double getScore() {
+		return utilCalc.eval();
 	}
 
 	public void notifyStarted(Entity cow) {

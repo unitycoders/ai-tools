@@ -1,9 +1,9 @@
 package uk.me.webpigeon.joseph.cow;
 
 import uk.me.webpigeon.joseph.CowPopulationManager;
-import uk.me.webpigeon.joseph.utility.UtilTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 
-public class CowPopulationStats extends UtilTreeNode {
+public class CowPopulationStats extends AbstractTreeNode {
 	private CowPopulationManager pop;
 	private String stat;
 	
@@ -12,7 +12,7 @@ public class CowPopulationStats extends UtilTreeNode {
 	}
 
 	@Override
-	public Double eval(Cow cow) {
+	public Double eval() {
 		if ("max".equals(stat)) {
 			return (double) pop.getPopMax();
 		}

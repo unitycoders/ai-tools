@@ -1,16 +1,16 @@
 package uk.me.webpigeon.joseph.cow;
 
-import uk.me.webpigeon.joseph.utility.UtilTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 
 public class InvertedCowProperty extends CowProperty {
 	
-	public InvertedCowProperty(Property prop) {
-		super(prop);
+	public InvertedCowProperty(Cow cow, Property prop) {
+		super(cow, prop);
 	}
 
 	@Override
-	public Double eval(Cow cow) {
-		return 1 - super.eval(cow);
+	public Double eval() {
+		return 1 - super.eval();
 	}
 
 }

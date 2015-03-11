@@ -27,11 +27,10 @@ public class EntityFactory {
 
 		int x = r.nextInt(maxWidth);
 		int y = r.nextInt(maxHeight);
-
+		
 		UtilitySystem util = new UtilitySystem();
-		CowFactory.applyCowActions(pop, util);
-
 		Cow cow = new Cow(x, y, util, genome);
+		CowFactory.applyCowActions(cow, pop, util);
 		return cow;
 	}
 }

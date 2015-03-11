@@ -1,7 +1,7 @@
 package uk.me.webpigeon.joseph.cow;
 
 import uk.me.webpigeon.joseph.utility.Action;
-import uk.me.webpigeon.joseph.utility.UtilTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 import uk.me.webpigeon.steering.SteeringBehaviour;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
@@ -10,7 +10,7 @@ import uk.me.webpigeon.world.World;
 public class SteeringAction extends Action {
 	final SteeringBehaviour behaviour;
 
-	public SteeringAction(UtilTreeNode utilCalc, SteeringBehaviour behaviour) {
+	public SteeringAction(AbstractTreeNode utilCalc, SteeringBehaviour behaviour) {
 		super(utilCalc);
 		this.behaviour = behaviour;
 	}

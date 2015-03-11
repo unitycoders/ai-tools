@@ -2,7 +2,8 @@ package uk.me.webpigeon.joseph.cow;
 
 import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.joseph.utility.Action;
-import uk.me.webpigeon.joseph.utility.UtilTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
+import uk.me.webpigeon.joseph.utility.trees.TreeNode;
 import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.World;
 
@@ -10,7 +11,7 @@ public class MakeBabbyCow extends Action {
 	private CowPopulationManager population;
 	private boolean cowAdded;
 
-	public MakeBabbyCow(UtilTreeNode utilCalc, CowPopulationManager population) {
+	public MakeBabbyCow(TreeNode<Double> utilCalc, CowPopulationManager population) {
 		super(utilCalc);
 		this.population = population;
 	}
