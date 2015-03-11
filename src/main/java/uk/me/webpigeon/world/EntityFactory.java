@@ -30,7 +30,7 @@ public class EntityFactory {
 		
 		UtilitySystem util = new UtilitySystem();
 		Cow cow = new Cow(x, y, util, genome);
-		CowFactory.applyCowActions(cow, pop, util);
+		CowFactory.applyCowActions(cow, null, pop, util);
 		return cow;
 	}
 }

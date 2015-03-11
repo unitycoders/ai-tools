@@ -28,6 +28,7 @@ public abstract class Entity {
 
 	public Entity() {
 		this.location = new Vector2D();
+		this.velocity = new Vector2D();
 		this.health = 100;
 		this.previousLocations = new ArrayList<>();
 	}
@@ -97,6 +98,10 @@ public abstract class Entity {
 
 	public int getHealth() {
 		return health;
+	}
+	
+	public int getZIndex() {
+		return 0;
 	}
 
 }
