@@ -2,12 +2,16 @@ package uk.me.webpigeon.world;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
+
+import uk.me.webpigeon.util.Vector2D;
 
 /**
  * Created by Piers on 03/03/2015.
@@ -16,6 +20,11 @@ public class World extends JComponent implements Runnable {
     private static final Boolean DEBUG_DRAW = false;
     private List<Entity> entities;
     private List<WorldComponent> components;
+    
+    private List<Entity> addList;
+    
+    protected double scaleX;
+    protected double scaleY;
 
     // width of the world
     protected int width;
@@ -38,6 +47,7 @@ public class World extends JComponent implements Runnable {
         this.height = height;
         this.entities = new ArrayList<Entity>();
         this.components = new ArrayList<WorldComponent>();
+        this.addList = new ArrayList<Entity>();
     }
 
     @Override
@@ -73,8 +83,11 @@ public class World extends JComponent implements Runnable {
      * @param entity The entity to be added to this world
      */
     public void addEntity(Entity entity) {
-        entities.add(entity);
-        entity.bind(this);
+        addList.add(entity);
+    }
+    
+    public void removeEntity(Entity entity) {
+    	entity.health = 0;
     }
 
     public void update(long timeOfLastUpdate) {
@@ -92,6 +105,14 @@ public class World extends JComponent implements Runnable {
     	
     	for (WorldComponent component : components) {
     		component.update(this, 0);
+    	}
+    	
+    	Iterator<Entity> addItr = addList.iterator();
+    	while(addItr.hasNext()){
+    		Entity entity = addItr.next();
+    		entities.add(entity);
+            entity.bind(this);
+            addItr.remove();
     	}
 
     }
@@ -130,9 +151,19 @@ public class World extends JComponent implements Runnable {
      * @return The entity that is the nearest of that type
      */
     public Entity getNearestEntityOfType(Entity source, Class type) {
-        return entities.stream().filter(s -> s.getClass().isAssignableFrom(type))
-                .sorted((s1, s2) -> (int) (source.getLocation().dist(s1.getLocation()) - source.getLocation().dist(s2.getLocation())))
-                .collect(Collectors.toList()).get(0);
+        return getNearestEntityOfType(source.location, type);
+    }
+    
+    public Entity getNearestEntityOfType(Vector2D source, Class type) {
+        List<Entity> entityList = entities.stream().filter(s -> type.isAssignableFrom(s.getClass()))
+                .sorted((s1, s2) -> (int) (source.dist(s1.getLocation()) - source.dist(s2.getLocation())))
+                .collect(Collectors.toList());
+        
+        if (entityList.isEmpty()) {
+        	return null;
+        }
+        
+        return entityList.get(0);
     }
 
     protected void paintComponent(Graphics g) {
@@ -147,6 +178,12 @@ public class World extends JComponent implements Runnable {
                 entity.debugDraw(g2);
             }
         }
+    }
+    
+    public Point project(Point2D p) {
+    	int x = (int)(p.getX() * scaleX);
+    	int y = (int)(p.getY() * scaleY);
+    	return new Point(x, y);
     }
 
 }

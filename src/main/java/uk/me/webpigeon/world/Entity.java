@@ -95,4 +95,8 @@ public abstract class Entity {
         this.velocity = velocity;
     }
 
+	public int getHealth() {
+		return health;
+	}
+
 }

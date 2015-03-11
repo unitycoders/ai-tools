@@ -1,16 +1,19 @@
 package uk.me.webpigeon.joseph.cow;
 
-import uk.me.webpigeon.joseph.utility.UtilTreeNode;
+import uk.me.webpigeon.joseph.CowPopulationManager;
+import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 
-public class CowProperty extends UtilTreeNode {
+public class CowProperty extends AbstractTreeNode {
+	private Cow cow;
 	private Property prop;
 	
-	public CowProperty(Property prop) {
+	public CowProperty(Cow cow, Property prop) {
+		this.cow = cow;
 		this.prop = prop;
 	}
 
 	@Override
-	public Double eval(Cow cow) {
+	public Double eval() {
 		return cow.getProperty(prop) / cow.getPropertyMax(prop);
 	}
 

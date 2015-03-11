@@ -56,13 +56,14 @@ public class Cow extends SteeringEntity {
 	}
 	
 	private void processNeeds() {
-		if (action == null || action.isComplete()) {
-			action = util.process(this);
-			System.out.println("I want to: "+action);
+		Action newAction = util.process(this);
+		if (newAction != null && !newAction.equals(action)){
+			action = newAction;
+			action.notifyStarted(this);
 		}
 		
 		if (action != null) {
-			action.executeStep(this);
+			action.executeStep(this, world);
 		}
 	}
 	
@@ -96,6 +97,11 @@ public class Cow extends SteeringEntity {
 		}
 		
 		return 0.0;
+	}
+
+	public void addSaturation(int health) {
+		double maxSat = getPropertyMax(Property.SATURATION);
+		saturation = Math.min(maxSat, saturation+health);
 	}
 	
 }

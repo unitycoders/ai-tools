@@ -13,8 +13,6 @@ public class SteeringEntity extends Entity {
 	private SteeringBehaviour behaviour;
 	private ArrayList<Vector2D> previousLocations = new ArrayList<>();
 
-	private double rotationAmount;
-
 	public SteeringEntity(int x, int y, SteeringBehaviour behaviour) {
 		this.location = new Vector2D(x, y, true);
 		this.velocity = new Vector2D(0, 0, true);
@@ -32,8 +30,7 @@ public class SteeringEntity extends Entity {
 	public void update() {
 		if (behaviour != null) {
 			Vector2D targetForce = behaviour.process();
-			Vector2D newVelocity = Vector2D.add(targetForce, velocity, VECTOR_SMOOTHING);
-			setVelocity(newVelocity);
+			setVelocity(targetForce);
 		}
 		super.update();
 	}
@@ -54,5 +51,11 @@ public class SteeringEntity extends Entity {
 
 		behaviour.debugDraw(graphics);
 	}
+	
+	public void setVelocity(Vector2D velocity) {
+		Vector2D newVelocity = Vector2D.add(velocity, velocity, VECTOR_SMOOTHING);
+		super.setVelocity(newVelocity);
+	}
+
 
 }

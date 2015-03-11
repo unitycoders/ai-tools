@@ -1,10 +1,12 @@
 package uk.me.webpigeon.world;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import uk.me.webpigeon.joseph.CowPopulationManager;
@@ -18,9 +20,9 @@ public class DoubleWorld extends World {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		double screenWidth = getWidth() / (width * 1.0);
-		double screenHeight = getHeight() / (height * 1.0);
-		g2.scale(screenWidth, screenHeight);
+		scaleX = getWidth() / (width * 1.0);
+		scaleY = getHeight() / (height * 1.0);
+		g2.scale(scaleX, scaleY);
 
 		g2.setColor(new Color(123, 191, 106));
 		g2.fillRect(0, 0, width, height);
@@ -29,7 +31,10 @@ public class DoubleWorld extends World {
 
 	public static void main(String[] args) {
 		World world = new DoubleWorld(800, 600);
-		world.addComponent(new CowPopulationManager(10));
+		
+		CowPopulationManager pop = new CowPopulationManager(10);
+		pop.addMoreCows(10);
+		world.addComponent(pop);
 
 		for (int i = 0; i < 50; i++) {
 			world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
@@ -38,11 +43,14 @@ public class DoubleWorld extends World {
 		
 		Thread t = new Thread(world);
 		t.start();
+		
+		world.addMouseListener(new MouseListener(world));
 
 		JFrame frame = new JFrame("Crazy Double World");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.add(world);
+		frame.add(new JPanel(), BorderLayout.EAST);
 		frame.pack();
 		frame.setVisible(true);
 	}

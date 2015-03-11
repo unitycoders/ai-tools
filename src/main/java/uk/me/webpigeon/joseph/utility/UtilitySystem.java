@@ -20,7 +20,7 @@ public class UtilitySystem {
 		double bestScore = -Double.MAX_VALUE;
 		
 		for (Action action : actions) {
-			double score = action.getScore(cow);
+			double score = action.getScore();
 			
 			if (score > bestScore) {
 				bestScore = score;
