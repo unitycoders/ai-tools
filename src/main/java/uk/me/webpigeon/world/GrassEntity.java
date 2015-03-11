@@ -22,13 +22,30 @@ public class GrassEntity extends Entity {
 			e.printStackTrace();
 		}
 	}
+	
+	private int age;
+	private int seedCooldown;
 
 	public GrassEntity(Vector2D location) {
+		this.age = 0;
 		this.location = location;
 	}
 
 	public void update() {
 		// TODO do we regenerate
+		age++;
+		seedCooldown--;
+		if (age < 100 && seedCooldown < 0 && Math.random() < 0.01) {
+			Vector2D randomPolar = Vector2D.getRandomPolar(2 * Math.PI, 0, 150, true);
+			Vector2D cartDir = Vector2D.add(Vector2D.toCartesian(randomPolar),getLocation());
+			
+			world.addEntity(new GrassEntity(cartDir));
+			seedCooldown = 1000;
+		}
+		
+		if (age > 100000) {
+			health--;
+		}
 	}
 
 	@Override

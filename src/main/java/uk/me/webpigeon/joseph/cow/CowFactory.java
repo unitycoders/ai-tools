@@ -36,8 +36,9 @@ public class CowFactory {
 	public static Action buildReproduceBehavour(CowPopulationManager pop, UtilitySystem util) {
 		AbstractTreeNode currPop = new CowPopulationStats("current", pop);
 		AbstractTreeNode maxPop = new CowPopulationStats("max", pop);
-		MathNode div = new MathNode('/', currPop, maxPop);
-		return new MakeBabbyCow(div, pop);
+		MathNode sub = new MathNode('-', maxPop, currPop);
+		//MathNode div = new MathNode('/', sub, maxPop);
+		return new MakeBabbyCow(sub, pop);
 	}
 	
 	public static void applyCowActions(Cow cow, World world, CowPopulationManager pop, UtilitySystem util) {
