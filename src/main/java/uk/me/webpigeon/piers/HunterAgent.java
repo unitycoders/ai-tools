@@ -24,11 +24,14 @@ public class HunterAgent extends Entity {
     // How big we are
     int radius = 10;
 
-    // How healthy are we
-    int health;
-
     // How hungry are we
-    int hungerLevel;
+    // When this is below starvingThreshold then we start to lose health
+    int hungerLevel = 100;
+    private static int starvingThreshold = 10;
+
+    // Maximum amount of life for a hunter
+    private static int maxTicks = 1_000;
+    private int currentTicks;
 
     private static ArrayList<Sensor<HunterAgent>> sensors;
     private static HunterBehaviour behaviour;
@@ -44,8 +47,7 @@ public class HunterAgent extends Entity {
      * @param brain
      */
     public HunterAgent(HunterVillage home, NeuralNet brain) {
-        this.home = home;
-        this.brain = brain;
+        initialise(home, brain);
     }
 
     /**
@@ -54,15 +56,26 @@ public class HunterAgent extends Entity {
      * @param home
      */
     public HunterAgent(HunterVillage home) {
+        NeuralNet brain = new NeuralNet(sensors.size(), HunterBehaviourNames.values().length, 3, HunterBehaviourNames.values().length);
+        brain.createNet();
+        initialise(home, brain);
+    }
+
+    private void initialise(HunterVillage home, NeuralNet brain) {
         this.home = home;
-        this.brain = new NeuralNet(sensors.size(), HunterBehaviourNames.values().length, 3, HunterBehaviourNames.values().length);
-        this.brain.createNet();
+        this.brain = brain;
         this.location = new Vector2D(home.getLocation(), true);
     }
 
     @Override
     public void update() {
         if (velocity == null) velocity = new Vector2D(1, 0, true);
+        currentTicks++;
+
+
+        // think about hunger and health
+        if (hungerLevel < starvingThreshold) health--;
+
 
         // Set the input layer to use our sensors
         ArrayList<Double> inputs = new ArrayList<>();
@@ -92,6 +105,11 @@ public class HunterAgent extends Entity {
     public void draw(Graphics2D graphics) {
         graphics.setColor(Color.RED);
         graphics.fillOval((int) getX(), (int) getY(), radius, radius);
+    }
+
+    @Override
+    public boolean isDead() {
+        return (currentTicks > maxTicks || super.isDead());
     }
 
     public static void initialiseBehaviour() {

@@ -9,6 +9,7 @@ import uk.me.webpigeon.world.WorldComponent;
 import javax.xml.stream.events.EntityDeclaration;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Piers on 09/03/2015.
@@ -22,6 +23,7 @@ public class HunterVillage extends Entity {
 
     // How many people do we have
     private int currentPopulation;
+    private int maxPopulation = 10;
 
     private int hunterThreshold = 50;
 
@@ -46,7 +48,18 @@ public class HunterVillage extends Entity {
     @Override
     public void update() {
         // Don't call super.update();
-        if (foodStocks > hunterThreshold) createNewHunter();
+        // take out dead hunters
+        Iterator<HunterAgent> iterator = hunters.iterator();
+        while (iterator.hasNext()) {
+            HunterAgent agent = iterator.next();
+            if (agent.isDead()) {
+                iterator.remove();
+                System.out.println("Hunter died - All mourn the hunter!");
+            }
+        }
+
+        currentPopulation = hunters.size();
+        if (foodStocks > hunterThreshold && currentPopulation < maxPopulation) createNewHunter();
     }
 
     private void createNewHunter() {
