@@ -10,49 +10,57 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import uk.me.webpigeon.joseph.CowPopulationManager;
+import uk.me.webpigeon.piers.HunterAgent;
+import uk.me.webpigeon.piers.HunterVillage;
 import uk.me.webpigeon.util.Vector2D;
 
 public class DoubleWorld extends World {
 
-	public DoubleWorld(int width, int height) {
-		super(width, height);
-	}
+    public DoubleWorld(int width, int height) {
+        super(width, height);
+    }
 
-	@Override
-	public void draw(Graphics2D g2) {
-		scaleX = getWidth() / (width * 1.0);
-		scaleY = getHeight() / (height * 1.0);
-		g2.scale(scaleX, scaleY);
+    @Override
+    public void draw(Graphics2D g2) {
+        scaleX = getWidth() / (width * 1.0);
+        scaleY = getHeight() / (height * 1.0);
+        g2.scale(scaleX, scaleY);
 
-		g2.setColor(new Color(123, 191, 106));
-		g2.fillRect(0, 0, width, height);
-		super.draw(g2);
-	}
+        g2.setColor(new Color(123, 191, 106));
+        g2.fillRect(0, 0, width, height);
+        super.draw(g2);
+    }
 
-	public static void main(String[] args) {
-		World world = new DoubleWorld(800, 600);
-		
-		CowPopulationManager pop = new CowPopulationManager(10);
-		pop.addMoreCows(10);
-		world.addComponent(pop);
+    public static void main(String[] args) {
+        World world = new DoubleWorld(800, 600);
 
-		for (int i = 0; i < 50; i++) {
-			world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
-					world.width, world.height, true)));
-		}
-		
-		Thread t = new Thread(world);
-		t.start();
-		
-		world.addMouseListener(new MouseListener(world));
+        HunterAgent.initialiseBehaviour();
+        HunterAgent.initialiseSensors();
 
-		JFrame frame = new JFrame("Crazy Double World");
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(800, 600));
-		frame.add(world);
-		frame.add(new JPanel(), BorderLayout.EAST);
-		frame.pack();
-		frame.setVisible(true);
-	}
+        CowPopulationManager pop = new CowPopulationManager(10);
+        pop.addMoreCows(10);
+        world.addComponent(pop);
+
+        for (int i = 0; i < 50; i++) {
+            world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
+                    world.width, world.height, true)));
+        }
+
+        world.addEntity(new HunterVillage(new Vector2D(250, 250)));
+
+
+        Thread t = new Thread(world);
+        t.start();
+
+        world.addMouseListener(new MouseListener(world));
+
+        JFrame frame = new JFrame("Crazy Double World");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(800, 600));
+        frame.add(world);
+        frame.add(new JPanel(), BorderLayout.EAST);
+        frame.pack();
+        frame.setVisible(true);
+    }
 
 }

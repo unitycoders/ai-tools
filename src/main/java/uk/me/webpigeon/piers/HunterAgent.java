@@ -1,6 +1,5 @@
 package uk.me.webpigeon.piers;
 
-import uk.me.webpigeon.behaviour.TreeNode;
 import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.piers.neural.NeuralNet;
 import uk.me.webpigeon.piers.neural.Sensor;
@@ -23,7 +22,7 @@ import java.util.HashMap;
  */
 public class HunterAgent extends Entity {
     // How big we are
-    int radius;
+    int radius = 10;
 
     // How healthy are we
     int health;
@@ -32,11 +31,11 @@ public class HunterAgent extends Entity {
     int hungerLevel;
 
     private static ArrayList<Sensor<HunterAgent>> sensors;
-    private static WeightedBehaviour behaviour;
+    private static HunterBehaviour behaviour;
 
     private NeuralNet brain;
 
-    private HunterVillage home;
+    protected HunterVillage home;
 
     /**
      * Create HunterAgent with given home and a provided brain
@@ -56,8 +55,47 @@ public class HunterAgent extends Entity {
      */
     public HunterAgent(HunterVillage home) {
         this.home = home;
-        this.brain = new NeuralNet(sensors.size(), HunterBehaviours.values().length, 3, HunterBehaviours.values().length);
+        this.brain = new NeuralNet(sensors.size(), HunterBehaviourNames.values().length, 3, HunterBehaviourNames.values().length);
         this.brain.createNet();
+        this.location = new Vector2D(home.getLocation(), true);
+    }
+
+    @Override
+    public void update() {
+        if (velocity == null) velocity = new Vector2D(1, 0, true);
+
+        // Set the input layer to use our sensors
+        ArrayList<Double> inputs = new ArrayList<>();
+        for (Sensor sensor : sensors) {
+            sensor.bind(this);
+            inputs.add(sensor.getValue());
+        }
+
+        ArrayList<Double> outputs = brain.getOutputs(inputs);
+
+        behaviour.bind(this);
+        behaviour.setWeights(outputs);
+        this.velocity = behaviour.process();
+
+        super.update();
+    }
+
+    public double getDistanceToNearestCow() {
+        return world.getNearestEntityOfType(this, Cow.class).getLocation().dist(this.getLocation());
+    }
+
+    public Vector2D getNearestCowLocation() {
+        return world.getNearestEntityOfType(this, Cow.class).getLocation();
+    }
+
+    @Override
+    public void draw(Graphics2D graphics) {
+        graphics.setColor(Color.RED);
+        graphics.fillOval((int) getX(), (int) getY(), radius, radius);
+    }
+
+    public static void initialiseBehaviour() {
+        behaviour = new HunterBehaviour();
     }
 
     public static void initialiseSensors() {
@@ -66,7 +104,7 @@ public class HunterAgent extends Entity {
         sensors.add(new Sensor<HunterAgent>() {
             @Override
             public void setValue() {
-                value = new Double(entity.health);
+                value = (double) entity.health;
             }
         });
 
@@ -85,36 +123,16 @@ public class HunterAgent extends Entity {
             }
         });
     }
-
-    public static void initialiseBehaviour() {
-        behaviour = new HunterBehaviour();
-    }
-
-    @Override
-    public void update() {
-        // Set the input layer to use our sensors
-
-    }
-
-    public double getDistanceToNearestCow() {
-        return world.getNearestEntityOfType(this, Cow.class).getLocation().dist(this.getLocation());
-    }
-
-    @Override
-    public void draw(Graphics2D graphics) {
-        graphics.setColor(Color.RED);
-        graphics.fillOval((int) getX(), (int) getY(), radius, radius);
-    }
 }
 
 
 class HunterBehaviour extends WeightedBehaviour {
-    private HashMap<HunterBehaviours, SteeringBehaviour> hunterBehaviours;
+    private HashMap<HunterBehaviourNames, SteeringBehaviour> hunterBehaviours = new HashMap<>();
 
     public HunterBehaviour() {
-        hunterBehaviours.put(HunterBehaviours.RETURN_HOME, new SeekBehaviour(null));
-        hunterBehaviours.put(HunterBehaviours.CHASE_COW, new SeekBehaviour(null));
-        hunterBehaviours.put(HunterBehaviours.WANDER, new WanderingBehaviour());
+        hunterBehaviours.put(HunterBehaviourNames.RETURN_HOME, new SeekBehaviour(null));
+        hunterBehaviours.put(HunterBehaviourNames.CHASE_COW, new SeekBehaviour(null));
+        hunterBehaviours.put(HunterBehaviourNames.WANDER, new WanderingBehaviour());
 
         // For now weights of 1.0
         for (SteeringBehaviour behaviour : hunterBehaviours.values()) {
@@ -122,14 +140,29 @@ class HunterBehaviour extends WeightedBehaviour {
         }
     }
 
+    public void setWeights(ArrayList<Double> weights) {
+        if (weights.size() != hunterBehaviours.size())
+            throw new IllegalArgumentException("Weights size was not correct(" + weights.size() + ") should have been (" + hunterBehaviours.size() + ")");
+        int i = 0;
+        for (HunterBehaviourNames behaviour : HunterBehaviourNames.values()) {
+            behaviours.put(hunterBehaviours.get(behaviour), weights.get(i));
+        }
+    }
+
 
     @Override
     public void bind(Entity entity) {
+        if (!(entity instanceof HunterAgent))
+            throw new IllegalArgumentException("Entity must be of type: " + HunterAgent.class + " not of type: " + entity.getClass());
         super.bind(entity);
+
+        ((SeekBehaviour) hunterBehaviours.get(HunterBehaviourNames.RETURN_HOME)).setTarget(((HunterAgent) entity).home.getLocation());
+        ((SeekBehaviour) hunterBehaviours.get(HunterBehaviourNames.CHASE_COW)).setTarget(((HunterAgent) entity).getNearestCowLocation());
+
     }
 }
 
-enum HunterBehaviours {
+enum HunterBehaviourNames {
     RETURN_HOME,
     CHASE_COW,
     WANDER

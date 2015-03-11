@@ -17,7 +17,7 @@ public class NeuralNet {
     int numberOfLayers;
     // Number of neurons to place in each hidden layer
     int neuronsPerHiddenLayer;
-    ArrayList<NeuronLayer> layers;
+    ArrayList<NeuronLayer> layers = new ArrayList<>();
 
     public NeuralNet(int numberOfInputs, int numberOfOutputs, int numberOfLayers, int neuronsPerHiddenLayer) {
         this.numberOfInputs = numberOfInputs;
@@ -74,32 +74,45 @@ public class NeuralNet {
         return weights;
     }
 
-    public ArrayList<Double> getOutputs(ArrayList<Double> inputs) {
+    public ArrayList<Double> getOutputs(ArrayList<Double> initialInputs) {
         ArrayList<Double> outputs = new ArrayList<>();
+        ArrayList<Double> inputs = new ArrayList<>();
         int currentWeight;
 
-        if (inputs.size() != numberOfInputs) {
+        if (initialInputs.size() != numberOfInputs) {
             return new ArrayList<>();
         }
 
-        for (int i = 0; i < numberOfLayers + 1; i++) {
+        for (int i = 0; i < numberOfLayers; i++) {
+            // For every run but the first, set the old outputs as the inputs to the calculation
             if (i > 0) {
-                inputs = outputs;
+                inputs.clear();
+                inputs.addAll(outputs);
+            } else {
+                inputs.addAll(initialInputs);
             }
+            // clear the outputs ready for storage
             outputs.clear();
             currentWeight = 0;
 
-            for (int j = 0; j < layers.get(i).numberOfNeurons; ++j) {
-                double netinput = 0;
-                int numInputs = layers.get(i).neurons.get(j).numberOfInputs;
+//            System.out.println("Layer " + i + " started - input size: " + inputs.size());
+
+            for (Neuron neuron : layers.get(i).neurons) {
+                double totalInputs = 0;
+                int numInputs = neuron.numberOfInputs;
+//                System.out.println("neuron inputs: " + numInputs);
                 // For each weight - remembering the last is the weight of the node
-                for (int k = 0; k < numInputs - 1; k++) {
-                    netinput += layers.get(i).neurons.get(j).weights.get(k) * inputs.get(currentWeight++);
+                for (int k = 0; k < numInputs; k++) {
+//                    System.out.println("K: " + k + " W: " + currentWeight);
+                    totalInputs += neuron.weights.get(k);
+                    totalInputs *= inputs.get(currentWeight);
+                    currentWeight++;
                 }
 
                 // Add in the final weight for the whole neuron
-                netinput += layers.get(i).neurons.get(j).weights.get(numInputs - 1) * -1;
-                outputs.add(calculateSigmoid(netinput, 1));
+                totalInputs += neuron.weights.get(numInputs - 1) * -1;
+                outputs.add(calculateSigmoid(totalInputs, 1));
+                currentWeight = 0;
             }
         }
         return outputs;
@@ -140,7 +153,7 @@ class NeuronLayer {
     int numberOfNeurons;
 
     // The neurons in this layer
-    ArrayList<Neuron> neurons;
+    ArrayList<Neuron> neurons = new ArrayList<>();
 
     public NeuronLayer(int numberOfNeurons, int numberOfInputsPerNeuron) {
         this.numberOfNeurons = numberOfNeurons;
