@@ -1,8 +1,11 @@
 package uk.me.webpigeon.piers;
 
+import uk.me.webpigeon.piers.neural.NeuralNet;
+import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.World;
 import uk.me.webpigeon.world.WorldComponent;
 
+import javax.xml.stream.events.EntityDeclaration;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +13,7 @@ import java.util.ArrayList;
  * <p>
  * The object that represents the village that the hunters live in
  */
-public class HunterVillage implements WorldComponent {
+public class HunterVillage extends Entity {
 
     // How much food is available for the hunters to eat
     private int foodStocks;
@@ -21,8 +24,7 @@ public class HunterVillage implements WorldComponent {
     private ArrayList<HunterAgent> hunters;
 
 
-    @Override
-    public void update(World world, int delta) {
-
+    private void createNewHunter() {
+        HunterAgent agent = new HunterAgent(this);
     }
 }
