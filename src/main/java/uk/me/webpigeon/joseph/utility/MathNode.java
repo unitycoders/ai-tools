@@ -6,12 +6,12 @@ import uk.me.webpigeon.joseph.utility.trees.TreeNode;
 
 public class MathNode implements TreeNode<Double> {
 	private char opr;
-	private AbstractTreeNode left;
-	private AbstractTreeNode right;
+	private TreeNode<Double> left;
+	private TreeNode<Double> right;
 	
-	public MathNode(char opr, AbstractTreeNode left, AbstractTreeNode right){
+	public MathNode(char opr, TreeNode<Double> sub, TreeNode<Double> right){
 		this.opr = opr;
-		this.left = left;
+		this.left = sub;
 		this.right = right;	
 	}
 

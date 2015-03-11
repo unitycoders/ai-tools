@@ -58,7 +58,7 @@ public class Cow extends SteeringEntity {
 			action.notifyStarted(this);
 		}
 		
-		if (action != null) {
+		if (action != null) {			
 			action.executeStep(this, world);
 		}
 	}
@@ -100,4 +100,8 @@ public class Cow extends SteeringEntity {
 		saturation = Math.min(maxSat, saturation+health);
 	}
 	
+	
+	public String toString() {
+		return "cow["+action+"]";
+	}
 }

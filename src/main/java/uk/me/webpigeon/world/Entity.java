@@ -99,5 +99,9 @@ public abstract class Entity {
 	public int getHealth() {
 		return health;
 	}
+	
+	public int getZIndex() {
+		return 0;
+	}
 
 }

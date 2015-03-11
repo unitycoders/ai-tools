@@ -21,7 +21,7 @@ public class Action {
 		return true;
 	}
 
-	public double getScore() {
+	public double getScore() {		
 		return utilCalc.eval();
 	}
 

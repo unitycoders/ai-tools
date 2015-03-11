@@ -31,6 +31,7 @@ public class Eat extends Action {
 			dest = plant.getLocation();
 		}
 		
+		System.out.println(dest);
 		if (dest.dist(entity.getLocation()) > EAT_RANGE) {
 			behaviour.setTarget(dest);
 			behaviour.bind(entity);
@@ -45,6 +46,10 @@ public class Eat extends Action {
 			
 			plant = null;
 			dest = null;
+		}
+		
+		if (plant != null && plant.isDead()) {
+			plant = null;
 		}
 		
 		// find the closest plant

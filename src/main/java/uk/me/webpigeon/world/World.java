@@ -174,7 +174,7 @@ public class World extends JComponent implements Runnable {
 
     public void draw(Graphics2D g2) {
     	List<Entity> renderList = new ArrayList<>(entities);
-    	//List<Entity> entities = Collections.sort(renderList);
+    	Collections.sort(renderList, new RenderOrder());
     	
         for (Entity entity : renderList) {
             entity.draw(g2);
