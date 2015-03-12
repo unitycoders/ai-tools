@@ -156,5 +156,9 @@ public abstract class Entity {
 		
 		return val / maxVal;
 	}
+
+	public void setHealth(int newHealth) {
+		health = newHealth;
+	}
 	
 }
