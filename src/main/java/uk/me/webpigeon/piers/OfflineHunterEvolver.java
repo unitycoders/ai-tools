@@ -6,7 +6,9 @@ import uk.me.webpigeon.piers.neural.NeuralNet;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.DoubleWorld;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -35,7 +37,7 @@ public final class OfflineHunterEvolver {
     HunterGenome bestInTotal;
 
 
-    private static int POPULATION_SIZE = 500;
+    private static int POPULATION_SIZE = 50;
     private static final float CROSSOVER_CHANCE = 0.66f;
     private static final float MUTATION_CHANCE = 0.1f;
 
@@ -94,7 +96,8 @@ public final class OfflineHunterEvolver {
 
         population.clear();
         population.addAll(next);
-        if (bestInTotal == null || bestInTotal.getFitness() < bestThisGeneration.getFitness()) bestInTotal = bestThisGeneration;
+        if (bestInTotal == null || bestInTotal.getFitness() < bestThisGeneration.getFitness())
+            bestInTotal = bestThisGeneration;
 
 
         System.out.println("Best Overall: " + bestInTotal.getFitness() +
@@ -154,6 +157,20 @@ public final class OfflineHunterEvolver {
         return (double) village.getTotalFoodStocksEver();
     }
 
+    private void saveBestGenome() throws IOException {
+        Date date = new Date();
+        String fileName =
+                "src/main/resources/hunters/" +
+                        date.getYear() + date.getMonth() + date.getDate() + date.getHours() + date.getMinutes() +
+                                ".ser";
+        FileOutputStream fileOut = new FileOutputStream(fileName);
+        ObjectOutputStream oos = new ObjectOutputStream(fileOut);
+        oos.writeObject(bestInTotal);
+        oos.close();
+        fileOut.close();
+        System.out.println("Saved to " + fileName);
+    }
+
     public static void main(String[] args) {
 
         // Important to do this
@@ -166,10 +183,16 @@ public final class OfflineHunterEvolver {
             evolver.runSingleGeneration();
         }
 
+        try {
+            evolver.saveBestGenome();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 
-class HunterGenome {
+class HunterGenome implements Serializable {
     // Stores essentially just the weights
     ArrayList<Double> weights;
     private static Random random = new Random();
@@ -177,7 +200,7 @@ class HunterGenome {
 
     private Double fitness = null;
 
-    private OfflineHunterEvolver evolver;
+    private transient OfflineHunterEvolver evolver;
 
     private HunterGenome() {
         weights = new ArrayList<>();
