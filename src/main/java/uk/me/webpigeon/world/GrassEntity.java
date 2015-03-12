@@ -67,4 +67,8 @@ public class GrassEntity extends Entity {
 	public int getZIndex() {
 		return -100;
 	}
+
+	public int getAge() {
+		return age;
+	}
 }

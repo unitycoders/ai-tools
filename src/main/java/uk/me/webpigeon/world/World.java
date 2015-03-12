@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +19,7 @@ import uk.me.webpigeon.util.Vector2D;
  * Created by Piers on 03/03/2015.
  */
 public class World extends JComponent implements Runnable {
-    private static final Boolean DEBUG_DRAW = false;
+    private static final Boolean DEBUG_DRAW = true;
     private List<Entity> entities;
     private List<WorldComponent> components;
     
@@ -138,7 +139,7 @@ public class World extends JComponent implements Runnable {
     public ArrayList<Entity> getNearEntities(Entity source, double radius, Class type){
         ArrayList<Entity> nearEntities = new ArrayList<>();
         nearEntities.addAll(entities.stream()
-                .filter(s -> s.getClass().isAssignableFrom(type))
+                .filter(s -> type.isAssignableFrom(s.getClass()))
                 .filter(entity -> entity.getLocation().dist(source.getLocation()) < radius)
                 .collect(Collectors.toList()));
 
@@ -189,5 +190,9 @@ public class World extends JComponent implements Runnable {
     	int y = (int)(p.getY() * scaleY);
     	return new Point(x, y);
     }
+
+	public Collection<Entity> getEntities() {
+		return Collections.unmodifiableList(entities);
+	}
 
 }
