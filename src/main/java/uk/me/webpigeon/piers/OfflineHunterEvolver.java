@@ -27,6 +27,8 @@ public final class OfflineHunterEvolver {
     ArrayList<HunterGenome> population = new ArrayList<>();
     ArrayList<HunterGenome> next = new ArrayList<>();
     private static int POPULATION_SIZE = 50;
+    private static float CROSSOVER_CHANCE = 0.66f;
+    private static float MUTATION_CHANCE = 0.1f;
 
     // Maximum number of ticks to run the game for
     private int maxTicks = 1000;
@@ -66,6 +68,16 @@ public final class OfflineHunterEvolver {
 
         while (next.size() < POPULATION_SIZE) {
             // add a new Genome
+            float rand = random.nextFloat();
+            if (rand < CROSSOVER_CHANCE) {
+                population.add(new HunterGenome(tournament(5), tournament(5)));
+                continue;
+            }
+            if (rand < CROSSOVER_CHANCE + MUTATION_CHANCE) {
+                population.add(new HunterGenome(tournament(5)));
+                continue;
+            }
+            population.add(tournament(5).getClone());
         }
 
         population.clear();
@@ -77,7 +89,7 @@ public final class OfflineHunterEvolver {
 
         for (int i = 1; i < size; i++) {
             HunterGenome choice = getRandomFromPopulation();
-
+            if (choice.getFitness() > best.getFitness()) best = choice;
         }
 
         return best;
@@ -147,6 +159,8 @@ class HunterGenome {
     public HunterGenome getClone() {
         HunterGenome clone = new HunterGenome();
         clone.weights.addAll(this.weights);
+        // This is reasonable - will cut down on calculations
+        clone.fitness = this.fitness;
         return clone;
     }
 
