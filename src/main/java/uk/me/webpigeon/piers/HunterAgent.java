@@ -11,6 +11,7 @@ import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -84,7 +85,7 @@ public class HunterAgent extends Entity {
                 // kill cow
                 foodCarrying += 50;
                 //TODO Kill the cow
-                System.out.println("Cow killed");
+//                System.out.println("Cow killed");
             }
         }
 
@@ -94,7 +95,7 @@ public class HunterAgent extends Entity {
             if (foodCarrying > 0) {
                 home.addFood(foodCarrying);
                 foodCarrying = 0;
-                System.out.println("Food returned");
+//                System.out.println("Food returned");
             }
 
             int toEat = 100 - hungerLevel;
@@ -123,11 +124,15 @@ public class HunterAgent extends Entity {
     }
 
     public double getDistanceToNearestCow() {
-        return world.getNearestEntityOfType(this, Cow.class).getLocation().dist(this.getLocation());
+        Entity cow = world.getNearestEntityOfType(this, Cow.class);
+        if (cow != null) return cow.getLocation().dist(this.getLocation());
+        return Double.MAX_VALUE; // No cows
     }
 
     public Vector2D getNearestCowLocation() {
-        return world.getNearestEntityOfType(this, Cow.class).getLocation();
+        Entity cow = world.getNearestEntityOfType(this, Cow.class);
+        if (cow != null) return cow.getLocation();
+        return null;
     }
 
     @Override

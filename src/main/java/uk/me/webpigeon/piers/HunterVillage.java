@@ -21,6 +21,7 @@ public class HunterVillage extends Entity {
     public static final int HUNTER_COST = 200;
     // How much food is available for the hunters to eat
     private int foodStocks = 200;
+    private int totalFoodStocksEver = foodStocks;
 
     // How many people do we have
     private int currentPopulation;
@@ -78,6 +79,7 @@ public class HunterVillage extends Entity {
 
     public void addFood(int food) {
         foodStocks += food;
+        totalFoodStocksEver += food;
     }
 
     // Gets as much food as possible from the village
@@ -87,5 +89,9 @@ public class HunterVillage extends Entity {
         foodGiven = foodStocks;
         foodStocks -= foodGiven;
         return foodGiven;
+    }
+
+    public int getTotalFoodStocksEver() {
+        return totalFoodStocksEver;
     }
 }
