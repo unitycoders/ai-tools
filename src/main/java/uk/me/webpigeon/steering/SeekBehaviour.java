@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
-public class SeekBehaviour implements SteeringBehaviour {
+public class SeekBehaviour implements TargetedBehavour {
     private Vector2D targetPos;
     private Entity entity;
 
