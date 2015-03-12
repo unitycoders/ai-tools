@@ -132,6 +132,7 @@ public class HunterAgent extends Entity {
     public Vector2D getNearestCowLocation() {
         Entity cow = world.getNearestEntityOfType(this, Cow.class);
         if (cow != null) return cow.getLocation();
+        // This is causing problems
         return null;
     }
 

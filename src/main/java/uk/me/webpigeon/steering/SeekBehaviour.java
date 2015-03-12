@@ -15,6 +15,7 @@ public class SeekBehaviour implements SteeringBehaviour {
     }
 
     public Vector2D process() {
+        if (targetPos == null) return new Vector2D(0, 0, true);
         Vector2D currentPos = entity.getLocation();
 
         Vector2D targetDirection = Vector2D.subtract(targetPos, currentPos);
