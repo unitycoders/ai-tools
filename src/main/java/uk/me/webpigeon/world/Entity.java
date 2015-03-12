@@ -3,8 +3,11 @@ package uk.me.webpigeon.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
+import uk.me.webpigeon.joseph.cow.Property;
 import uk.me.webpigeon.util.Vector2D;
 
 /**
@@ -17,6 +20,8 @@ public abstract class Entity {
 	// The GridWorld in all its glory
 	protected World world;
 	protected List<Vector2D> previousLocations;
+	protected Map<Property, Double> properties;
+	protected Map<Property, Double> propertyLimits;
 
 	// Location of the entity
 	protected Vector2D location;
@@ -31,6 +36,8 @@ public abstract class Entity {
 		this.velocity = new Vector2D();
 		this.health = 100;
 		this.previousLocations = new ArrayList<>();
+		this.properties = new EnumMap<>(Property.class);
+		this.propertyLimits = new EnumMap<>(Property.class);
 	}
 
 	public void update() {
@@ -103,5 +110,55 @@ public abstract class Entity {
 	public int getZIndex() {
 		return 0;
 	}
+	
+	public Double setValue(Property prop, Double newValue) {
+		double maxVal = getLimit(prop, Double.MAX_VALUE);
+		double storeVal = Math.min(maxVal, newValue);
+		return properties.put(prop, storeVal);
+	}
+	
+	public Double getValue(Property prop) {
+		return properties.get(prop);
+	}
+	
+	public double getValue(Property prop, double defaultValue) {
+		Double val = getValue(prop);
+		if (val == null) {
+			assert getLimit(prop) == null || getLimit(prop) > defaultValue;
+			return defaultValue;
+		}
+		return val;
+	}
+	
+	public Double setLimit(Property prop, Double newValue) {
+		return propertyLimits.put(prop, newValue);
+	}
+	
+	public Double getLimit(Property prop) {
+		return propertyLimits.get(prop);
+	}
+	
+	public double getLimit(Property prop, double defaultVal) {
+		Double limit = getLimit(prop);
+		if (limit == null) {
+			return defaultVal;
+		}
+		return limit;
+	}
 
+	public double getNormProp(Property prop) {
+		double maxVal = getLimit(prop, Double.MAX_VALUE);
+		double val = getValue(prop, Double.MAX_VALUE);
+		
+		if (maxVal == 0) {
+			return 0.0;
+		}
+		
+		return val / maxVal;
+	}
+
+	public void setHealth(int newHealth) {
+		health = newHealth;
+	}
+	
 }
