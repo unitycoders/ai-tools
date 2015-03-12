@@ -1,5 +1,7 @@
 package uk.me.webpigeon.piers;
 
+import com.sun.org.apache.bcel.internal.generic.POP;
+import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.piers.neural.NeuralNet;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.DoubleWorld;
@@ -23,6 +25,7 @@ public final class OfflineHunterEvolver {
 
     // population of genomes
     ArrayList<HunterGenome> population = new ArrayList<>();
+    ArrayList<HunterGenome> next = new ArrayList<>();
     private static int POPULATION_SIZE = 50;
 
     // Maximum number of ticks to run the game for
@@ -32,12 +35,13 @@ public final class OfflineHunterEvolver {
     private NeuralNet brain;
     private int numberOfWeights;
 
+    private Random random = new Random();
+
     /**
      * Forbid other parts of the program from using this class
      */
     private OfflineHunterEvolver() {
-        world = new DoubleWorld(800, 800);
-        village = new HunterVillage(new Vector2D(400, 400));
+
 
         brain = new HunterAgent(village).getBrain();
         brain.createNet();
@@ -48,6 +52,8 @@ public final class OfflineHunterEvolver {
     }
 
     private void createInitialPopulation() {
+        population = new ArrayList<>(POPULATION_SIZE);
+        next = new ArrayList<>(POPULATION_SIZE);
         for (int i = 0; i < POPULATION_SIZE; i++) {
             population.add(new HunterGenome(numberOfWeights));
         }
@@ -56,6 +62,29 @@ public final class OfflineHunterEvolver {
     // Runs a generation of the GA - causing the population to shift to the new one
     public void runSingleGeneration() {
 
+        next.clear();
+
+        while (next.size() < POPULATION_SIZE) {
+            // add a new Genome
+        }
+
+        population.clear();
+        population.addAll(next);
+    }
+
+    private HunterGenome tournament(int size) {
+        HunterGenome best = getRandomFromPopulation();
+
+        for (int i = 1; i < size; i++) {
+            HunterGenome choice = getRandomFromPopulation();
+
+        }
+
+        return best;
+    }
+
+    private HunterGenome getRandomFromPopulation() {
+        return population.get(random.nextInt(population.size()));
     }
 
     public static void main(String[] args) {
@@ -74,6 +103,8 @@ class HunterGenome {
     ArrayList<Double> weights;
     private static Random random = new Random();
     private static double INIDIVIDUAL_BIT_MUTATION_CHANCE = 0.05;
+
+    private Double fitness = null;
 
     private HunterGenome() {
         weights = new ArrayList<>();
@@ -117,6 +148,22 @@ class HunterGenome {
         HunterGenome clone = new HunterGenome();
         clone.weights.addAll(this.weights);
         return clone;
+    }
+
+    public double getFitness() {
+        if (fitness == null) calculateFitness();
+        return fitness;
+    }
+
+    private void calculateFitness() {
+        // Do the heavy work calculating fitness
+
+        DoubleWorld world = new DoubleWorld(800, 800);
+        HunterVillage village = new HunterVillage(new Vector2D(400, 400));
+        CowPopulationManager cows = new CowPopulationManager(10);
+        world.addComponent(cows);
+        world.addEntity(village);
+
     }
 
     private double rand() {
