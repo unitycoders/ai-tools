@@ -8,6 +8,7 @@ public class CowPopulationStats extends AbstractTreeNode {
 	private String stat;
 	
 	public CowPopulationStats(String stat, CowPopulationManager pop) {
+		this.stat = stat;
 		this.pop = pop;
 	}
 
@@ -20,7 +21,7 @@ public class CowPopulationStats extends AbstractTreeNode {
 		if ("current".equals(stat)) {
 			return (double)pop.getPop();
 		}
-		
+
 		return 0.0;
 	}
 

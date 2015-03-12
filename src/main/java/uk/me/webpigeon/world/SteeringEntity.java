@@ -9,7 +9,7 @@ import uk.me.webpigeon.util.Vector2D;
 
 public class SteeringEntity extends Entity {
 	private static final Double VECTOR_SMOOTHING = 0.2;
-	private static final Integer SIZE = 30;
+	private static final Integer SIZE = 20;
 	private SteeringBehaviour behaviour;
 	private ArrayList<Vector2D> previousLocations = new ArrayList<>();
 
@@ -39,6 +39,9 @@ public class SteeringEntity extends Entity {
 	public void drawLocal(Graphics2D graphics) {
 		graphics.setColor(Color.WHITE);
 		graphics.fillRect(-SIZE, -(int) (SIZE / 2.0), SIZE * 2, SIZE);
+		
+		graphics.setColor(Color.black);
+		graphics.fillRect( -SIZE + SIZE * 2, -(int) (SIZE / 2.0) + (SIZE / 4), SIZE/4, SIZE/2);
 	}
 
 	public void debugDraw(Graphics2D graphics) {

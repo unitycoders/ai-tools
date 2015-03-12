@@ -21,6 +21,7 @@ public class MakeBabbyCow extends Action {
 		if (!cowAdded) {
 			Cow cow = (Cow)entity;
 			population.addCow(cow.getGenome());
+			cowAdded = true;
 		}
 	}
 

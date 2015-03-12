@@ -85,7 +85,6 @@ public class CowPopulationManager implements WorldComponent {
 		double[] newGenome = new double[genome.length];
 		for (int i=0; i<genome.length; i++) {
 			newGenome[i] = genome[i] + r.nextGaussian() * epsilon;
-			System.out.println(r.nextGaussian() * epsilon);
 		}
 		
 		return newGenome;
