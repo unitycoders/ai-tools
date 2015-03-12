@@ -26,7 +26,16 @@ public final class OfflineHunterEvolver {
     // population of genomes
     ArrayList<HunterGenome> population = new ArrayList<>();
     ArrayList<HunterGenome> next = new ArrayList<>();
-    private static int POPULATION_SIZE = 50;
+
+    // Best genome seen this generation
+    HunterGenome bestThisGeneration;
+    // Worst genome seen this generation
+    HunterGenome worstThisGeneration;
+    // Best genome seen in total
+    HunterGenome bestInTotal;
+
+
+    private static int POPULATION_SIZE = 500;
     private static final float CROSSOVER_CHANCE = 0.66f;
     private static final float MUTATION_CHANCE = 0.1f;
 
@@ -65,27 +74,35 @@ public final class OfflineHunterEvolver {
     public void runSingleGeneration() {
 
         next.clear();
+        bestThisGeneration = null;
+        worstThisGeneration = null;
 
         while (next.size() < POPULATION_SIZE) {
             // add a new Genome
             float rand = random.nextFloat();
             if (rand < CROSSOVER_CHANCE) {
-                population.add(new HunterGenome(tournament(5), tournament(5)));
+                next.add(new HunterGenome(tournament(5), tournament(5)));
                 continue;
             }
             if (rand < CROSSOVER_CHANCE + MUTATION_CHANCE) {
-                population.add(new HunterGenome(tournament(5)));
+                next.add(new HunterGenome(tournament(5)));
                 continue;
             }
-            population.add(tournament(5).getClone());
+            next.add(tournament(5).getClone());
+//            System.out.println(next.size());
         }
 
         population.clear();
         population.addAll(next);
+        if (bestInTotal == null || bestInTotal.getFitness() < bestThisGeneration.getFitness()) bestInTotal = bestThisGeneration;
 
-        System.out.println(getBestFromPopulation());
+
+        System.out.println("Best Overall: " + bestInTotal.getFitness() +
+                " Best This Generation:" + bestThisGeneration.getFitness()
+                + " Worst this Generation: " + worstThisGeneration.getFitness());
     }
 
+    // Potentially quite expensive operation
     private HunterGenome getBestFromPopulation() {
         HunterGenome best = population.get(0);
         for (int i = 1; i < population.size(); i++) {
@@ -94,13 +111,18 @@ public final class OfflineHunterEvolver {
         return best;
     }
 
+    // Tournament selection - prevents need to calculate fitness for all candidates
     private HunterGenome tournament(int size) {
         HunterGenome best = getRandomFromPopulation();
-
+        if (worstThisGeneration == null) worstThisGeneration = best;
         for (int i = 1; i < size; i++) {
             HunterGenome choice = getRandomFromPopulation();
             if (choice.getFitness() > best.getFitness()) best = choice;
+            if (choice.getFitness() < worstThisGeneration.getFitness()) worstThisGeneration = choice;
         }
+        // Set the best seen so far
+        if (bestThisGeneration == null || bestThisGeneration.getFitness() < best.getFitness())
+            bestThisGeneration = best;
 
         return best;
     }
@@ -140,7 +162,9 @@ public final class OfflineHunterEvolver {
 
         OfflineHunterEvolver evolver = new OfflineHunterEvolver();
 
-        evolver.runSingleGeneration();
+        for (int i = 0; i < 10; i++) {
+            evolver.runSingleGeneration();
+        }
 
     }
 }
