@@ -20,7 +20,7 @@ public class HunterVillage extends Entity {
 
     public static final int HUNTER_COST = 200;
     // How much food is available for the hunters to eat
-    private int foodStocks = 50;
+    private int foodStocks = 200;
 
     // How many people do we have
     private int currentPopulation;
@@ -58,7 +58,15 @@ public class HunterVillage extends Entity {
         }
 
         currentPopulation = hunters.size();
-        if (foodStocks > HUNTER_COST && currentPopulation < maxPopulation) createNewHunter();
+        if (foodStocks >= HUNTER_COST && currentPopulation < maxPopulation) createNewHunter();
+    }
+
+    public NeuralNet getHunterBrain() {
+        return hunterBrain;
+    }
+
+    public void setHunterBrain(NeuralNet hunterBrain) {
+        this.hunterBrain = hunterBrain;
     }
 
     private void createNewHunter() {
@@ -70,5 +78,14 @@ public class HunterVillage extends Entity {
 
     public void addFood(int food) {
         foodStocks += food;
+    }
+
+    // Gets as much food as possible from the village
+    public int getFood(int wantedFood) {
+        int foodGiven;
+        if (foodStocks > wantedFood) foodGiven = wantedFood;
+        foodGiven = foodStocks;
+        foodStocks -= foodGiven;
+        return foodGiven;
     }
 }
