@@ -33,6 +33,8 @@ public class HunterAgent extends Entity {
     private static int maxTicks = 1_000;
     private int currentTicks;
 
+    private int foodCarrying;
+
     private static ArrayList<Sensor<HunterAgent>> sensors;
     private static HunterBehaviour behaviour;
 
@@ -71,6 +73,27 @@ public class HunterAgent extends Entity {
     public void update() {
         if (velocity == null) velocity = new Vector2D(1, 0, true);
         currentTicks++;
+
+        // Hunt cow if we are near it
+        Cow cow = (Cow) world.getNearestEntityOfType(this, Cow.class);
+        if (cow != null) {
+            if (cow.getLocation().dist(this.getLocation()) <= radius) {
+                // kill cow
+                foodCarrying += 50;
+                //TODO Kill the cow
+                System.out.println("Cow killed");
+            }
+        }
+
+        //Add food carrying if near home
+        if (this.getLocation().dist(home.getLocation()) <= 25) {
+            // Put food into home
+            if (foodCarrying > 0) {
+                home.addFood(foodCarrying);
+                foodCarrying = 0;
+                System.out.println("Food returned");
+            }
+        }
 
 
         // think about hunger and health
@@ -138,6 +161,13 @@ public class HunterAgent extends Entity {
             @Override
             public void setValue() {
                 value = entity.getDistanceToNearestCow();
+            }
+        });
+
+        sensors.add(new Sensor<HunterAgent>() {
+            @Override
+            public void setValue() {
+                value = (double) entity.foodCarrying;
             }
         });
     }

@@ -68,4 +68,8 @@ public class HunterVillage extends Entity {
         world.addEntity(agent);
         hunters.add(agent);
     }
+
+    public void addFood(int food) {
+        foodStocks += food;
+    }
 }
