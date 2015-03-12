@@ -13,13 +13,14 @@ import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 
+import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.util.Vector2D;
 
 /**
  * Created by Piers on 03/03/2015.
  */
 public class World extends JComponent implements Runnable {
-    private static final Boolean DEBUG_DRAW = true;
+    public static Boolean DEBUG_DRAW = false;
     private List<Entity> entities;
     private List<WorldComponent> components;
     
@@ -126,7 +127,12 @@ public class World extends JComponent implements Runnable {
      * @return The list of entities that are close enough
      */
     public ArrayList<Entity> getNearEntities(Entity source, double radius) {
-        return getNearEntities(source, radius, Entity.class);
+    	Vector2D srcLoc = source.getLocation();
+    	List<Entity> closeBy = entities.stream()
+    			.filter(s -> srcLoc.dist(s.location) <= radius)
+    			.collect(Collectors.toList());
+    	
+        return new ArrayList<Entity>(closeBy);
     }
 
     /**
@@ -136,14 +142,10 @@ public class World extends JComponent implements Runnable {
      * @param type The class of the entity to search for
      * @return The list of entities that are close enough of the correct class
      */
-    public ArrayList<Entity> getNearEntities(Entity source, double radius, Class type){
-        ArrayList<Entity> nearEntities = new ArrayList<>();
-        nearEntities.addAll(entities.stream()
-                .filter(s -> type.isAssignableFrom(s.getClass()))
-                .filter(entity -> entity.getLocation().dist(source.getLocation()) < radius)
-                .collect(Collectors.toList()));
-
-        return nearEntities;
+    public ArrayList<Entity> getNearEntities(Entity source, double radius, Tag type){
+    	ArrayList<Entity> closeBy = getNearEntities(source, radius);
+    	List<Entity> filtered = closeBy.stream().filter(e -> e.hasTag(type)).collect(Collectors.toList());
+    	return new ArrayList<Entity>(filtered);
     }
 
     /**
@@ -152,13 +154,13 @@ public class World extends JComponent implements Runnable {
      * @param type The clas of the entity to search for
      * @return The entity that is the nearest of that type
      */
-    public Entity getNearestEntityOfType(Entity source, Class type) {
+    public Entity getNearestEntityOfType(Entity source, Tag type) {
         return getNearestEntityOfType(source.location, type);
     }
     
-    public Entity getNearestEntityOfType(Vector2D source, Class type) {
-        List<Entity> entityList = entities.stream().filter(s -> type.isAssignableFrom(s.getClass()))
-                .sorted((s1, s2) -> (int) (source.dist(s1.getLocation()) - source.dist(s2.getLocation())))
+    public Entity getNearestEntityOfType(Vector2D source, Tag type) {    	
+        List<Entity> entityList = entities.stream().filter(s -> s.hasTag(type))
+                .sorted( (s1, s2) -> Double.compare(source.dist(s1.getLocation()), source.dist(s2.getLocation())))
                 .collect(Collectors.toList());
         
         if (entityList.isEmpty()) {
@@ -166,6 +168,15 @@ public class World extends JComponent implements Runnable {
         }
         
         return entityList.get(0);
+    }
+    
+    @Deprecated
+    public Entity getNearestEntityOfType(Entity source, Class<?> type) {   
+    	if (type.equals(Cow.class)) {
+    		return getNearestEntityOfType(source, Tag.COW);
+    	}
+    	
+    	return null;
     }
 
     protected void paintComponent(Graphics g) {

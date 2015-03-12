@@ -17,7 +17,7 @@ public class MouseListener extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		Point worldPoint = world.project(e.getPoint());
 		Vector2D worldVec = new Vector2D(worldPoint.x, worldPoint.y);
-		Entity entity = world.getNearestEntityOfType(worldVec, Entity.class);
+		Entity entity = world.getNearestEntityOfType(worldVec, Tag.AGENT);
 		System.out.println("CLICKY CLICKY "+entity);
 	}
 

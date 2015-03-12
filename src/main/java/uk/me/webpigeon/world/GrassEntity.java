@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.EnumSet;
 
 import javax.imageio.ImageIO;
 
@@ -29,6 +30,7 @@ public class GrassEntity extends Entity {
 	private int seedCooldown;
 
 	public GrassEntity(Vector2D location) {
+		super(location.x, location.y, EnumSet.of(Tag.GRASS));
 		this.age = 0;
 		this.location = location;
 	}

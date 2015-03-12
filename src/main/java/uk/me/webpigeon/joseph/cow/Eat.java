@@ -7,6 +7,7 @@ import uk.me.webpigeon.steering.SeekBehaviour;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.GrassEntity;
+import uk.me.webpigeon.world.Tag;
 import uk.me.webpigeon.world.World;
 
 public class Eat extends Action {
@@ -23,7 +24,7 @@ public class Eat extends Action {
 	@Override
 	public void executeStep(Entity entity, World world) {
 		if (plant == null) {
-			plant = world.getNearestEntityOfType(entity, GrassEntity.class);
+			plant = world.getNearestEntityOfType(entity, Tag.GRASS);
 			if (plant == null) {
 				//ah, there are no more plants, I'm a sad cow :(
 				return;
