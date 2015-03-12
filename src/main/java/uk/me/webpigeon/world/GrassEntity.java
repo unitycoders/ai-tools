@@ -60,8 +60,6 @@ public class GrassEntity extends Entity {
 	}
 	
 	public void debugDraw(Graphics2D graphics) {
-		System.out.println(age / GRASS_MAX_AGE);
-		
 		graphics.setColor(new Color(0.0f, 1 - (age / GRASS_MAX_AGE), 0.0f));
 		graphics.fillRect((int)(location.x - 10), (int)(location.y - 10), 20, 20);
 	}
