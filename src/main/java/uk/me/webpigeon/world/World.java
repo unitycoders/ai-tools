@@ -21,9 +21,9 @@ public class World extends JComponent implements Runnable {
     private static final Boolean DEBUG_DRAW = false;
     private List<Entity> entities;
     private List<WorldComponent> components;
-    
+
     private List<Entity> addList;
-    
+
     protected double scaleX;
     protected double scaleY;
 
@@ -73,53 +73,56 @@ public class World extends JComponent implements Runnable {
 
     /**
      * Adds a new WorldComponent to this world
+     *
      * @param component The WorldComponent to be added
      */
     public void addComponent(WorldComponent component) {
-    	components.add(component);
+        components.add(component);
     }
 
     /**
      * Adds the entity to the world and binds the world to the entity
+     *
      * @param entity The entity to be added to this world
      */
     public void addEntity(Entity entity) {
         addList.add(entity);
     }
-    
+
     public void removeEntity(Entity entity) {
-    	entity.health = 0;
+        entity.health = 0;
     }
 
     public void update(long timeOfLastUpdate) {
 
-    	Iterator<Entity> entItr = entities.iterator();
-    	while(entItr.hasNext()) {
-    		Entity entity = entItr.next();
-    		entity.update();
-    		
-    		//reap dead entities
-    		if (entity.isDead()) {
-    			entItr.remove();
-    		}
-    	}
-    	
-    	for (WorldComponent component : components) {
-    		component.update(this, 0);
-    	}
-    	
-    	Iterator<Entity> addItr = addList.iterator();
-    	while(addItr.hasNext()){
-    		Entity entity = addItr.next();
-    		entities.add(entity);
+        Iterator<Entity> entItr = entities.iterator();
+        while (entItr.hasNext()) {
+            Entity entity = entItr.next();
+            entity.update();
+
+            //reap dead entities
+            if (entity.isDead()) {
+                entItr.remove();
+            }
+        }
+
+        for (WorldComponent component : components) {
+            component.update(this, 0);
+        }
+
+        Iterator<Entity> addItr = addList.iterator();
+        while (addItr.hasNext()) {
+            Entity entity = addItr.next();
+            entities.add(entity);
             entity.bind(this);
             addItr.remove();
-    	}
+        }
 
     }
 
     /**
      * Gets the entities that are within the provided radius to the provided source entity
+     *
      * @param source The start point for the check
      * @param radius The search radius to use
      * @return The list of entities that are close enough
@@ -130,12 +133,13 @@ public class World extends JComponent implements Runnable {
 
     /**
      * Gets the entities that are within the provided radius to the provided source entity and are of a certain class
+     *
      * @param source The start point for the check
      * @param radius The search radius to use
-     * @param type The class of the entity to search for
+     * @param type   The class of the entity to search for
      * @return The list of entities that are close enough of the correct class
      */
-    public ArrayList<Entity> getNearEntities(Entity source, double radius, Class type){
+    public ArrayList<Entity> getNearEntities(Entity source, double radius, Class type) {
         ArrayList<Entity> nearEntities = new ArrayList<>();
         nearEntities.addAll(entities.stream()
                 .filter(s -> s.getClass().isAssignableFrom(type))
@@ -147,24 +151,28 @@ public class World extends JComponent implements Runnable {
 
     /**
      * Gets the nearest entity of a given type to the provided source
+     *
      * @param source The start point for the check
-     * @param type The clas of the entity to search for
+     * @param type   The clas of the entity to search for
      * @return The entity that is the nearest of that type
      */
     public Entity getNearestEntityOfType(Entity source, Class type) {
         return getNearestEntityOfType(source.location, type);
     }
-    
+
     public Entity getNearestEntityOfType(Vector2D source, Class type) {
-        List<Entity> entityList = entities.stream().filter(s -> type.isAssignableFrom(s.getClass()))
-                .sorted((s1, s2) -> (int) (source.dist(s1.getLocation()) - source.dist(s2.getLocation())))
-                .collect(Collectors.toList());
-        
-        if (entityList.isEmpty()) {
-        	return null;
+        if (entities.isEmpty()) {
+            return null;
         }
-        
-        return entityList.get(0);
+        Entity nearest = null;
+        for (int i = 1; i < entities.size(); i++) {
+            Entity temp = entities.get(i);
+            if (temp.getClass().isAssignableFrom(type)) {
+                if (nearest == null || nearest.getLocation().dist(source) > temp.getLocation().dist(source))
+                    nearest = temp;
+            }
+        }
+        return nearest;
     }
 
     protected void paintComponent(Graphics g) {
@@ -173,9 +181,9 @@ public class World extends JComponent implements Runnable {
     }
 
     public void draw(Graphics2D g2) {
-    	List<Entity> renderList = new ArrayList<>(entities);
-    	Collections.sort(renderList, new RenderOrder());
-    	
+        List<Entity> renderList = new ArrayList<>(entities);
+        Collections.sort(renderList, new RenderOrder());
+
         for (Entity entity : renderList) {
             entity.draw(g2);
             if (DEBUG_DRAW) {
@@ -183,11 +191,11 @@ public class World extends JComponent implements Runnable {
             }
         }
     }
-    
+
     public Point project(Point2D p) {
-    	int x = (int)(p.getX() * scaleX);
-    	int y = (int)(p.getY() * scaleY);
-    	return new Point(x, y);
+        int x = (int) (p.getX() * scaleX);
+        int y = (int) (p.getY() * scaleY);
+        return new Point(x, y);
     }
 
 }

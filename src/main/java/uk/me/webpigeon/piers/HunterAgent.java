@@ -22,7 +22,7 @@ import java.util.HashMap;
  * behaviour
  */
 public class HunterAgent extends Entity {
-    public static final int TICKS_PER_HUNGER_DROP = 10;
+    public static final int TICKS_PER_HUNGER_DROP = 50;
     // How big we are
     int radius = 10;
 
@@ -83,9 +83,11 @@ public class HunterAgent extends Entity {
         if (cow != null) {
             if (cow.getLocation().dist(this.getLocation()) <= radius) {
                 // kill cow
-                foodCarrying += 50;
-                //TODO Kill the cow
+                if (foodCarrying == 0) {
+                    foodCarrying += 100;
+                    cow.setHealth(-1);
 //                System.out.println("Cow killed");
+                }
             }
         }
 
@@ -119,6 +121,8 @@ public class HunterAgent extends Entity {
         behaviour.bind(this);
         behaviour.setWeights(outputs);
         this.velocity = behaviour.process();
+        this.velocity.normalise();
+        this.velocity.multiply(2.0);
 
         super.update();
     }
@@ -157,13 +161,13 @@ public class HunterAgent extends Entity {
 
     public static void initialiseSensors() {
         sensors = new ArrayList<>();
-        // health
-        sensors.add(new Sensor<HunterAgent>() {
-            @Override
-            public void setValue() {
-                value = (double) entity.health;
-            }
-        });
+//        // health
+//        sensors.add(new Sensor<HunterAgent>() {
+//            @Override
+//            public void setValue() {
+//                value = (double) entity.health;
+//            }
+//        });
 
         // hunger
         sensors.add(new Sensor<HunterAgent>() {

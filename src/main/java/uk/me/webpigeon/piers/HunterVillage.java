@@ -18,9 +18,9 @@ import java.util.Iterator;
  */
 public class HunterVillage extends Entity {
 
-    public static final int HUNTER_COST = 200;
+    public static final int HUNTER_COST = 50;
     // How much food is available for the hunters to eat
-    private int foodStocks = 200;
+    private int foodStocks = 50;
     private int totalFoodStocksEver = foodStocks;
 
     // How many people do we have
@@ -31,6 +31,7 @@ public class HunterVillage extends Entity {
     NeuralNet hunterBrain;
 
     private ArrayList<HunterAgent> hunters;
+    private boolean firstCreationDone = false;
 
 
     @Override
@@ -54,7 +55,7 @@ public class HunterVillage extends Entity {
             HunterAgent agent = iterator.next();
             if (agent.isDead()) {
                 iterator.remove();
-                System.out.println("Hunter died - All mourn the hunter!");
+//                System.out.println("Hunter died - All mourn the hunter!");
             }
         }
 
@@ -75,6 +76,7 @@ public class HunterVillage extends Entity {
         foodStocks -= HUNTER_COST;
         world.addEntity(agent);
         hunters.add(agent);
+        firstCreationDone = true;
     }
 
     public void addFood(int food) {
@@ -89,6 +91,14 @@ public class HunterVillage extends Entity {
         foodGiven = foodStocks;
         foodStocks -= foodGiven;
         return foodGiven;
+    }
+
+    @Override
+    public boolean isDead() {
+        if (firstCreationDone) {
+            return hunters.size() == 0;
+        }
+        return false;
     }
 
     public int getTotalFoodStocksEver() {

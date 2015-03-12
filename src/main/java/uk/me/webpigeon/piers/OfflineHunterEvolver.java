@@ -5,7 +5,11 @@ import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.piers.neural.NeuralNet;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.DoubleWorld;
+import uk.me.webpigeon.world.GrassEntity;
 
+import javax.swing.*;
+import javax.swing.text.html.parser.Entity;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +23,7 @@ import java.util.Random;
 public final class OfflineHunterEvolver {
 
     private static final String HUNTER_DIRECTORY = "/hunters";
+    public static final int GENERATIONS = 100;
 
     // World to use for evaluation
     private DoubleWorld world;
@@ -37,12 +42,12 @@ public final class OfflineHunterEvolver {
     HunterGenome bestInTotal;
 
 
-    private static int POPULATION_SIZE = 50;
-    private static final float CROSSOVER_CHANCE = 0.66f;
-    private static final float MUTATION_CHANCE = 0.1f;
+    private static int POPULATION_SIZE = 100;
+    private static final float CROSSOVER_CHANCE = 0.50f;
+    private static final float MUTATION_CHANCE = 0.4f;
 
     // Maximum number of ticks to run the game for
-    public static final int MAX_TICKS = 1000;
+    public static final int MAX_TICKS = 5_000;
 
 
     private NeuralNet brain;
@@ -59,6 +64,7 @@ public final class OfflineHunterEvolver {
         brain = new HunterAgent(village).getBrain();
         brain.createNet();
         numberOfWeights = brain.getNumberOfWeights();
+        System.out.println("Number of Weights: " + numberOfWeights);
 
         createInitialPopulation();
 
@@ -114,6 +120,38 @@ public final class OfflineHunterEvolver {
         return best;
     }
 
+    private void showBestGenome() {
+        JFrame frame = new JFrame("Best Genome");
+
+        world = new DoubleWorld(800, 800);
+        village = new HunterVillage(new Vector2D(400, 400));
+
+        frame.setPreferredSize(new Dimension(800, 800));
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        brain.setWeights(bestInTotal.weights);
+        village.setHunterBrain(brain);
+
+        CowPopulationManager pop = new CowPopulationManager(10);
+        pop.addMoreCows(10);
+        world.addComponent(pop);
+        world.addEntity(village);
+
+        for (int i = 0; i < 50; i++) {
+            world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
+                    800, 800, true)));
+        }
+
+        Thread thread = new Thread(world);
+
+        frame.add(world);
+        frame.pack();
+
+        thread.start();
+
+        frame.setVisible(true);
+    }
+
     // Tournament selection - prevents need to calculate fitness for all candidates
     private HunterGenome tournament(int size) {
         HunterGenome best = getRandomFromPopulation();
@@ -148,9 +186,15 @@ public final class OfflineHunterEvolver {
         brain.setWeights(candidate.weights);
         village.setHunterBrain(brain);
 
+        for (int i = 0; i < 50; i++) {
+            world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
+                    800, 800, true)));
+        }
+
         // Run the simulation
         for (int i = 0; i < OfflineHunterEvolver.MAX_TICKS; i++) {
             world.update(20);
+            if (village.isDead()) break;
         }
 
         // retrieve how well they did
@@ -159,10 +203,13 @@ public final class OfflineHunterEvolver {
 
     private void saveBestGenome() throws IOException {
         Date date = new Date();
-        String fileName =
-                "src/main/resources/hunters/" +
-                        date.getYear() + date.getMonth() + date.getDate() + date.getHours() + date.getMinutes() +
-                                ".ser";
+        String fileName = String.format("src/main/resources/hunters/%4d_%2d_%2d_%2d_%2d.ser",
+                date.getYear() + 1900,
+                date.getMonth() + 1,
+                date.getDate(),
+                date.getHours(),
+                date.getMinutes());
+
         FileOutputStream fileOut = new FileOutputStream(fileName);
         ObjectOutputStream oos = new ObjectOutputStream(fileOut);
         oos.writeObject(bestInTotal);
@@ -179,7 +226,8 @@ public final class OfflineHunterEvolver {
 
         OfflineHunterEvolver evolver = new OfflineHunterEvolver();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < GENERATIONS; i++) {
+            System.out.println("Generation: " + i);
             evolver.runSingleGeneration();
         }
 
@@ -189,6 +237,8 @@ public final class OfflineHunterEvolver {
             e.printStackTrace();
         }
 
+        evolver.showBestGenome();
+
     }
 }
 
@@ -196,7 +246,7 @@ class HunterGenome implements Serializable {
     // Stores essentially just the weights
     ArrayList<Double> weights;
     private static Random random = new Random();
-    private static double INIDIVIDUAL_BIT_MUTATION_CHANCE = 0.05;
+    private static double INIDIVIDUAL_BIT_MUTATION_CHANCE = 0.10;
 
     private Double fitness = null;
 
