@@ -32,7 +32,6 @@ public class Eat extends Action {
 			dest = plant.getLocation();
 		}
 		
-		System.out.println(dest);
 		if (dest.dist(entity.getLocation()) > EAT_RANGE) {
 			behaviour.setTarget(dest);
 			behaviour.bind(entity);
@@ -41,8 +40,9 @@ public class Eat extends Action {
 			behaviour.bind(null);
 		} else {
 			//we can eat the plant now ^^
-			Cow cow = (Cow)entity;
-			cow.addSaturation(plant.getHealth());
+			double currSat = entity.getValue(Property.SATURATION, 0);
+			currSat += plant.getHealth();
+			entity.setValue(Property.SATURATION, currSat);
 			world.removeEntity(plant);
 			
 			plant = null;

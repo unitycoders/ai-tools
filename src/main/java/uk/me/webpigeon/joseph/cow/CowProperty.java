@@ -14,7 +14,7 @@ public class CowProperty extends AbstractTreeNode {
 
 	@Override
 	public Double eval() {
-		return cow.getProperty(prop) / cow.getPropertyMax(prop);
+		return cow.getValue(prop, 0) / cow.getLimit(prop, 1);
 	}
 
 }

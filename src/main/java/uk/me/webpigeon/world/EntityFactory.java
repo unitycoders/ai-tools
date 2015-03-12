@@ -6,6 +6,7 @@ import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.joseph.GenomeCoding;
 import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.joseph.cow.CowFactory;
+import uk.me.webpigeon.joseph.cow.Property;
 import uk.me.webpigeon.joseph.utility.UtilitySystem;
 import uk.me.webpigeon.steering.SeekBehaviour;
 import uk.me.webpigeon.steering.WanderingBehaviour;
@@ -30,6 +31,12 @@ public class EntityFactory {
 		
 		UtilitySystem util = new UtilitySystem();
 		Cow cow = new Cow(x, y, util, genome);
+		
+		cow.setValue(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
+		cow.setLimit(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
+		cow.setValue(Property.METABOLISM, genome[GenomeCoding.HUNGER_RATE]);
+		cow.setLimit(Property.METABOLISM, genome[GenomeCoding.HUNGER_RATE]);
+		
 		CowFactory.applyCowActions(cow, null, pop, util);
 		return cow;
 	}
