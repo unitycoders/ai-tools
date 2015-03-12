@@ -18,14 +18,14 @@ import java.util.Iterator;
  */
 public class HunterVillage extends Entity {
 
+    public static final int HUNTER_COST = 200;
     // How much food is available for the hunters to eat
-    private int foodStocks = 51;
+    private int foodStocks = 200;
+    private int totalFoodStocksEver = foodStocks;
 
     // How many people do we have
     private int currentPopulation;
     private int maxPopulation = 10;
-
-    private int hunterThreshold = 50;
 
     // The brian to use when creating hunters
     NeuralNet hunterBrain;
@@ -59,13 +59,39 @@ public class HunterVillage extends Entity {
         }
 
         currentPopulation = hunters.size();
-        if (foodStocks > hunterThreshold && currentPopulation < maxPopulation) createNewHunter();
+        if (foodStocks >= HUNTER_COST && currentPopulation < maxPopulation) createNewHunter();
+    }
+
+    public NeuralNet getHunterBrain() {
+        return hunterBrain;
+    }
+
+    public void setHunterBrain(NeuralNet hunterBrain) {
+        this.hunterBrain = hunterBrain;
     }
 
     private void createNewHunter() {
         HunterAgent agent = new HunterAgent(this);
-        foodStocks -= 50;
+        foodStocks -= HUNTER_COST;
         world.addEntity(agent);
         hunters.add(agent);
+    }
+
+    public void addFood(int food) {
+        foodStocks += food;
+        totalFoodStocksEver += food;
+    }
+
+    // Gets as much food as possible from the village
+    public int getFood(int wantedFood) {
+        int foodGiven;
+        if (foodStocks > wantedFood) foodGiven = wantedFood;
+        foodGiven = foodStocks;
+        foodStocks -= foodGiven;
+        return foodGiven;
+    }
+
+    public int getTotalFoodStocksEver() {
+        return totalFoodStocksEver;
     }
 }

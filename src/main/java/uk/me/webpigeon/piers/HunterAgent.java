@@ -11,6 +11,7 @@ import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,17 +22,20 @@ import java.util.HashMap;
  * behaviour
  */
 public class HunterAgent extends Entity {
+    public static final int TICKS_PER_HUNGER_DROP = 10;
     // How big we are
     int radius = 10;
 
     // How hungry are we
-    // When this is below starvingThreshold then we start to lose health
+    // When this is below STARVING_THRESHOLD then we start to lose health
     int hungerLevel = 100;
-    private static int starvingThreshold = 10;
+    private static int STARVING_THRESHOLD = 10;
 
     // Maximum amount of life for a hunter
-    private static int maxTicks = 1_000;
+    private static int MAX_TICKS = 1_000;
     private int currentTicks;
+
+    private int foodCarrying;
 
     private static ArrayList<Sensor<HunterAgent>> sensors;
     private static HunterBehaviour behaviour;
@@ -72,9 +76,35 @@ public class HunterAgent extends Entity {
         if (velocity == null) velocity = new Vector2D(1, 0, true);
         currentTicks++;
 
+        if (currentTicks % TICKS_PER_HUNGER_DROP == 0) hungerLevel--;
+
+        // Hunt cow if we are near it
+        Cow cow = (Cow) world.getNearestEntityOfType(this, Cow.class);
+        if (cow != null) {
+            if (cow.getLocation().dist(this.getLocation()) <= radius) {
+                // kill cow
+                foodCarrying += 50;
+                //TODO Kill the cow
+//                System.out.println("Cow killed");
+            }
+        }
+
+        //Add food carrying if near home
+        if (this.getLocation().dist(home.getLocation()) <= 25) {
+            // Put food into home
+            if (foodCarrying > 0) {
+                home.addFood(foodCarrying);
+                foodCarrying = 0;
+//                System.out.println("Food returned");
+            }
+
+            int toEat = 100 - hungerLevel;
+            hungerLevel += home.getFood(toEat);
+        }
+
 
         // think about hunger and health
-        if (hungerLevel < starvingThreshold) health--;
+        if (hungerLevel < STARVING_THRESHOLD) health--;
 
 
         // Set the input layer to use our sensors
@@ -94,11 +124,16 @@ public class HunterAgent extends Entity {
     }
 
     public double getDistanceToNearestCow() {
-        return world.getNearestEntityOfType(this, Cow.class).getLocation().dist(this.getLocation());
+        Entity cow = world.getNearestEntityOfType(this, Cow.class);
+        if (cow != null) return cow.getLocation().dist(this.getLocation());
+        return Double.MAX_VALUE; // No cows
     }
 
     public Vector2D getNearestCowLocation() {
-        return world.getNearestEntityOfType(this, Cow.class).getLocation();
+        Entity cow = world.getNearestEntityOfType(this, Cow.class);
+        if (cow != null) return cow.getLocation();
+        // This is causing problems
+        return null;
     }
 
     @Override
@@ -109,7 +144,11 @@ public class HunterAgent extends Entity {
 
     @Override
     public boolean isDead() {
-        return (currentTicks > maxTicks || super.isDead());
+        return (currentTicks > MAX_TICKS || super.isDead());
+    }
+
+    public NeuralNet getBrain() {
+        return brain;
     }
 
     public static void initialiseBehaviour() {
@@ -138,6 +177,13 @@ public class HunterAgent extends Entity {
             @Override
             public void setValue() {
                 value = entity.getDistanceToNearestCow();
+            }
+        });
+
+        sensors.add(new Sensor<HunterAgent>() {
+            @Override
+            public void setValue() {
+                value = (double) entity.foodCarrying;
             }
         });
     }
