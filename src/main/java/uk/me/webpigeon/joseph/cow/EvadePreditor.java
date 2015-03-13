@@ -12,56 +12,17 @@ import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.Tag;
 import uk.me.webpigeon.world.World;
 
-public class EvadePreditor extends Action {
-	private FleeBehaviour behaviour;
-	private Entity preditor;
-	private Vector2D dest;
-
-
-	// find the closest preditor
-	// choose a path away from the preditor
-	// execute a move in the direction away from the preditor
-	// be alive
+public class EvadePreditor extends TargetingAction {
 	
-	
-	public EvadePreditor(TreeNode<Double> utilCalc) {
-		super(utilCalc);
-		this.behaviour = new FleeBehaviour(null);
+	public EvadePreditor(TreeNode<Double> utilCalc, Tag targetType) {
+		super(utilCalc, new FleeBehaviour(null), targetType);
 	}
 
 	@Override
-	public void executeStep(Entity entity, World world) {
-		if (preditor == null) {
-			preditor = world.getNearestEntityOfType(entity, Tag.HUNTER);
-			if (preditor == null) {
-				entity.setVelocity(new Vector2D(0, 0));
-				behaviour.setTarget(null);
-				return;
-			}
-			dest = preditor.getLocation();
-		}
-		
-		double safeDistance = entity.getValue(Property.SIGHT_RANGE, 100);
-		if (dest.dist(entity.getLocation()) < safeDistance) {
-			behaviour.setTarget(dest);
-			Vector2D forceDir = behaviour.process();
-			entity.setVelocity(forceDir);
-		} else {
-			preditor = null;
-			behaviour.setTarget(null);
-			entity.setVelocity(new Vector2D(0, 0));
-		}
-	}
-	
-	@Override
-	public void notifyStarted(Entity entity) {
-		behaviour.bind(entity);
-	}
-	
-	public void debugDraw(Graphics2D g) {
-		if (preditor != null) {
-			behaviour.debugDraw(g);
-		}
+	protected boolean isCorrectDistance(Entity us, Entity target) {
+		double safeDistance = us.getValue(Property.SIGHT_RANGE, 100);
+		Vector2D targetLocation = target.getLocation();
+		return (targetLocation.dist(us.getLocation()) > safeDistance);
 	}
 
 }

@@ -22,8 +22,6 @@ public class UtilitySystem {
 		for (Action action : actions) {
 			double score = action.getScore();
 			
-			System.out.println(action+" "+score);
-			
 			if (score > bestScore) {
 				bestScore = score;
 				bestAction = action;

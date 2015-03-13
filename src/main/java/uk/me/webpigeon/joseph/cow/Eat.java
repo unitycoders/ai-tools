@@ -12,56 +12,28 @@ import uk.me.webpigeon.world.GrassEntity;
 import uk.me.webpigeon.world.Tag;
 import uk.me.webpigeon.world.World;
 
-public class Eat extends Action {
+public class Eat extends TargetingAction {
 	private static final Double EAT_RANGE = 2.0;
-	SeekBehaviour behaviour;
-	Entity plant;
-	Vector2D dest;
 	
 	public Eat(TreeNode<Double> utilFunction) {
-		super(utilFunction);
-		behaviour = new SeekBehaviour(null);
+		super(utilFunction, new SeekBehaviour(null), Tag.GRASS);
 	}
 	
 	@Override
-	public void executeStep(Entity entity, World world) {
-		if (plant == null) {
-			plant = world.getNearestEntityOfType(entity, Tag.GRASS);
-			if (plant == null) {
-				behaviour.setTarget(null);
-				return;
-			}
-			dest = plant.getLocation();
+	protected void targetingComplete(World world, Entity target) {
+		if (target == null || target.isDead()) {
+			return;
 		}
 		
-		if (dest.dist(entity.getLocation()) > EAT_RANGE) {
-			behaviour.setTarget(dest);
-			Vector2D forceDir = behaviour.process();
-			entity.setVelocity(forceDir);
-		} else {
-			//we can eat the plant now ^^
-			double currSat = entity.getValue(Property.SATURATION, 0);
-			currSat += plant.getHealth();
-			entity.setValue(Property.SATURATION, currSat);
-			world.removeEntity(plant);
-			
-			plant = null;
-			dest = null;
-		}
-		
-		if (plant != null && plant.isDead()) {
-			plant = null;
-		}
-		
+		double currSat = us.getValue(Property.SATURATION, 0);
+		currSat += target.getHealth();
+		us.setValue(Property.SATURATION, currSat);
+		world.removeEntity(target);
 	}
 	
 	@Override
-	public void notifyStarted(Entity entity) {
-		behaviour.bind(entity);
-	}
-
-	@Override
-	public void debugDraw(Graphics2D g) {
-		behaviour.debugDraw(g);
+	protected boolean isCorrectDistance(Entity us, Entity target) {
+		Vector2D dest = target.getLocation();
+		return dest.dist(us.getLocation()) <= EAT_RANGE;
 	}
 }

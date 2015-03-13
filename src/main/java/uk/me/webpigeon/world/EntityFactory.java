@@ -2,6 +2,7 @@ package uk.me.webpigeon.world;
 
 import java.util.Random;
 
+import uk.me.webpigeon.joseph.BaseStats;
 import uk.me.webpigeon.joseph.CowPopulationManager;
 import uk.me.webpigeon.joseph.GenomeCoding;
 import uk.me.webpigeon.joseph.cow.Cow;
@@ -17,9 +18,12 @@ public class EntityFactory {
 	private EntityFactory() {
 	}
 
+	public static double[] buildDefaultGenome() {
+		return new double[]{BaseStats.BASE_SAT, BaseStats.BASE_HUNGER, BaseStats.BASE_SIGHT};
+	}
+	
 	public static Cow buildCow(World world, int maxWidth, int maxHeight, CowPopulationManager pop) {
-		double[] genome = new double[]{GenomeCoding.MAX_SAT_ID, GenomeCoding.HUNGER_RATE};
-		return buildGenomeCow(maxWidth, maxHeight, world, pop, genome);
+		return buildGenomeCow(maxWidth, maxHeight, world, pop, buildDefaultGenome());
 	}
 
 	
@@ -32,12 +36,17 @@ public class EntityFactory {
 		UtilitySystem util = new UtilitySystem();
 		Cow cow = new Cow(x, y, util, genome);
 		
-		cow.setValue(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
-		cow.setLimit(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
-		cow.setValue(Property.METABOLISM, Math.abs(genome[GenomeCoding.HUNGER_RATE]));
-		cow.setLimit(Property.METABOLISM, Math.abs(genome[GenomeCoding.HUNGER_RATE]));
+		setGenome(cow, genome);
 		
 		CowFactory.applyCowActions(cow, world, pop, util);
 		return cow;
+	}
+	
+	public static void setGenome(Entity entity, double[] genome) {
+		entity.setValue(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
+		entity.setLimit(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
+		entity.setValue(Property.METABOLISM, Math.abs(genome[GenomeCoding.HUNGER_RATE]));
+		entity.setLimit(Property.METABOLISM, Math.abs(genome[GenomeCoding.HUNGER_RATE]));
+		entity.setValue(Property.SIGHT_RANGE, Math.abs(genome[GenomeCoding.SIGHT_RANGE]));
 	}
 }

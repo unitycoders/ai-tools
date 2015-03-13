@@ -56,9 +56,6 @@ public class Cow extends SteeringEntity {
 	private void processNeeds() {
 		Action newAction = util.process(this);		
 		if (newAction != null && !newAction.equals(action)){
-			if (action != null && action instanceof EvadePreditor) {
-				System.out.println("swapped "+action+" for "+newAction);
-			}
 			action = newAction;
 			action.notifyStarted(this);
 		}

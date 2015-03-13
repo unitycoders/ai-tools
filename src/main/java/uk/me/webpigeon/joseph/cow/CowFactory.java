@@ -25,26 +25,19 @@ public class CowFactory {
 		return new Eat(quadtraic);
 	}
 	
-	public static Action buildNearFood(Cow cow, World world, UtilitySystem util) {
-		TreeNode<Double> foodDistance = new DistanceToEntity(cow, world, Tag.GRASS);
-		SteeringBehaviour behaviour = new WanderingBehaviour();
-		return new SteeringAction(foodDistance, behaviour);
-	}
-	
 	public static Action buildRunAway(Cow cow, World world) {
 		TreeNode<Double> hunterDist = new DistanceToEntity(cow, world, Tag.HUNTER);
 		TreeNode<Double> inverted = new InvertNode(hunterDist);
 		
-		return new EvadePreditor(new QuadraticCurve(inverted, 1, 0.8));
+		return new EvadePreditor(new QuadraticCurve(inverted, 1, 0.8), Tag.HUNTER);
 	}
 	
 	public static Action buildWanderingBehavour(Cow cow, World world, UtilitySystem util) {
-		AbstractTreeNode hunger = new CowProperty(cow, Property.SATURATION);
+		TreeNode<Double> foodDist = new DistanceToEntity(cow, world, Tag.GRASS);
 		TreeNode<Double> hunterDist = new InvertNode(new DistanceToEntity(cow, world, Tag.HUNTER));
-		MeanNode curveInput = new MeanNode(hunterDist, hunger);
 		
 		SteeringBehaviour behaviour = new WanderingBehaviour();
-		return new SteeringAction(new LogisticCurve(hunterDist), behaviour);
+		return new SteeringAction(new MathNode('-', foodDist, hunterDist), behaviour);
 	}
 	
 	public static Action buildReproduceBehavour(CowPopulationManager pop, UtilitySystem util) {
@@ -59,7 +52,6 @@ public class CowFactory {
 		util.addAction(buildEatAction(cow, util));
 		util.addAction(buildWanderingBehavour(cow, world, util));
 		util.addAction(buildRunAway(cow, world));
-		//util.addAction(buildNearFood(cow, world, util));
 	}
 	
 }
