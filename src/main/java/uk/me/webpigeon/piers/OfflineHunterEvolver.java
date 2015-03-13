@@ -133,7 +133,7 @@ public final class OfflineHunterEvolver {
         village.setHunterBrain(brain);
 
         CowPopulationManager pop = new CowPopulationManager(10);
-        pop.addMoreCows(10);
+        pop.addMoreCows(10, world);
         world.addComponent(pop);
         world.addEntity(village);
 
@@ -179,7 +179,7 @@ public final class OfflineHunterEvolver {
         DoubleWorld world = new DoubleWorld(800, 800);
         HunterVillage village = new HunterVillage(new Vector2D(400, 400));
         CowPopulationManager cows = new CowPopulationManager(10);
-        cows.addMoreCows(10);
+        cows.addMoreCows(10, world);
         world.addComponent(cows);
         world.addEntity(village);
 
