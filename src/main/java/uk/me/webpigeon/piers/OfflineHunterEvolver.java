@@ -43,8 +43,8 @@ public final class OfflineHunterEvolver {
 
 
     private static int POPULATION_SIZE = 100;
-    private static final float CROSSOVER_CHANCE = 0.50f;
-    private static final float MUTATION_CHANCE = 0.4f;
+    private static final float CROSSOVER_CHANCE = 0.70f;
+    private static final float MUTATION_CHANCE = 0.25f;
 
     // Maximum number of ticks to run the game for
     public static final int MAX_TICKS = 5_000;
@@ -155,11 +155,13 @@ public final class OfflineHunterEvolver {
     // Tournament selection - prevents need to calculate fitness for all candidates
     private HunterGenome tournament(int size) {
         HunterGenome best = getRandomFromPopulation();
-        if (worstThisGeneration == null) worstThisGeneration = best;
         for (int i = 1; i < size; i++) {
             HunterGenome choice = getRandomFromPopulation();
+            while (choice.getFitness() <= 50) {
+                choice = getRandomFromPopulation();
+            }
             if (choice.getFitness() > best.getFitness()) best = choice;
-            if (choice.getFitness() < worstThisGeneration.getFitness()) worstThisGeneration = choice;
+            if (worstThisGeneration == null || choice.getFitness() < worstThisGeneration.getFitness()) worstThisGeneration = choice;
         }
         // Set the best seen so far
         if (bestThisGeneration == null || bestThisGeneration.getFitness() < best.getFitness())
@@ -190,20 +192,24 @@ public final class OfflineHunterEvolver {
             world.addEntity(new GrassEntity(Vector2D.getRandomCartesian(
                     800, 800, true)));
         }
-
-        // Run the simulation
-        for (int i = 0; i < OfflineHunterEvolver.MAX_TICKS; i++) {
-            world.update(20);
-            if (village.isDead()) break;
+        double totalFitness = 0;
+        for (int i = 0; i < 5; i++) {
+            // Run the simulation
+            for (int j = 0; j < OfflineHunterEvolver.MAX_TICKS; j++) {
+                world.update(20);
+                if (village.isDead()) break;
+            }
+            totalFitness += (double) village.getTotalFoodStocksEver();
         }
 
         // retrieve how well they did
-        return (double) village.getTotalFoodStocksEver();
+        return totalFitness / 5;
     }
 
     private void saveBestGenome() throws IOException {
         Date date = new Date();
-        String fileName = String.format("src/main/resources/hunters/%4d_%2d_%2d_%2d_%2d.ser",
+        String fileName = String.format("src/main/resources/hunters/%6.0f_%4d_%2d_%2d_%2d_%2d.ser",
+                bestInTotal.getFitness(),
                 date.getYear() + 1900,
                 date.getMonth() + 1,
                 date.getDate(),
