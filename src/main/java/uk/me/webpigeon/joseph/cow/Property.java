@@ -1,6 +1,8 @@
 package uk.me.webpigeon.joseph.cow;
 
 public enum Property {
-	SATURATION
-
+	SATURATION,
+	SIGHT_RANGE,
+	METABOLISM,
+	AGE
 }

@@ -1,5 +1,7 @@
 package uk.me.webpigeon.joseph.cow;
 
+import java.awt.Graphics2D;
+
 import uk.me.webpigeon.joseph.utility.Action;
 import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 import uk.me.webpigeon.joseph.utility.trees.TreeNode;
@@ -7,55 +9,31 @@ import uk.me.webpigeon.steering.SeekBehaviour;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 import uk.me.webpigeon.world.GrassEntity;
+import uk.me.webpigeon.world.Tag;
 import uk.me.webpigeon.world.World;
 
-public class Eat extends Action {
+public class Eat extends TargetingAction {
 	private static final Double EAT_RANGE = 2.0;
-	SeekBehaviour behaviour;
-	Entity plant;
-	Vector2D dest;
 	
 	public Eat(TreeNode<Double> utilFunction) {
-		super(utilFunction);
-		behaviour = new SeekBehaviour(null);
+		super(utilFunction, new SeekBehaviour(null), Tag.GRASS);
 	}
 	
 	@Override
-	public void executeStep(Entity entity, World world) {
-		if (plant == null) {
-			plant = world.getNearestEntityOfType(entity, GrassEntity.class);
-			if (plant == null) {
-				//ah, there are no more plants, I'm a sad cow :(
-				return;
-			}
-			dest = plant.getLocation();
+	protected void targetingComplete(World world, Entity target) {
+		if (target == null || target.isDead()) {
+			return;
 		}
 		
-		System.out.println(dest);
-		if (dest.dist(entity.getLocation()) > EAT_RANGE) {
-			behaviour.setTarget(dest);
-			behaviour.bind(entity);
-			Vector2D forceDir = behaviour.process();
-			entity.setVelocity(forceDir);
-			behaviour.bind(null);
-		} else {
-			//we can eat the plant now ^^
-			Cow cow = (Cow)entity;
-			cow.addSaturation(plant.getHealth());
-			world.removeEntity(plant);
-			
-			plant = null;
-			dest = null;
-		}
-		
-		if (plant != null && plant.isDead()) {
-			plant = null;
-		}
-		
-		// find the closest plant
-		// head towards plant
-		// eat the plant
-		// be happy
+		double currSat = us.getValue(Property.SATURATION, 0);
+		currSat += target.getHealth();
+		us.setValue(Property.SATURATION, currSat);
+		world.removeEntity(target);
 	}
-
+	
+	@Override
+	protected boolean isCorrectDistance(Entity us, Entity target) {
+		Vector2D dest = target.getLocation();
+		return dest.dist(us.getLocation()) <= EAT_RANGE;
+	}
 }

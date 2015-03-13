@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.me.webpigeon.joseph.BaseStats;
 import uk.me.webpigeon.joseph.GenomeCoding;
 import uk.me.webpigeon.joseph.utility.Action;
 import uk.me.webpigeon.joseph.utility.UtilitySystem;
@@ -18,7 +19,7 @@ public class Cow extends SteeringEntity {
 	private UtilitySystem util;
 	private Action action;
 	
-	private double saturation;
+	//private double saturation;
 	private double[] genome;
 	private Color colour;
 	private int age;
@@ -26,7 +27,6 @@ public class Cow extends SteeringEntity {
 	public Cow(int x, int y, UtilitySystem util, double[] genome) {
 		super(x, y, null);
 		this.genome = genome;
-		this.saturation = genome[GenomeCoding.MAX_SAT_ID];
 		this.util = util;
 	}
 
@@ -42,17 +42,19 @@ public class Cow extends SteeringEntity {
 	 */
 	private void processLife() {
 		age += 1;
-		if (saturation <= 0) {
+		double currentSat = getValue(Property.SATURATION, 0);
+		if (currentSat <= 0) {
 			//cow starved
 			health = 0;
 		}
 		
 		//stop cows from cheating by evolving negative hunger rates
-		saturation -= Math.abs(genome[GenomeCoding.HUNGER_RATE]);
+		currentSat -= getValue(Property.METABOLISM, BaseStats.BASE_HUNGER);
+		setValue(Property.SATURATION, currentSat);
 	}
 	
 	private void processNeeds() {
-		Action newAction = util.process(this);
+		Action newAction = util.process(this);		
 		if (newAction != null && !newAction.equals(action)){
 			action = newAction;
 			action.notifyStarted(this);
@@ -66,8 +68,20 @@ public class Cow extends SteeringEntity {
 	public void draw(Graphics2D g) {
 		super.draw(g);
 		
+		double satVal = getNormProp(Property.SATURATION);
+		
 		g.setColor(Color.BLUE);
-		g.fillRect((int)location.x, (int)location.y, (int)saturation, 5);
+		g.fillRect((int)location.x-20, (int)location.y+10, (int)(satVal*50), 5);
+	}
+	
+	public void debugDraw(Graphics2D g) {
+		if (action != null) {
+			action.debugDraw(g);
+		}
+		
+		int range = (int)getValue(Property.SIGHT_RANGE, 100);
+		g.setColor(Color.WHITE);
+		g.drawOval((int)location.x - range, (int)location.y - range, range*2, range*2);
 	}
 
 	public int getAge() {
@@ -78,27 +92,10 @@ public class Cow extends SteeringEntity {
 		return genome;
 	}
 
-	public Double getProperty(Property prop) {
-		//TODO might store these in a map
-		if (prop == Property.SATURATION) {
-			return saturation;
-		}
-		
-		return 0.0;
-	}
-
-	public Double getPropertyMax(Property prop) {
-		if (prop == Property.SATURATION) {
-			return genome[GenomeCoding.MAX_SAT_ID];
-		}
-		
-		return 0.0;
-	}
-
-	public void addSaturation(int health) {
+	/**public void addSaturation(int health) {
 		double maxSat = getPropertyMax(Property.SATURATION);
 		saturation = Math.min(maxSat, saturation+health);
-	}
+	}*/
 	
 	
 	public String toString() {

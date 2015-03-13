@@ -20,7 +20,7 @@ public class MakeBabbyCow extends Action {
 	public void executeStep(Entity entity, World world) {
 		if (!cowAdded) {
 			Cow cow = (Cow)entity;
-			population.addCow(cow.getGenome());
+			population.addCow(world, cow.getGenome());
 			cowAdded = true;
 		}
 	}

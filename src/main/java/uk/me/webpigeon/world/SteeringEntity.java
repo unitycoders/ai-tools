@@ -3,6 +3,7 @@ package uk.me.webpigeon.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import uk.me.webpigeon.steering.SteeringBehaviour;
 import uk.me.webpigeon.util.Vector2D;
@@ -14,8 +15,7 @@ public class SteeringEntity extends Entity {
 	private ArrayList<Vector2D> previousLocations = new ArrayList<>();
 
 	public SteeringEntity(int x, int y, SteeringBehaviour behaviour) {
-		this.location = new Vector2D(x, y, true);
-		this.velocity = new Vector2D(0, 0, true);
+		super(x, y, EnumSet.of(Tag.COW));
 		setBehavour(behaviour);
 	}
 	
@@ -52,13 +52,14 @@ public class SteeringEntity extends Entity {
 					SIZE / 3);
 		}
 
-		behaviour.debugDraw(graphics);
+		if (behaviour != null) {
+			behaviour.debugDraw(graphics);
+		}
 	}
 	
 	public void setVelocity(Vector2D velocity) {
 		Vector2D newVelocity = Vector2D.add(velocity, velocity, VECTOR_SMOOTHING);
 		super.setVelocity(newVelocity);
 	}
-
 
 }

@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
 
-public class SeekBehaviour implements SteeringBehaviour {
+public class SeekBehaviour implements TargetedBehavour {
     private Vector2D targetPos;
     private Entity entity;
 
@@ -35,6 +35,10 @@ public class SeekBehaviour implements SteeringBehaviour {
 
     @Override
     public void debugDraw(Graphics2D g) {
+    	if (entity == null || targetPos == null) {
+    		return;
+    	}
+    	
         g.setColor(Color.GREEN);
         Vector2D entPos = entity.getLocation();
         g.drawLine((int) entPos.x, (int) entPos.y, (int) targetPos.x,

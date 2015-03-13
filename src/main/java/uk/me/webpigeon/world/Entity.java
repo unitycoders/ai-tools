@@ -3,9 +3,12 @@ package uk.me.webpigeon.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import uk.me.webpigeon.joseph.cow.Property;
 import uk.me.webpigeon.util.Vector2D;
@@ -22,6 +25,7 @@ public abstract class Entity {
 	protected List<Vector2D> previousLocations;
 	protected Map<Property, Double> properties;
 	protected Map<Property, Double> propertyLimits;
+	protected Set<Tag> tags;
 
 	// Location of the entity
 	protected Vector2D location;
@@ -31,13 +35,23 @@ public abstract class Entity {
 	// Health
 	protected int health;
 
-	public Entity() {
-		this.location = new Vector2D();
-		this.velocity = new Vector2D();
+	public Entity(double x, double y, EnumSet<Tag> tags) {
+		this.location = new Vector2D(x, y, true);
+		this.velocity = new Vector2D(0, 0, true);
 		this.health = 100;
 		this.previousLocations = new ArrayList<>();
+		
+		this.tags = tags;
 		this.properties = new EnumMap<>(Property.class);
 		this.propertyLimits = new EnumMap<>(Property.class);
+	}
+	
+	public Entity(double x, double y) {
+		this(x, y, EnumSet.noneOf(Tag.class));
+	}
+	
+	public Entity() {
+		this(0, 0);
 	}
 
 	public void update() {
@@ -105,6 +119,15 @@ public abstract class Entity {
 
 	public int getHealth() {
 		return health;
+	}
+	
+	public boolean hasTag(Tag tag) {
+		return tags.contains(tag);
+	}
+	
+	public boolean hasAllTags(Tag ... extras) {
+		List<Tag> tags = Arrays.asList(extras);
+		return tags.containsAll(tags);
 	}
 	
 	public int getZIndex() {

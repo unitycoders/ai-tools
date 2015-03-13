@@ -50,17 +50,17 @@ public class CowPopulationManager implements WorldComponent {
 		}
 	}
 	
-	public void addMoreCows(int cowCount) {
+	public void addMoreCows(int cowCount, World world) {
 		// find out now many new cows we need
 		//int replacementCowsNeeded = cowPopulation - cows.size();
 		for (int i=0; i<cowCount; i++) {
 			//get the best cow and mutate it's genome
 			Cow parent = selectParent();
-			double[] genome = parent==null?buildBaseGenome():parent.getGenome();
-			genome = mutateGenome(genome);
+			double[] genome = parent==null?EntityFactory.buildDefaultGenome():parent.getGenome();
+			//genome = mutateGenome(genome);
 			
 			//build a new cow with our new genome
-			Cow newCow = EntityFactory.buildGenomeCow(800, 600, this, genome);
+			Cow newCow = EntityFactory.buildGenomeCow(800, 600, world, this, genome);
 			newCows.add(newCow);
 		}
 	}
@@ -90,17 +90,8 @@ public class CowPopulationManager implements WorldComponent {
 		return newGenome;
 	}
 
-	private double[] buildBaseGenome() {
-		
-		double[] genome = new double[GenomeCoding.GENOME_SIZE];
-		genome[GenomeCoding.MAX_SAT_ID] = BaseStats.BASE_SAT;
-		genome[GenomeCoding.HUNGER_RATE] = BaseStats.BASE_HUNGER;
-		
-		return genome;
-	}
-
-	public void addCow(double[] genome) {
-		Cow newCow = EntityFactory.buildGenomeCow(800, 600, this, genome);
+	public void addCow(World world, double[] genome) {
+		Cow newCow = EntityFactory.buildGenomeCow(800, 600, world, this, genome);
 		newCows.add(newCow);
 	}
 

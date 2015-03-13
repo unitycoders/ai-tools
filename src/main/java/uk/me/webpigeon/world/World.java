@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -12,13 +13,14 @@ import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 
+import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.util.Vector2D;
 
 /**
  * Created by Piers on 03/03/2015.
  */
 public class World extends JComponent implements Runnable {
-    private static final Boolean DEBUG_DRAW = false;
+    public static Boolean DEBUG_DRAW = false;
     private List<Entity> entities;
     private List<WorldComponent> components;
 
@@ -128,7 +130,12 @@ public class World extends JComponent implements Runnable {
      * @return The list of entities that are close enough
      */
     public ArrayList<Entity> getNearEntities(Entity source, double radius) {
-        return getNearEntities(source, radius, Entity.class);
+    	Vector2D srcLoc = source.getLocation();
+    	List<Entity> closeBy = entities.stream()
+    			.filter(s -> srcLoc.dist(s.location) <= radius)
+    			.collect(Collectors.toList());
+    	
+        return new ArrayList<Entity>(closeBy);
     }
 
     /**
@@ -139,14 +146,10 @@ public class World extends JComponent implements Runnable {
      * @param type   The class of the entity to search for
      * @return The list of entities that are close enough of the correct class
      */
-    public ArrayList<Entity> getNearEntities(Entity source, double radius, Class type) {
-        ArrayList<Entity> nearEntities = new ArrayList<>();
-        nearEntities.addAll(entities.stream()
-                .filter(s -> s.getClass().isAssignableFrom(type))
-                .filter(entity -> entity.getLocation().dist(source.getLocation()) < radius)
-                .collect(Collectors.toList()));
-
-        return nearEntities;
+    public ArrayList<Entity> getNearEntities(Entity source, double radius, Tag type){
+    	ArrayList<Entity> closeBy = getNearEntities(source, radius);
+    	List<Entity> filtered = closeBy.stream().filter(e -> e.hasTag(type)).collect(Collectors.toList());
+    	return new ArrayList<Entity>(filtered);
     }
 
     /**
@@ -156,23 +159,29 @@ public class World extends JComponent implements Runnable {
      * @param type   The clas of the entity to search for
      * @return The entity that is the nearest of that type
      */
-    public Entity getNearestEntityOfType(Entity source, Class type) {
+    public Entity getNearestEntityOfType(Entity source, Tag type) {
         return getNearestEntityOfType(source.location, type);
     }
-
-    public Entity getNearestEntityOfType(Vector2D source, Class type) {
-        if (entities.isEmpty()) {
-            return null;
+    
+    public Entity getNearestEntityOfType(Vector2D source, Tag type) {    	
+        List<Entity> entityList = entities.stream().filter(s -> s.hasTag(type))
+                .sorted( (s1, s2) -> Double.compare(source.dist(s1.getLocation()), source.dist(s2.getLocation())))
+                .collect(Collectors.toList());
+        
+        if (entityList.isEmpty()) {
+        	return null;
         }
-        Entity nearest = null;
-        for (int i = 1; i < entities.size(); i++) {
-            Entity temp = entities.get(i);
-            if (temp.getClass().isAssignableFrom(type)) {
-                if (nearest == null || nearest.getLocation().dist(source) > temp.getLocation().dist(source))
-                    nearest = temp;
-            }
-        }
-        return nearest;
+        
+        return entityList.get(0);
+    }
+    
+    @Deprecated
+    public Entity getNearestEntityOfType(Entity source, Class<?> type) {   
+    	if (type.equals(Cow.class)) {
+    		return getNearestEntityOfType(source, Tag.COW);
+    	}
+    	
+    	return null;
     }
 
     protected void paintComponent(Graphics g) {
@@ -197,5 +206,9 @@ public class World extends JComponent implements Runnable {
         int y = (int) (p.getY() * scaleY);
         return new Point(x, y);
     }
+
+	public Collection<Entity> getEntities() {
+		return Collections.unmodifiableList(entities);
+	}
 
 }

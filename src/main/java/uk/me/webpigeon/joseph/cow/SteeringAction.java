@@ -1,5 +1,7 @@
 package uk.me.webpigeon.joseph.cow;
 
+import java.awt.Graphics2D;
+
 import uk.me.webpigeon.joseph.utility.Action;
 import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 import uk.me.webpigeon.joseph.utility.trees.TreeNode;
@@ -29,5 +31,10 @@ public class SteeringAction extends Action {
 	
 	public String toString() {
 		return "Action["+behaviour+"]";
+	}
+	
+	@Override
+	public void debugDraw(Graphics2D g) {
+		behaviour.debugDraw(g);
 	}
 }
