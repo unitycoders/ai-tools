@@ -3,17 +3,18 @@ package uk.me.webpigeon.joseph.cow;
 import uk.me.webpigeon.joseph.utility.trees.TreeNode;
 import uk.me.webpigeon.util.Vector2D;
 import uk.me.webpigeon.world.Entity;
+import uk.me.webpigeon.world.Tag;
 import uk.me.webpigeon.world.World;
 
 public class DistanceToEntity implements TreeNode<Double> {
 	private Entity us;
 	private World world;
-	private Class clazz;
+	private Tag type;
 
-	public DistanceToEntity(Entity us, World world, Class clazz) {
+	public DistanceToEntity(Entity us, World world, Tag type) {
 		this.us = us;
 		this.world = world;
-		this.clazz = clazz;
+		this.type = type;
 	}
 	
 	@Override
@@ -33,19 +34,18 @@ public class DistanceToEntity implements TreeNode<Double> {
 
 	@Override
 	public Double eval() {
-		return 0.0;
-		/*
-		//TODO do something better with this
-		double maxDist = 800;
-		
-		Entity closestOfType = world.getNearestEntityOfType(us, clazz);
-		if (closestOfType == null) {
+		Entity other = world.getNearestEntityOfType(us, type);
+		if(other == null) {
 			return 1.0;
 		}
 		
-		Vector2D myLocation = us.getLocation();
-		Vector2D theirLocation = closestOfType.getLocation();
-		return myLocation.dist(theirLocation) / maxDist;*/
+		double maxSight = us.getLimit(Property.SIGHT_RANGE, 100);
+		double distance = us.getLocation().dist(other.getLocation());
+		if (distance > maxSight) {
+			return 1.0; //out of range
+		}
+		
+		return distance/maxSight;
 	}
 
 }

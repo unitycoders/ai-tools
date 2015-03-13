@@ -62,5 +62,4 @@ public class SteeringEntity extends Entity {
 		super.setVelocity(newVelocity);
 	}
 
-
 }

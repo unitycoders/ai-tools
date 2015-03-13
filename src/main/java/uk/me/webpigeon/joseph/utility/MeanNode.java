@@ -5,6 +5,12 @@ import uk.me.webpigeon.joseph.utility.trees.TreeNode;
 
 public class MeanNode extends AbstractTreeNode {
 
+	public MeanNode(TreeNode<Double> ... children) {
+		for (TreeNode<Double> child : children) {
+			addChild(child);
+		}
+	}
+
 	@Override
 	public Double eval() {
 		double total = 0.0;

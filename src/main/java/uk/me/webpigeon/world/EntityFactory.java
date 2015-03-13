@@ -17,13 +17,13 @@ public class EntityFactory {
 	private EntityFactory() {
 	}
 
-	public static Cow buildCow(int maxWidth, int maxHeight, CowPopulationManager pop) {
+	public static Cow buildCow(World world, int maxWidth, int maxHeight, CowPopulationManager pop) {
 		double[] genome = new double[]{GenomeCoding.MAX_SAT_ID, GenomeCoding.HUNGER_RATE};
-		return buildGenomeCow(maxWidth, maxHeight, pop, genome);
+		return buildGenomeCow(maxWidth, maxHeight, world, pop, genome);
 	}
 
 	
-	public static Cow buildGenomeCow(int maxWidth, int maxHeight, CowPopulationManager pop, double[] genome) {
+	public static Cow buildGenomeCow(int maxWidth, int maxHeight, World world, CowPopulationManager pop, double[] genome) {
 		Random r = new Random();
 
 		int x = r.nextInt(maxWidth);
@@ -34,10 +34,10 @@ public class EntityFactory {
 		
 		cow.setValue(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
 		cow.setLimit(Property.SATURATION, genome[GenomeCoding.MAX_SAT_ID]);
-		cow.setValue(Property.METABOLISM, genome[GenomeCoding.HUNGER_RATE]);
-		cow.setLimit(Property.METABOLISM, genome[GenomeCoding.HUNGER_RATE]);
+		cow.setValue(Property.METABOLISM, Math.abs(genome[GenomeCoding.HUNGER_RATE]));
+		cow.setLimit(Property.METABOLISM, Math.abs(genome[GenomeCoding.HUNGER_RATE]));
 		
-		CowFactory.applyCowActions(cow, null, pop, util);
+		CowFactory.applyCowActions(cow, world, pop, util);
 		return cow;
 	}
 }

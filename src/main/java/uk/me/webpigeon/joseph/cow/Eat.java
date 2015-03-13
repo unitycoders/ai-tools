@@ -1,5 +1,7 @@
 package uk.me.webpigeon.joseph.cow;
 
+import java.awt.Graphics2D;
+
 import uk.me.webpigeon.joseph.utility.Action;
 import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 import uk.me.webpigeon.joseph.utility.trees.TreeNode;
@@ -26,7 +28,7 @@ public class Eat extends Action {
 		if (plant == null) {
 			plant = world.getNearestEntityOfType(entity, Tag.GRASS);
 			if (plant == null) {
-				//ah, there are no more plants, I'm a sad cow :(
+				behaviour.setTarget(null);
 				return;
 			}
 			dest = plant.getLocation();
@@ -34,10 +36,8 @@ public class Eat extends Action {
 		
 		if (dest.dist(entity.getLocation()) > EAT_RANGE) {
 			behaviour.setTarget(dest);
-			behaviour.bind(entity);
 			Vector2D forceDir = behaviour.process();
 			entity.setVelocity(forceDir);
-			behaviour.bind(null);
 		} else {
 			//we can eat the plant now ^^
 			double currSat = entity.getValue(Property.SATURATION, 0);
@@ -53,10 +53,15 @@ public class Eat extends Action {
 			plant = null;
 		}
 		
-		// find the closest plant
-		// head towards plant
-		// eat the plant
-		// be happy
+	}
+	
+	@Override
+	public void notifyStarted(Entity entity) {
+		behaviour.bind(entity);
 	}
 
+	@Override
+	public void debugDraw(Graphics2D g) {
+		behaviour.debugDraw(g);
+	}
 }

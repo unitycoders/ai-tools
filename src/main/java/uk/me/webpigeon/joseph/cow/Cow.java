@@ -54,8 +54,11 @@ public class Cow extends SteeringEntity {
 	}
 	
 	private void processNeeds() {
-		Action newAction = util.process(this);
+		Action newAction = util.process(this);		
 		if (newAction != null && !newAction.equals(action)){
+			if (action != null && action instanceof EvadePreditor) {
+				System.out.println("swapped "+action+" for "+newAction);
+			}
 			action = newAction;
 			action.notifyStarted(this);
 		}
@@ -73,6 +76,16 @@ public class Cow extends SteeringEntity {
 		g.setColor(Color.BLUE);
 		g.fillRect((int)location.x-20, (int)location.y+10, (int)(satVal*50), 5);
 	}
+	
+	public void debugDraw(Graphics2D g) {
+		if (action != null) {
+			action.debugDraw(g);
+		}
+		
+		int range = (int)getValue(Property.SIGHT_RANGE, 100);
+		g.setColor(Color.WHITE);
+		g.drawOval((int)location.x - range, (int)location.y - range, range*2, range*2);
+	}
 
 	public int getAge() {
 		return age;
@@ -80,14 +93,6 @@ public class Cow extends SteeringEntity {
 
 	public double[] getGenome() {
 		return genome;
-	}
-
-	public Double getPropertyMax(Property prop) {
-		if (prop == Property.SATURATION) {
-			return genome[GenomeCoding.MAX_SAT_ID];
-		}
-		
-		return 0.0;
 	}
 
 	/**public void addSaturation(int health) {

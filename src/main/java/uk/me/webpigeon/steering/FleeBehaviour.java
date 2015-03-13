@@ -37,6 +37,10 @@ public class FleeBehaviour implements TargetedBehavour {
 
 	@Override
 	public void debugDraw(Graphics2D g) {
+		if (entity == null) {
+			return;
+		}
+		
 		g.setColor(Color.RED);
 		Vector2D entPos = entity.getLocation();
 		g.drawLine((int) entPos.x, (int) entPos.y, (int) targetPos.x,

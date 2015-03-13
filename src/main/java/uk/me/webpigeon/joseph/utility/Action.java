@@ -1,5 +1,7 @@
 package uk.me.webpigeon.joseph.utility;
 
+import java.awt.Graphics2D;
+
 import uk.me.webpigeon.joseph.cow.Cow;
 import uk.me.webpigeon.joseph.utility.trees.AbstractTreeNode;
 import uk.me.webpigeon.joseph.utility.trees.TreeNode;
@@ -27,6 +29,9 @@ public class Action {
 
 	public void notifyStarted(Entity cow) {
 		
+	}
+
+	public void debugDraw(Graphics2D g) {		
 	}
 	
 }

@@ -32,13 +32,14 @@ public class DoubleWorld extends World {
     }
 
     public static void main(String[] args) {
+    	DoubleWorld.DEBUG_DRAW = true;
         World world = new DoubleWorld(800, 600);
 
         HunterAgent.initialiseBehaviour();
         HunterAgent.initialiseSensors();
 
         CowPopulationManager pop = new CowPopulationManager(10);
-        pop.addMoreCows(10);
+        pop.addMoreCows(10, world);
         world.addComponent(pop);
 
         for (int i = 0; i < 50; i++) {

@@ -50,7 +50,7 @@ public class CowPopulationManager implements WorldComponent {
 		}
 	}
 	
-	public void addMoreCows(int cowCount) {
+	public void addMoreCows(int cowCount, World world) {
 		// find out now many new cows we need
 		//int replacementCowsNeeded = cowPopulation - cows.size();
 		for (int i=0; i<cowCount; i++) {
@@ -60,7 +60,7 @@ public class CowPopulationManager implements WorldComponent {
 			genome = mutateGenome(genome);
 			
 			//build a new cow with our new genome
-			Cow newCow = EntityFactory.buildGenomeCow(800, 600, this, genome);
+			Cow newCow = EntityFactory.buildGenomeCow(800, 600, world, this, genome);
 			newCows.add(newCow);
 		}
 	}
@@ -99,8 +99,8 @@ public class CowPopulationManager implements WorldComponent {
 		return genome;
 	}
 
-	public void addCow(double[] genome) {
-		Cow newCow = EntityFactory.buildGenomeCow(800, 600, this, genome);
+	public void addCow(World world, double[] genome) {
+		Cow newCow = EntityFactory.buildGenomeCow(800, 600, world, this, genome);
 		newCows.add(newCow);
 	}
 
